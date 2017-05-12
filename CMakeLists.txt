@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 3.6)
+project(TPCuat-Grupo11)
+set(CMAKE_C_STANDARD 99)
+add_subdirectory(src)
+add_subdirectory(test)

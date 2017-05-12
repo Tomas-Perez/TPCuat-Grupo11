@@ -1,0 +1,5 @@
+add_subdirectory(ApplianceShop)
+add_subdirectory(Blockbuster)
+add_subdirectory(CameraShop)
+add_subdirectory(Hotel)
+add_subdirectory(Library)
