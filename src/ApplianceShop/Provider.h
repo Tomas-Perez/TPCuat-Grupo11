@@ -8,7 +8,7 @@ typedef struct Provider{
     char* city;
     int phoneNumber;
     char* web;
-    int manufacturerId;
+    int providerId;
 }Provider;
 
 Provider* newProvider(char* name, char* description, char* address,
