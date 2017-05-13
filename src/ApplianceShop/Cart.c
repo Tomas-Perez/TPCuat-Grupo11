@@ -1,6 +1,5 @@
 #include <malloc.h>
 #include "Cart.h"
-#include "CartLine.h"
 
 Cart* newCart(int initialCapacity){
     Cart* result = malloc(sizeof(Cart));
@@ -13,6 +12,7 @@ Cart* newCart(int initialCapacity){
 
     return result;
 }
+
 void destroy(Cart* cart){
     for(int i = 0; i < cart->maxCapacity; i++){
         if(cart->spacesTaken[i]) destroyCartLine(cart->cartLines[i]);
@@ -21,6 +21,7 @@ void destroy(Cart* cart){
     free(cart->spacesTaken);
     free(cart);
 }
+
 void addAppliance(Cart* cart, int applianceId, int amount){
     int lineIndex = containsAppliance(cart, applianceId);
     if(lineIndex == -1) {
@@ -45,9 +46,9 @@ void addAppliance(Cart* cart, int applianceId, int amount){
 
 int containsAppliance(Cart* cart, int applianceId){
     for(int i = 0; i < cart->maxCapacity; i++){
-        if(cart->spacesTaken[i] == 1){
+        if(cart->spacesTaken[i]){
             if(cart->cartLines[i]->applianceId == applianceId) return i;
-        }
+       }
     }
     return -1;
 }
@@ -65,7 +66,16 @@ void removeAppliance(Cart* cart, int applianceId, int amount){
 }
 
 int getTotal(Cart* cart, Database* database){
-
+    int result = 0;
+    for(int i = 0; i < cart->maxCapacity; i++){
+        if(cart->spacesTaken[i]){
+            int id = cart->cartLines[i]->applianceId;
+            int amount = cart->cartLines[i]->amount;
+            Appliance* appliance = getAppliance(id, database);
+            result += appliance->price * amount;
+        }
+    }
+    return result;
 }
 
 void grow(Cart* cart){
