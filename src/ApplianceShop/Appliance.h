@@ -9,4 +9,8 @@ typedef struct Appliance{
     int idManufacturer;
 }Appliance;
 
+Appliance* newAppliance(char* name, int price, int idAppliance, int idProvider, int idManufacturer);
+void destroyAppliance(Appliance* appliance);
+
+
 #endif //TPCUAT_GRUPO11_APPLIANCE_H
