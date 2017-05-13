@@ -5,11 +5,12 @@
 #include "Cart.h"
 
 typedef struct Invoice{
-    InvoiceLine* invoiceLines;
+    InvoiceLine** invoiceLines;
+    int amountOfLines;
     int total;
 }Invoice;
 
-Invoice* newInvoice(Cart* cart);
+Invoice* newInvoice(Cart* cart, Database* database);
 void destroyInvoice(Invoice* invoice);
 
 #endif //TPCUAT_GRUPO11_INVOICE_H

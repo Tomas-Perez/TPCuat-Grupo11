@@ -92,6 +92,41 @@ void growManufacturer(Database* database){
     database->booleanArrayManufacturer = realloc(database->booleanArrayManufacturer, sizeof(database->booleanArrayManufacturer) * 2);
     database->manufacturerMaxCapacity *= 2;
 }
+
+void removeProvider(int idProvider, Database* database){
+    for(int i = 0; i < database->providerMaxCapacity; i++){
+        if(database->booleanArrayProvider[i] != 0){
+            if(idProvider == database->arrayProvider[i]->providerId){
+                destroyProvider(database->arrayProvider[i]);
+                database->booleanArrayProvider[i] = 0;
+                break;
+            }
+        }
+    }
+}
+void removeAppliance(int idAppliance, Database* database){
+    for(int i = 0; i < database->applianceMaxCapacity; i++){
+        if(database->booleanArrayAppliance[i] != 0){
+            if(idAppliance == database->arrayAppliance[i]->idAppliance){
+                destroyAppliance(database->arrayAppliance[i]);
+                database->booleanArrayAppliance[i] = 0;
+                break;
+            }
+        }
+    }
+}
+void removeManufacturer(int idManufacturer, Database* database){
+    for(int i = 0; i < database->manufacturerMaxCapacity; i++){
+        if(database->booleanArrayManufacturer[i] != 0){
+            if(idManufacturer == database->arrayManufacturer[i]->manufacturerId){
+                destroyManufacturer(database->arrayManufacturer[i]);
+                database->booleanArrayManufacturer[i] = 0;
+                break;
+            }
+        }
+    }
+}
+
 int getNextProviderId(Database* database){
     int result = database->idProviderGenerator;
     database->idProviderGenerator += 1;

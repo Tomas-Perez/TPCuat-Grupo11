@@ -13,6 +13,6 @@ typedef struct Provider{
 
 Provider* newProvider(char* name, char* description, char* address,
                               char* city, int phoneNumber, char* web, int providerId);
-void destroyProvider(Provider* Provider);
+void destroyProvider(Provider* provider);
 
 #endif //TPCUAT_GRUPO11_PROVIDER_H
