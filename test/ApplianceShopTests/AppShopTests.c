@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "CUTest/CuTest.h"
+#include "../CUTest/CuTest.h"
 
 /**
  * Test setup
