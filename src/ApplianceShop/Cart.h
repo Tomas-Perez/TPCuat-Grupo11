@@ -2,6 +2,7 @@
 #define TPCUAT_GRUPO11_CART_H
 
 #include "CartLine.h"
+#include "Database.h"
 
 typedef struct Cart{
     CartLine** cartLines;
@@ -12,8 +13,9 @@ typedef struct Cart{
 
 Cart* newCart(int initialCapacity);
 void destroy(Cart* cart);
-void addAppliance(Cart* cart, int applianceId));
-void removeAppliance(Cart* cart, int applianceId));
+void addAppliance(Cart* cart, int applianceId, int amount);
+int containsAppliance(Cart* cart, int applianceId);
+void removeAppliance(Cart* cart, int applianceId, int amount);
 int getTotal(Cart* cart, Database* database);
 void grow(Cart* cart);
 
