@@ -5,7 +5,7 @@
 Appliance *newAppliance(char *name, int price, int idAppliance, int idProvider, int idManufacturer) {
     Appliance* result = malloc(sizeof(Appliance));
 
-    result->name = malloc(sizeof(char)*(strlen(name)+1));
+    result->name = malloc(sizeof(char)*(strlen(name) + 1));
     strcpy(result->name, name);
 
     result->price = price;
