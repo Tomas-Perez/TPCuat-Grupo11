@@ -1,10 +1,10 @@
 #include <malloc.h>
 #include "CartLine.h"
 
-CartLine* newCartLine(int applianceId){
+CartLine* newCartLine(int applianceId, int amount){
     CartLine* result = malloc(sizeof(CartLine));
     result->applianceId = applianceId;
-    result->amount = 1;
+    result->amount = amount;
 
     return result;
 }

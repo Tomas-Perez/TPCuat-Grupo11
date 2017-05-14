@@ -6,7 +6,7 @@ typedef struct CartLine{
     int amount;
 }CartLine;
 
-CartLine* newCartLine(int applianceId);
+CartLine* newCartLine(int applianceId, int amount);
 void destroyCartLine(CartLine* cartLine);
 
 #endif //TPCUAT_GRUPO11_CARTLINE_H

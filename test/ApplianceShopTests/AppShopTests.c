@@ -5,11 +5,13 @@
  * Test setup
  */
 
+CuSuite* getCartTestSuite();
+
 void RunAllTests(void) {
     CuString *output = CuStringNew();
     CuSuite* suite = CuSuiteNew();
 
-    // CuSuiteAddSuite(suite, );
+    CuSuiteAddSuite(suite, getCartTestSuite());
 
     CuSuiteRun(suite);
     CuSuiteSummary(suite, output);
@@ -19,4 +21,5 @@ void RunAllTests(void) {
 
 int main(void) {
     RunAllTests();
+    //printf("ayylmao");
 }

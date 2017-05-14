@@ -12,12 +12,12 @@ typedef struct Cart{
 }Cart;
 
 Cart* newCart(int initialCapacity);
-void destroy(Cart* cart);
-void addAppliance(Cart* cart, int applianceId, int amount);
-int containsAppliance(Cart* cart, int applianceId);
-void removeAppliance(Cart* cart, int applianceId, int amount);
-int getTotal(Cart* cart, Database* database);
-void grow(Cart* cart);
+void destroyCart(Cart* cart);
+void cartAddAppliance(Cart* cart, int applianceId, int amount);
+int cartContainsAppliance(Cart* cart, int applianceId);
+void cartRemoveAppliance(Cart* cart, int applianceId, int amount);
+int cartGetTotal(Cart* cart, Database* database);
+void cartGrow(Cart* cart);
 
 
 #endif //TPCUAT_GRUPO11_CART_H
