@@ -17,6 +17,11 @@ Database* newDatabase(){
     database->idProviderGenerator = 1;
     database->idApplianceGenerator = 1;
     database->idManufacturerGenerator = 1;
+    for(int i = 0; i < initialSize; i++){
+        database->booleanArrayProvider[i] = 0;
+        database->booleanArrayAppliance[i] = 0;
+        database->booleanArrayManufacturer[i] = 0;
+    }
 
     return database;
 }
@@ -80,17 +85,72 @@ Manufacturer* getManufacturer(int idManufacturer, Database* database){
 void growProvider(Database* database){
     database->arrayProvider = realloc(database->arrayProvider, sizeof(database->arrayProvider) * 2);
     database->booleanArrayProvider = realloc(database->booleanArrayProvider, sizeof(database->booleanArrayProvider) * 2);
+    for(int i = database->providerMaxCapacity; i < database->providerMaxCapacity; i++){
+        database->booleanArrayProvider[i] = 0;
+    }
     database->providerMaxCapacity *= 2;
 }
 void growAppliance(Database* database){
     database->arrayAppliance = realloc(database->arrayAppliance, sizeof(database->arrayAppliance) * 2);
     database->booleanArrayAppliance = realloc(database->booleanArrayAppliance, sizeof(database->booleanArrayAppliance) * 2);
+    for(int i = database->applianceMaxCapacity; i < database->applianceMaxCapacity; i++){
+        database->booleanArrayAppliance[i] = 0;
+    }
     database->applianceMaxCapacity *= 2;
 }
 void growManufacturer(Database* database){
     database->arrayManufacturer = realloc(database->arrayManufacturer, sizeof(database->arrayManufacturer) * 2);
     database->booleanArrayManufacturer = realloc(database->booleanArrayManufacturer, sizeof(database->booleanArrayManufacturer) * 2);
+    for(int i = database->manufacturerMaxCapacity; i < database->manufacturerMaxCapacity; i++){
+        database->booleanArrayManufacturer[i] = 0;
+    }
     database->manufacturerMaxCapacity *= 2;
+}
+
+void addProvider(Database* database, Provider* provider){
+    int inserted = 0;
+    for(int i = 0; i < database->providerMaxCapacity; i++){
+        if(!database->booleanArrayProvider[i]){
+            database->arrayProvider[i] = provider;
+            database->booleanArrayProvider[i] = 1;
+            inserted = 1;
+        }
+    }
+
+    if(!inserted){
+        growProvider(database);
+        addProvider(database, provider);
+    }
+}
+void addAppliance(Database* database, Appliance* appliance){
+    int inserted = 0;
+    for(int i = 0; i < database->applianceMaxCapacity; i++){
+        if(!database->booleanArrayAppliance[i]){
+            database->arrayAppliance[i] = appliance;
+            database->booleanArrayAppliance[i] = 1;
+            inserted = 1;
+        }
+    }
+
+    if(!inserted){
+        growAppliance(database);
+        addAppliance(database, appliance);
+    }
+}
+void addManufacturer(Database* database, Manufacturer* manufacturer){
+    int inserted = 0;
+    for(int i = 0; i < database->manufacturerMaxCapacity; i++){
+        if(!database->booleanArrayManufacturer[i]){
+            database->arrayManufacturer[i] = manufacturer;
+            database->booleanArrayManufacturer[i] = 1;
+            inserted = 1;
+        }
+    }
+
+    if(!inserted){
+        growManufacturer(database);
+        addManufacturer(database, manufacturer);
+    }
 }
 
 void removeProvider(int idProvider, Database* database){

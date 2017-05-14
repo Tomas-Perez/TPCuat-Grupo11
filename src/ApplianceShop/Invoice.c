@@ -4,13 +4,8 @@
 Invoice* newInvoice(Cart* cart, Database* database){
     Invoice* invoice = malloc(sizeof(Invoice));
     invoice->total = cartGetTotal(cart, database);
-    int amountOfLines = 0;
-    for(int i = 0; i < cart->maxCapacity; i++){
-        if(cart->spacesTaken[i]){
-            amountOfLines++;
-        }
-    }
-    invoice->invoiceLines = malloc(sizeof(InvoiceLine) * amountOfLines);
+    invoice->amountOfLines = cart->amountOfLines;
+    invoice->invoiceLines = malloc(sizeof(InvoiceLine) * cart->amountOfLines);
     int j = 0;
     for(int i = 0; i < cart->maxCapacity; i++){
         if(cart->spacesTaken[i]){
