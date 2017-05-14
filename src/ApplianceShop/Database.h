@@ -9,14 +9,17 @@ struct Database{
     Provider** arrayProvider;
     int* booleanArrayProvider;
     int providerMaxCapacity;
+    int amountOfProviders;
 
     Appliance** arrayAppliance;
     int* booleanArrayAppliance;
     int applianceMaxCapacity;
+    int amountOfAppliances;
 
     Manufacturer** arrayManufacturer;
     int* booleanArrayManufacturer;
     int manufacturerMaxCapacity;
+    int amountOfManufacturers;
 
     int idProviderGenerator;
     int idApplianceGenerator;

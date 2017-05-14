@@ -31,6 +31,8 @@ void TestCartContains(CuTest *tc){
 void TestCartAddAppliance(CuTest *tc){
     Cart* cart = newCart(1);
     cartAddAppliance(cart, 5, 10);
+    cartAddAppliance(cart, 7, 10);
+    cartAddAppliance(cart, 6, 10);
     int actual = cartContainsAppliance(cart, 5);
     CuAssertIntEquals(tc, 0, actual);
 
@@ -49,6 +51,10 @@ void TestCartRemoveAppliance(CuTest *tc){
 
     cartRemoveAppliance(cart, 5, 3);
     CuAssertIntEquals(tc, 7, cartLineId5->amount);
+
+    cartRemoveAppliance(cart, 5, 7);
+    CuAssertIntEquals(tc, 0, cartLineId5->amount);
+    CuAssertIntEquals(tc, -1, cartContainsAppliance(cart, 5));
 }
 
 /**

@@ -17,6 +17,9 @@ Database* newDatabase(){
     database->idProviderGenerator = 1;
     database->idApplianceGenerator = 1;
     database->idManufacturerGenerator = 1;
+    database->amountOfAppliances = 0;
+    database->amountOfProviders = 0;
+    database->amountOfManufacturers = 0;
     for(int i = 0; i < initialSize; i++){
         database->booleanArrayProvider[i] = 0;
         database->booleanArrayAppliance[i] = 0;
@@ -108,48 +111,58 @@ void growManufacturer(Database* database){
 }
 
 void addProvider(Database* database, Provider* provider){
-    int inserted = 0;
-    for(int i = 0; i < database->providerMaxCapacity; i++){
-        if(!database->booleanArrayProvider[i]){
-            database->arrayProvider[i] = provider;
-            database->booleanArrayProvider[i] = 1;
-            inserted = 1;
+    if(database->amountOfProviders != database->providerMaxCapacity) {
+        for (int i = 0; i < database->providerMaxCapacity; i++) {
+            if (!database->booleanArrayProvider[i]) {
+                database->arrayProvider[i] = provider;
+                database->booleanArrayProvider[i] = 1;
+                database->amountOfProviders++;
+                break;
+            }
         }
     }
 
-    if(!inserted){
+    else {
         growProvider(database);
-        addProvider(database, provider);
+        database->arrayProvider[database->amountOfProviders] = provider;
+        database->booleanArrayProvider[database->amountOfProviders] = 1;
+        database->amountOfProviders++;
     }
 }
 void addAppliance(Database* database, Appliance* appliance){
-    int inserted = 0;
-    for(int i = 0; i < database->applianceMaxCapacity; i++){
-        if(!database->booleanArrayAppliance[i]){
-            database->arrayAppliance[i] = appliance;
-            database->booleanArrayAppliance[i] = 1;
-            inserted = 1;
+    if(database->amountOfAppliances != database->applianceMaxCapacity) {
+        for (int i = 0; i < database->applianceMaxCapacity; i++) {
+            if (!database->booleanArrayAppliance[i]) {
+                database->arrayAppliance[i] = appliance;
+                database->booleanArrayAppliance[i] = 1;
+                database->amountOfAppliances++;
+                break;
+            }
         }
     }
-
-    if(!inserted){
+    else {
         growAppliance(database);
-        addAppliance(database, appliance);
+        database->arrayAppliance[database->amountOfAppliances] = appliance;
+        database->booleanArrayAppliance[database->amountOfAppliances] = 1;
+        database->amountOfAppliances++;
     }
 }
 void addManufacturer(Database* database, Manufacturer* manufacturer){
-    int inserted = 0;
-    for(int i = 0; i < database->manufacturerMaxCapacity; i++){
-        if(!database->booleanArrayManufacturer[i]){
-            database->arrayManufacturer[i] = manufacturer;
-            database->booleanArrayManufacturer[i] = 1;
-            inserted = 1;
+    if(database->amountOfManufacturers != database->manufacturerMaxCapacity) {
+        for (int i = 0; i < database->manufacturerMaxCapacity; i++) {
+            if (!database->booleanArrayManufacturer[i]) {
+                database->arrayManufacturer[i] = manufacturer;
+                database->booleanArrayManufacturer[i] = 1;
+                database->amountOfManufacturers++;
+                break;
+            }
         }
     }
-
-    if(!inserted){
+    else {
         growManufacturer(database);
-        addManufacturer(database, manufacturer);
+        database->arrayManufacturer[database->amountOfManufacturers] = manufacturer;
+        database->booleanArrayManufacturer[database->amountOfManufacturers] = 1;
+        database->amountOfManufacturers++;
     }
 }
 
@@ -159,6 +172,7 @@ void removeProvider(int idProvider, Database* database){
             if(idProvider == database->arrayProvider[i]->providerId){
                 destroyProvider(database->arrayProvider[i]);
                 database->booleanArrayProvider[i] = 0;
+                database->amountOfProviders--;
                 break;
             }
         }
@@ -170,6 +184,7 @@ void removeAppliance(int idAppliance, Database* database){
             if(idAppliance == database->arrayAppliance[i]->idAppliance){
                 destroyAppliance(database->arrayAppliance[i]);
                 database->booleanArrayAppliance[i] = 0;
+                database->amountOfAppliances--;
                 break;
             }
         }
@@ -181,6 +196,7 @@ void removeManufacturer(int idManufacturer, Database* database){
             if(idManufacturer == database->arrayManufacturer[i]->manufacturerId){
                 destroyManufacturer(database->arrayManufacturer[i]);
                 database->booleanArrayManufacturer[i] = 0;
+                database->amountOfManufacturers--;
                 break;
             }
         }

@@ -63,6 +63,7 @@ void cartRemoveAppliance(Cart* cart, int applianceId, int amount){
         if(line->amount <= 0){
             cart->spacesTaken[lineIndex] = 0;
             destroyCartLine(line);
+            cart->amountOfLines--;
         }
     }
 }
