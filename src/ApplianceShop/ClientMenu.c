@@ -26,14 +26,18 @@ void addApplianceToCartMenu(Database* database, Cart* cart, int* applianceIdArra
     }
     int indexInput = 0;
     do {
+        fseek(stdin,0,SEEK_END);
+        printf("Please enter a valid number\n");
         scanf("%d", &indexInput);
     } while (indexInput == 0 || indexInput > database->amountOfAppliances);
     if(indexInput == -1) return;
     int amount = 0;
     printf("How many would you like to buy?\n");
     do {
+        fseek(stdin,0,SEEK_END);
+        printf("Please enter a valid number\n");
         scanf("%d", &amount);
-    } while (amount == 0);
+    } while (amount <= 0);
     cartAddAppliance(cart, applianceIdArray[indexInput-1], amount);
     printf("The Appliance has been added to you cart\n");
 }
@@ -89,7 +93,7 @@ void clientMenu(Database* database){
             case -1:
                 return;
             default:
-                printf("Please enter one of the options");
+                printf("Please enter one of the options\n");
                 fseek(stdin,0,SEEK_END);
         }
     }

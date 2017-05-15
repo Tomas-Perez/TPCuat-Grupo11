@@ -165,7 +165,7 @@ void addManufacturer(Database* database, Manufacturer* manufacturer){
         database->amountOfManufacturers++;
     }
 }
-
+//TODO should remove all related Appliances
 void removeProvider(int idProvider, Database* database){
     for(int i = 0; i < database->providerMaxCapacity; i++){
         if(database->booleanArrayProvider[i] != 0){
@@ -178,6 +178,7 @@ void removeProvider(int idProvider, Database* database){
         }
     }
 }
+//TODO nothing ay lmao
 void removeAppliance(int idAppliance, Database* database){
     for(int i = 0; i < database->applianceMaxCapacity; i++){
         if(database->booleanArrayAppliance[i] != 0){
@@ -190,6 +191,7 @@ void removeAppliance(int idAppliance, Database* database){
         }
     }
 }
+//TODO should remove all related Appliances
 void removeManufacturer(int idManufacturer, Database* database){
     for(int i = 0; i < database->manufacturerMaxCapacity; i++){
         if(database->booleanArrayManufacturer[i] != 0){
