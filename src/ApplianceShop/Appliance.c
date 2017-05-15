@@ -1,5 +1,5 @@
 #include <malloc.h>
-#include <mem.h>
+#include <memory.h>
 #include "Appliance.h"
 
 Appliance *newAppliance(char *name, int price, int idAppliance, int idProvider, int idManufacturer) {

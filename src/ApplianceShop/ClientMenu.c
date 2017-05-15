@@ -15,7 +15,7 @@ int* getApplianceIdArray(Database* database){
     return result;
 }
 
-void addApplianceMenu(Database* database, Cart* cart, int* applianceIdArray){
+void addApplianceToCartMenu(Database* database, Cart* cart, int* applianceIdArray){
     printf("Select the item you'd like to buy. Type -1 to exit \n");
     for(int i = 0; i < database->amountOfAppliances; i++){
         Appliance* appliance = getAppliance(applianceIdArray[i], database);
@@ -79,7 +79,7 @@ void clientMenu(Database* database){
         scanf("%d", &choice);
         switch (choice) {
             case 1:
-                addApplianceMenu(database, cart, applianceIdArray);
+                addApplianceToCartMenu(database, cart, applianceIdArray);
                 break;
             case 2:
                 checkCartDisplay(database, cart);
