@@ -120,6 +120,7 @@ void addApplianceMenu(Database* database, int*** applianceIdArray, int* provider
     int idManufacturer = manufacturerIdArray[manufacturerIndex-1];
     Appliance* appliance = newAppliance(name,price,getNextApplianceId(database),idProvider,idManufacturer);
     addAppliance(database, appliance);
+    free(**applianceIdArray);
     **applianceIdArray = getApplianceIdArray(database);
     free(name);
 }
@@ -181,6 +182,7 @@ void addProviderMenu(Database *database, int ***providerIdArray){
     }
     Provider* provider = newProvider(name, description, address, city, phone, web, getNextProviderId(database));
     addProvider(database, provider);
+    free(**providerIdArray);
     **providerIdArray = getProviderIdArray(database);
     free(name);
     free(description);
@@ -200,6 +202,7 @@ void removeProviderMenu(Database* database, int*** providerIdArray, int*** appli
             scanf("%d", &choiceIndex);
         }
         removeProvider(**providerIdArray[choiceIndex - 1], database);
+        free(**providerIdArray);
         **providerIdArray = getProviderIdArray(database);
     }
 }
@@ -258,6 +261,7 @@ void addManufacturerMenu(Database* database, int*** manufacturerIdArray){
     }
     Manufacturer* manufacturer = newManufacturer(name, description, address, city, phone, web, getNextManufacturerId(database));
     addManufacturer(database, manufacturer);
+    free(**manufacturerIdArray);
     **manufacturerIdArray = getProviderIdArray(database);
     free(name);
     free(description);
@@ -277,6 +281,7 @@ void removeManufacturerMenu(Database* database, int*** manufacturerIdArray, int*
             scanf("%d", &choiceIndex);
         }
         removeProvider(**manufacturerIdArray[choiceIndex - 1], database);
+        free(**manufacturerIdArray);
         **manufacturerIdArray = getProviderIdArray(database);
     }
 }
