@@ -1,5 +1,5 @@
 #include <malloc.h>
-#include <mem.h>
+#include <memory.h>
 #include "Manufacturer.h"
 
 Manufacturer* newManufacturer(char* name, char* description, char* address,

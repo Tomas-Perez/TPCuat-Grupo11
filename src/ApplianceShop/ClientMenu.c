@@ -15,7 +15,7 @@ int* getApplianceIdArray(Database* database){
     return result;
 }
 
-void addApplianceMenu(Database* database, Cart* cart, int* applianceIdArray){
+void addApplianceToCartMenu(Database* database, Cart* cart, int* applianceIdArray){
     printf("Select the item you'd like to buy. Type -1 to exit \n");
     for(int i = 0; i < database->amountOfAppliances; i++){
         Appliance* appliance = getAppliance(applianceIdArray[i], database);
@@ -26,14 +26,18 @@ void addApplianceMenu(Database* database, Cart* cart, int* applianceIdArray){
     }
     int indexInput = 0;
     do {
+        fseek(stdin,0,SEEK_END);
+        printf("Please enter a valid number\n");
         scanf("%d", &indexInput);
     } while (indexInput == 0 || indexInput > database->amountOfAppliances);
     if(indexInput == -1) return;
     int amount = 0;
     printf("How many would you like to buy?\n");
     do {
+        fseek(stdin,0,SEEK_END);
+        printf("Please enter a valid number\n");
         scanf("%d", &amount);
-    } while (amount == 0);
+    } while (amount <= 0);
     cartAddAppliance(cart, applianceIdArray[indexInput-1], amount);
     printf("The Appliance has been added to you cart\n");
 }
@@ -79,7 +83,7 @@ void clientMenu(Database* database){
         scanf("%d", &choice);
         switch (choice) {
             case 1:
-                addApplianceMenu(database, cart, applianceIdArray);
+                addApplianceToCartMenu(database, cart, applianceIdArray);
                 break;
             case 2:
                 checkCartDisplay(database, cart);
@@ -89,7 +93,7 @@ void clientMenu(Database* database){
             case -1:
                 return;
             default:
-                printf("Please enter one of the options");
+                printf("Please enter one of the options\n");
                 fseek(stdin,0,SEEK_END);
         }
     }
