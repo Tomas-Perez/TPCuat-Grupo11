@@ -5,11 +5,13 @@
  * Test setup
  */
 
+CuSuite* getHotelDatabaseTestSuite();
+
 void RunAllTests(void) {
     CuString *output = CuStringNew();
     CuSuite* suite = CuSuiteNew();
 
-    // CuSuiteAddSuite(suite, );
+    CuSuiteAddSuite(suite, getHotelDatabaseTestSuite());
 
     CuSuiteRun(suite);
     CuSuiteSummary(suite, output);

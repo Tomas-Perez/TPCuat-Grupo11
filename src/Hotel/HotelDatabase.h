@@ -11,14 +11,17 @@ typedef struct HotelDatabase{
     Room** rooms;
     int roomAmount;
     int roomCapacity;
+    int roomNumberGen;
 
     HotelClient** clients;
     int clientAmount;
     int clientCapacity;
+    int clientIDGen;
 
     HotelInvoice** invoices;
     int invoiceAmount;
     int invoiceCapacity;
+    int invoiceIDGen;
 }HotelDatabase;
 
 HotelDatabase* newHotelDatabase(int initialCapacity, char* hotelName);

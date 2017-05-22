@@ -10,7 +10,7 @@ typedef struct HotelInvoice{
     int amount;
 }HotelInvoice;
 
-HotelInvoice* newHotelInvoice(int invoiceID, char* hotelName, int days, int amount, int clientID, int roomNumber);
+HotelInvoice* newHotelInvoice(char* hotelName, int days, int amount, int clientID, int roomNumber);
 void destroyHotelInvoice(HotelInvoice* hotelInvoice);
 
 #endif //TPCUAT_GRUPO11_INVOICE_H

@@ -5,7 +5,7 @@
 HotelDatabase* newHotelDatabase(int initialCapacity, char* hotelName){
     HotelDatabase* result = malloc(sizeof(HotelDatabase));
 
-    result->hotelName = malloc(sizeof(char)*strlen(hotelName)+1);
+    result->hotelName = malloc(sizeof(char)*(strlen(hotelName)+1));
     strcpy(result->hotelName, hotelName);
 
     result->clientAmount = 0;
@@ -14,6 +14,9 @@ HotelDatabase* newHotelDatabase(int initialCapacity, char* hotelName){
     result->invoiceCapacity = initialCapacity;
     result->roomAmount = 0;
     result->roomCapacity = 0;
+    result->roomNumberGen = 0;
+    result->clientIDGen = 0;
+    result->invoiceIDGen = 0;
 
     result->clients = malloc(sizeof(HotelClient*)*result->clientCapacity);
     result->invoices = malloc(sizeof(HotelInvoice*)*result->invoiceCapacity);
@@ -23,48 +26,45 @@ HotelDatabase* newHotelDatabase(int initialCapacity, char* hotelName){
 }
 
 static void growRooms(HotelDatabase* database){
-
+    realloc(database->rooms, sizeof(Room) * database->roomCapacity*2);
+    database->roomCapacity *= 2;
 }
 
 static void growClients(HotelDatabase* database){
-
+    realloc(database->clients, sizeof(HotelClient) * database->clientCapacity*2);
+    database->clientCapacity *= 2;
 }
 
 static void growInvoices(HotelDatabase* database){
-
+    realloc(database->invoices, sizeof(HotelInvoice) * database->invoiceCapacity*2);
+    database->invoiceCapacity *= 2;
 }
-static int containsRoom(HotelDatabase* database, int roomNumber){
 
-}
-static int containsClient(HotelDatabase* database, int clientID){
-
-}
-static int containsInvoice(HotelDatabase* database, int invoiceID){
-
-}
 int addRoom(HotelDatabase* database, Room* room){
-    if(containsRoom(database, room->number)) return 0;
     if(database->roomAmount == database->roomCapacity){
         growRooms(database);
     }
+    room->number = database->roomNumberGen++;
     database->rooms[database->roomAmount] = room;
     database->roomAmount++;
     return 1;
 }
+
 int addClient(HotelDatabase* database, HotelClient* client){
-    if(containsClient(database, client->clientID)) return 0;
     if(database->clientAmount == database->clientCapacity){
         growClients(database);
     }
+    client->clientID = database->clientIDGen++;
     database->clients[database->clientAmount] = client;
     database->clientAmount++;
     return 1;
 }
+
 int addInvoice(HotelDatabase* database, HotelInvoice* invoice){
-    if(containsInvoice(database, invoice->invoiceID)) return 0;
     if(database->invoiceAmount == database->invoiceCapacity){
         growInvoices(database);
     }
+    invoice->invoiceID = database->invoiceIDGen++;
     database->invoices[database->invoiceAmount] = invoice;
     database->invoiceAmount++;
     return 1;

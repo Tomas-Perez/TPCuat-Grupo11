@@ -8,7 +8,7 @@ typedef struct HotelClient{
     int clientID;
 }HotelClient;
 
-HotelClient* newHotelClient(char* name, char* surname, int DNI, int clientID);
+HotelClient* newHotelClient(char* name, char* surname, int DNI);
 void destroyHotelClient(HotelClient* client);
 
 #endif //TPCUAT_GRUPO11_HOTELCLIENT_H
