@@ -86,25 +86,25 @@ Manufacturer* getManufacturer(int idManufacturer, Database* database){
     return NULL;
 }
 void growProvider(Database* database){
-    database->arrayProvider = realloc(database->arrayProvider, sizeof(database->arrayProvider) * 2);
-    database->booleanArrayProvider = realloc(database->booleanArrayProvider, sizeof(database->booleanArrayProvider) * 2);
-    for(int i = database->providerMaxCapacity; i < database->providerMaxCapacity; i++){
+    database->arrayProvider = realloc(database->arrayProvider, sizeof(Provider*) * database->providerMaxCapacity * 2);
+    database->booleanArrayProvider = realloc(database->booleanArrayProvider, sizeof(int) * database->providerMaxCapacity * 2);
+    for(int i = database->providerMaxCapacity; i < database->providerMaxCapacity * 2; i++){
         database->booleanArrayProvider[i] = 0;
     }
     database->providerMaxCapacity *= 2;
 }
 void growAppliance(Database* database){
-    database->arrayAppliance = realloc(database->arrayAppliance, sizeof(database->arrayAppliance) * 2);
-    database->booleanArrayAppliance = realloc(database->booleanArrayAppliance, sizeof(database->booleanArrayAppliance) * 2);
-    for(int i = database->applianceMaxCapacity; i < database->applianceMaxCapacity; i++){
+    database->arrayAppliance = realloc(database->arrayAppliance, sizeof(Appliance*) * database->applianceMaxCapacity * 2);
+    database->booleanArrayAppliance = realloc(database->booleanArrayAppliance, sizeof(int) * database->applianceMaxCapacity * 2);
+    for(int i = database->applianceMaxCapacity; i < database->applianceMaxCapacity  * 2; i++){
         database->booleanArrayAppliance[i] = 0;
     }
     database->applianceMaxCapacity *= 2;
 }
 void growManufacturer(Database* database){
-    database->arrayManufacturer = realloc(database->arrayManufacturer, sizeof(database->arrayManufacturer) * 2);
-    database->booleanArrayManufacturer = realloc(database->booleanArrayManufacturer, sizeof(database->booleanArrayManufacturer) * 2);
-    for(int i = database->manufacturerMaxCapacity; i < database->manufacturerMaxCapacity; i++){
+    database->arrayManufacturer = realloc(database->arrayManufacturer, sizeof(Manufacturer*) * database->manufacturerMaxCapacity * 2);
+    database->booleanArrayManufacturer = realloc(database->booleanArrayManufacturer, sizeof(int) * database->manufacturerMaxCapacity * 2);
+    for(int i = database->manufacturerMaxCapacity; i < database->manufacturerMaxCapacity * 2; i++){
         database->booleanArrayManufacturer[i] = 0;
     }
     database->manufacturerMaxCapacity *= 2;
@@ -170,6 +170,15 @@ void removeProvider(int idProvider, Database* database){
     for(int i = 0; i < database->providerMaxCapacity; i++){
         if(database->booleanArrayProvider[i] != 0){
             if(idProvider == database->arrayProvider[i]->providerId){
+                for(int j = 0; i<database->applianceMaxCapacity; j++){
+                    if(database->booleanArrayAppliance[i] != 0){
+                        if(database->arrayAppliance[i]->idProvider == idProvider){
+                            destroyAppliance(database->arrayAppliance[i]);
+                            database->booleanArrayAppliance[i] = 0;
+                            database->amountOfAppliances--;
+                        }
+                    }
+                }
                 destroyProvider(database->arrayProvider[i]);
                 database->booleanArrayProvider[i] = 0;
                 database->amountOfProviders--;
@@ -196,6 +205,15 @@ void removeManufacturer(int idManufacturer, Database* database){
     for(int i = 0; i < database->manufacturerMaxCapacity; i++){
         if(database->booleanArrayManufacturer[i] != 0){
             if(idManufacturer == database->arrayManufacturer[i]->manufacturerId){
+                for(int j = 0; i<database->applianceMaxCapacity; j++){
+                    if(database->booleanArrayAppliance[i] != 0){
+                        if(database->arrayAppliance[i]->idManufacturer == idManufacturer){
+                            destroyAppliance(database->arrayAppliance[i]);
+                            database->booleanArrayAppliance[i] = 0;
+                            database->amountOfAppliances--;
+                        }
+                    }
+                }
                 destroyManufacturer(database->arrayManufacturer[i]);
                 database->booleanArrayManufacturer[i] = 0;
                 database->amountOfManufacturers--;
