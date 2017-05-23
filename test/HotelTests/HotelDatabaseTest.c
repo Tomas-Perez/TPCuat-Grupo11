@@ -19,7 +19,6 @@ void TestAdd(CuTest* tc){
     CuAssertIntEquals(tc, 2, client3->clientID);
     CuAssertIntEquals(tc, 3, hotelDatabase->clientAmount);
 
-
     Room* room1 = newRoom(DELUXE, 500);
     Room* room2 = newRoom(SINGLE, 200);
     Room* room3 = newRoom(MASTER, 990);
