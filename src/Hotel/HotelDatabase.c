@@ -13,7 +13,7 @@ HotelDatabase* newHotelDatabase(int initialCapacity, char* hotelName){
     result->invoiceAmount = 0;
     result->invoiceCapacity = initialCapacity;
     result->roomAmount = 0;
-    result->roomCapacity = 0;
+    result->roomCapacity = initialCapacity;
     result->roomNumberGen = 0;
     result->clientIDGen = 0;
     result->invoiceIDGen = 0;
@@ -26,17 +26,17 @@ HotelDatabase* newHotelDatabase(int initialCapacity, char* hotelName){
 }
 
 static void growRooms(HotelDatabase* database){
-    realloc(database->rooms, sizeof(Room) * database->roomCapacity*2);
+    realloc(database->rooms, sizeof(Room*) * database->roomCapacity*2);
     database->roomCapacity *= 2;
 }
 
 static void growClients(HotelDatabase* database){
-    realloc(database->clients, sizeof(HotelClient) * database->clientCapacity*2);
+    realloc(database->clients, sizeof(HotelClient*) * database->clientCapacity*2);
     database->clientCapacity *= 2;
 }
 
 static void growInvoices(HotelDatabase* database){
-    realloc(database->invoices, sizeof(HotelInvoice) * database->invoiceCapacity*2);
+    realloc(database->invoices, sizeof(HotelInvoice*) * database->invoiceCapacity*2);
     database->invoiceCapacity *= 2;
 }
 
