@@ -86,25 +86,25 @@ Manufacturer* getManufacturer(int idManufacturer, Database* database){
     return NULL;
 }
 void growProvider(Database* database){
-    database->arrayProvider = realloc(database->arrayProvider, sizeof(database->arrayProvider) * 2);
-    database->booleanArrayProvider = realloc(database->booleanArrayProvider, sizeof(database->booleanArrayProvider) * 2);
-    for(int i = database->providerMaxCapacity; i < database->providerMaxCapacity; i++){
+    database->arrayProvider = realloc(database->arrayProvider, sizeof(Provider*) * database->providerMaxCapacity * 2);
+    database->booleanArrayProvider = realloc(database->booleanArrayProvider, sizeof(int) * database->providerMaxCapacity * 2);
+    for(int i = database->providerMaxCapacity; i < database->providerMaxCapacity * 2; i++){
         database->booleanArrayProvider[i] = 0;
     }
     database->providerMaxCapacity *= 2;
 }
 void growAppliance(Database* database){
-    database->arrayAppliance = realloc(database->arrayAppliance, sizeof(database->arrayAppliance) * 2);
-    database->booleanArrayAppliance = realloc(database->booleanArrayAppliance, sizeof(database->booleanArrayAppliance) * 2);
-    for(int i = database->applianceMaxCapacity; i < database->applianceMaxCapacity; i++){
+    database->arrayAppliance = realloc(database->arrayAppliance, sizeof(Appliance*) * database->applianceMaxCapacity * 2);
+    database->booleanArrayAppliance = realloc(database->booleanArrayAppliance, sizeof(int) * database->applianceMaxCapacity * 2);
+    for(int i = database->applianceMaxCapacity; i < database->applianceMaxCapacity * 2; i++){
         database->booleanArrayAppliance[i] = 0;
     }
     database->applianceMaxCapacity *= 2;
 }
 void growManufacturer(Database* database){
-    database->arrayManufacturer = realloc(database->arrayManufacturer, sizeof(database->arrayManufacturer) * 2);
-    database->booleanArrayManufacturer = realloc(database->booleanArrayManufacturer, sizeof(database->booleanArrayManufacturer) * 2);
-    for(int i = database->manufacturerMaxCapacity; i < database->manufacturerMaxCapacity; i++){
+    database->arrayManufacturer = realloc(database->arrayManufacturer, sizeof(Manufacturer*) * database->manufacturerMaxCapacity * 2);
+    database->booleanArrayManufacturer = realloc(database->booleanArrayManufacturer, sizeof(int) * database->manufacturerMaxCapacity * 2);
+    for(int i = database->manufacturerMaxCapacity; i < database->manufacturerMaxCapacity * 2; i++){
         database->booleanArrayManufacturer[i] = 0;
     }
     database->manufacturerMaxCapacity *= 2;
