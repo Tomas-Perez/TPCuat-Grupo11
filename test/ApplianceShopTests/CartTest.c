@@ -53,7 +53,6 @@ void TestCartRemoveAppliance(CuTest *tc){
     CuAssertIntEquals(tc, 7, cartLineId5->amount);
 
     cartRemoveAppliance(cart, 5, 7);
-    CuAssertIntEquals(tc, 0, cartLineId5->amount);
     CuAssertIntEquals(tc, -1, cartContainsAppliance(cart, 5));
 }
 

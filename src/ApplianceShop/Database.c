@@ -1,4 +1,4 @@
-#include <malloc.h>
+#include <stdlib.h>
 #include "Database.h"
 
 
@@ -96,7 +96,7 @@ void growProvider(Database* database){
 void growAppliance(Database* database){
     database->arrayAppliance = realloc(database->arrayAppliance, sizeof(Appliance*) * database->applianceMaxCapacity * 2);
     database->booleanArrayAppliance = realloc(database->booleanArrayAppliance, sizeof(int) * database->applianceMaxCapacity * 2);
-    for(int i = database->applianceMaxCapacity; i < database->applianceMaxCapacity * 2; i++){
+    for(int i = database->applianceMaxCapacity; i < database->applianceMaxCapacity  * 2; i++){
         database->booleanArrayAppliance[i] = 0;
     }
     database->applianceMaxCapacity *= 2;
@@ -170,6 +170,15 @@ void removeProvider(int idProvider, Database* database){
     for(int i = 0; i < database->providerMaxCapacity; i++){
         if(database->booleanArrayProvider[i] != 0){
             if(idProvider == database->arrayProvider[i]->providerId){
+                for(int j = 0; i<database->applianceMaxCapacity; j++){
+                    if(database->booleanArrayAppliance[i] != 0){
+                        if(database->arrayAppliance[i]->idProvider == idProvider){
+                            destroyAppliance(database->arrayAppliance[i]);
+                            database->booleanArrayAppliance[i] = 0;
+                            database->amountOfAppliances--;
+                        }
+                    }
+                }
                 destroyProvider(database->arrayProvider[i]);
                 database->booleanArrayProvider[i] = 0;
                 database->amountOfProviders--;
@@ -196,6 +205,15 @@ void removeManufacturer(int idManufacturer, Database* database){
     for(int i = 0; i < database->manufacturerMaxCapacity; i++){
         if(database->booleanArrayManufacturer[i] != 0){
             if(idManufacturer == database->arrayManufacturer[i]->manufacturerId){
+                for(int j = 0; i<database->applianceMaxCapacity; j++){
+                    if(database->booleanArrayAppliance[i] != 0){
+                        if(database->arrayAppliance[i]->idManufacturer == idManufacturer){
+                            destroyAppliance(database->arrayAppliance[i]);
+                            database->booleanArrayAppliance[i] = 0;
+                            database->amountOfAppliances--;
+                        }
+                    }
+                }
                 destroyManufacturer(database->arrayManufacturer[i]);
                 database->booleanArrayManufacturer[i] = 0;
                 database->amountOfManufacturers--;
