@@ -4,8 +4,9 @@
 typedef struct Person Person;
 struct Person{
     int idPerson;
-    int type;//1 Student, 2 Teacher
+    int type;//1 Student, 2 Teacher, 3 Admin
     char* name;
+    char* username;
     char* surname;
     int phone;
     double debt;
@@ -14,7 +15,7 @@ struct Person{
     int borrowedBooksMaxCapacity;
 };
 
-Person* person(int idPerson, int type, char* name, char* surname, int phone);
+Person* newPerson(int idPerson, char* username, int type, char* name, char* surname, int phone);
 void destroyPerson(Person* person);
 void growBorrowedBooks(Person* person);
 void addBorrowedBook(Person* person, int idBook);
