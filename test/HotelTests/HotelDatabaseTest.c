@@ -46,8 +46,33 @@ void TestAdd(CuTest* tc){
     CuAssertIntEquals(tc, 3, hotelDatabase->invoiceAmount);
 }
 
+void TestRemove(CuTest* tc){
+    HotelDatabase* hotelDatabase = newHotelDatabase(1, "Vista");
+
+    HotelClient* client1 = newHotelClient("Alfonso","Ravera", 420);
+    HotelClient* client2 = newHotelClient("Roberta","Caballero", 65);
+
+    addClient(hotelDatabase, client1);
+    addClient(hotelDatabase, client2);
+
+
+
+    Room* room1 = newRoom(DELUXE, 500);
+    Room* room2 = newRoom(SINGLE, 200);
+
+    addRoom(hotelDatabase, room1);
+    addRoom(hotelDatabase, room2);
+
+    HotelInvoice* invoice1 = newHotelInvoice("dadadsa", 15, 6000, 5, 2);
+    HotelInvoice* invoice2 = newHotelInvoice("dacxz", 12, 1023, 5, 2);
+
+    addInvoice(hotelDatabase, invoice1);
+    addInvoice(hotelDatabase, invoice2);
+}
+
 CuSuite* getHotelDatabaseTestSuite(){
     CuSuite* suite = CuSuiteNew();
     SUITE_ADD_TEST(suite, TestAdd);
+    SUITE_ADD_TEST(suite, TestRemove);
     return suite;
 }
