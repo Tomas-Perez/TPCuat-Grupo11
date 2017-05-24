@@ -1,20 +1,9 @@
 #include <stdio.h>
+#include <mem.h>
 #include "Room.h"
+#include "../Util/ScanUtil.h"
 
 int main() {
-    char line[256];
-    int i;
-    int NaN = 1;
-    while(NaN) {
-        if (fgets(line, sizeof(line), stdin)) {
-            if (1 == sscanf(line, "%d", &i)) {
-                printf("%d", i);
-                NaN = 0;
-            }
-            else {
-                printf("NaN u fcker");
-            }
-        }
-    }
+    printf(scanChar());
     return 0;
 }
