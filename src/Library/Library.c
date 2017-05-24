@@ -42,8 +42,6 @@ Library* newLibrary(){
     library->amountOfMagazine = 0;
 
     library->personIdGenerator = 1;
-    library->teacherIdGenerator = 1;
-    library->studentIdGenerator = 1;
     library->materialIdGenerator = 1;
 
     return library;
@@ -107,6 +105,9 @@ void growPerson(Library* library){
     library->personMaxCapacity *= 2;
 }
 int addPerson(Library* library, Person* person){
+    if(getPersonByUsername(library, person->username) != NULL){
+        return 0;
+    }
     if(library->amountOfPeople != library->personMaxCapacity) {
         for (int i = 0; i < library->personMaxCapacity; i++) {
             if (!library->personBooleanArray[i]) {
@@ -124,6 +125,7 @@ int addPerson(Library* library, Person* person){
         library->personBooleanArray[library->amountOfPeople] = 1;
         library->amountOfPeople++;
     }
+    return 1;
 }
 void removePerson(Library* library, int idPerson){
     for(int i = 0; i < library->personMaxCapacity; i++){
@@ -160,6 +162,26 @@ void removePerson(Library* library, int idPerson){
         }
     }
 }
+Person* getPersonById(Library* library, int idPerson){
+    for(int i = 0; i < library->personMaxCapacity; i++){
+        if(library->personBooleanArray[i] != 0){
+            Person* person = library->personArray[i];
+            if(idPerson == person->idPerson)
+                return person;
+        }
+    }
+    return NULL;
+}
+Person* getPersonByUsername(Library* library, char* username) {
+    for(int i = 0; i < library->personMaxCapacity; i++){
+        if(library->personBooleanArray[i] != 0){
+            Person* person = library->personArray[i];
+            if(strcmp(username, person->username) == 0)
+                return person;
+        }
+    }
+    return NULL;
+}
 
 void growTeacher(Library* library) {
     library->teacherArray = realloc(library->teacherArray, sizeof(Teacher*) * library->teacherMaxCapacity * 2);
@@ -187,6 +209,27 @@ int addTeacher(Library* library, Teacher* teacher){
         library->teacherBooleanArray[library->amountOfTeacher] = 1;
         library->amountOfTeacher++;
     }
+    return 1;
+}
+Teacher* getTeacher(Library* library, int idPerson){
+    for(int i = 0; i < library->teacherMaxCapacity; i++){
+        if(library->teacherBooleanArray[i] != 0){
+            Teacher* teacher = library->teacherArray[i];
+            if(idPerson == teacher->idPerson)
+                return teacher;
+        }
+    }
+    return NULL;
+}
+Teacher* getTeacherById(Library* library, int idTeacher){
+    for(int i = 0; i < library->teacherMaxCapacity; i++){
+        if(library->teacherBooleanArray[i] != 0){
+            Teacher* teacher = library->teacherArray[i];
+            if(idTeacher == teacher->idTeacher)
+                return teacher;
+        }
+    }
+    return NULL;
 }
 
 void growStudent(Library* library){
@@ -215,8 +258,28 @@ int addStudent(Library* library, Student* student){
         library->studentBooleanArray[library->amountOfStudent] = 1;
         library->amountOfStudent++;
     }
+    return 1;
 }
-
+Student* getStudent(Library* library, int idPerson){
+    for(int i = 0; i < library->studentMaxCapacity; i++){
+        if(library->studentBooleanArray[i] != 0){
+            Student* student = library->studentArray[i];
+            if(idPerson == student->idPerson)
+                return student;
+        }
+    }
+    return NULL;
+}
+Student* getStudentById(Library* library, int idStudent){
+    for(int i = 0; i < library->teacherMaxCapacity; i++){
+        if(library->teacherBooleanArray[i] != 0){
+            Student* student = library->studentArray[i];
+            if(idStudent == student->idStudent)
+                return student;
+        }
+    }
+    return NULL;
+}
 
 void growMaterial(Library* library){
     library->materialArray  = realloc(library->materialArray, sizeof(Material*) * library->materialMaxCapacity * 2);
@@ -244,6 +307,7 @@ int addMaterial(Library* library, Material* material){
         library->materialBooleanArray[library->amountOfMaterial] = 1;
         library->amountOfMaterial++;
     }
+    return 1;
 }
 void removeMaterial(Library* library, int idMaterial){
     for(int i = 0; i < library->materialMaxCapacity; i++){
@@ -280,6 +344,16 @@ void removeMaterial(Library* library, int idMaterial){
         }
     }
 }
+Material* getMaterial(Library* library, int idMaterial){
+    for(int i = 0; i < library->materialMaxCapacity; i++){
+        if(library->materialBooleanArray[i] != 0){
+            Material* material = library->materialArray[i];
+            if(idMaterial == material->idMaterial)
+                return material;
+        }
+    }
+    return NULL;
+}
 
 void growMagazine(Library* library){
     library->magazineArray  = realloc(library->magazineArray, sizeof(Magazine*) * library->magazineMaxCapacity * 2);
@@ -308,6 +382,16 @@ int addMagazine(Library* library, Magazine* magazine){
         library->amountOfMagazine++;
     }
 }
+Magazine* getMagazine(Library* library, int idMaterial){
+    for(int i = 0; i < library->magazineMaxCapacity; i++){
+        if(library->magazineBooleanArray[i] != 0){
+            Magazine* magazine = library->magazineArray[i];
+            if(idMaterial == magazine->idMaterial)
+                return magazine;
+        }
+    }
+    return NULL;
+}
 
 void growBook(Library* library){
     library->bookArray  = realloc(library->bookArray, sizeof(Book*) * library->bookMaxCapacity * 2);
@@ -335,4 +419,22 @@ int addBook(Library* library, Book* book){
         library->bookBooleanArray[library->amountOfBook] = 1;
         library->amountOfBook++;
     }
+    return 1;
+}
+Book* getBook(Library* library, int idMaterial){
+    for(int i = 0; i < library->bookMaxCapacity; i++){
+        if(library->bookBooleanArray[i] != 0){
+            Book* book = library->bookArray[i];
+            if(idMaterial == book->idMaterial)
+                return book;
+        }
+    }
+    return NULL;
+}
+
+int generateIdPerson(Library* library){
+    return ++library->personIdGenerator;
+}
+int generateIdMaterial(Library* library){
+    return ++library->materialIdGenerator;
 }
