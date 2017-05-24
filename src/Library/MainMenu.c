@@ -3,12 +3,31 @@
 #include <memory.h>
 #include "Library.h"
 
-void logInMenu(Library* library){
+void personMenu(Library* library, Person* person);
 
+void logInMenu(Library* library){
+    printf("\n-- Log in --\n");
+    printf("(-1 to cancel)\n");
+    char* username = malloc(sizeof(char) * 20);
+    while(1) {
+        printf("Username:\n");
+        fseek(stdin,0,SEEK_END);
+        scanf("%s", username);
+        if(strcmp(username,"-1") == 0){
+            return;
+        }
+        Person* person = getPersonByUsername(library, username);
+        if (person == NULL) {
+            printf("No such user.\n");
+        } else{
+            personMenu(library, person);
+            break;
+        }
+    }
 }
 
 void accountCreationMenu(Library* library){
-    printf("\n-- New Account--\n");
+    printf("\n-- New Account --\n");
     printf("(-1 to cancel)\n\n");
     char* username = malloc(sizeof(char) * 20);
     while(1) {
@@ -61,8 +80,46 @@ void accountCreationMenu(Library* library){
         }
         printf("Number not valid\n");
     }
+    int id = 0;
+    while(1) {
+        if(type == 1) {
+            printf("Student id:\n");
+            fseek(stdin, 0, SEEK_END);
+            scanf("%d", &id);
+            if (id == -1) {
+                return;
+            }
+            if (id > 0) {
+                if (getStudentById(library, id) == NULL)
+                    break;
+                printf("There is already someone with that id.\n");
+            }
+        }
+        else if(type == 2) {
+            printf("Teacher id:\n");
+            fseek(stdin, 0, SEEK_END);
+            scanf("%d", &id);
+            if (id == -1) {
+                return;
+            }
+            if (id > 0) {
+                if (getTeacher(library, id) == NULL)
+                    break;
+                printf("There is already someone with that id.\n");
+            }
+        }
+        printf("Number not valid\n");
+    }
     Person* person = newPerson(generateIdPerson(library), username, type, name, surname, phone);
     addPerson(library, person);
+    if(type == 1){
+        Student* student = newStudent(id, person->idPerson);
+        addStudent(library, student);
+    }
+    else if (type == 2){
+        Teacher* teacher = newTeacher(id, person->idPerson);
+        addTeacher(library, teacher);
+    }
     printf("Account created.\n");
 }
 

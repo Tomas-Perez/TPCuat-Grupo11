@@ -56,10 +56,12 @@ Person* getPersonByUsername(Library* library, char* username);
 void growTeacher(Library* library);
 int addTeacher(Library* library, Teacher* teacher);
 Teacher* getTeacher(Library* library, int idPerson);
+Teacher* getTeacherById(Library* library, int idTeacher);
 
 void growStudent(Library* library);
 int addStudent(Library* library, Student* student);
 Student* getStudent(Library* library, int idPerson);
+Student* getStudentById(Library* library, int idStudent);
 
 void growMaterial(Library* library);
 int addMaterial(Library* library, Material* material);

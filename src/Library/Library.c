@@ -221,6 +221,16 @@ Teacher* getTeacher(Library* library, int idPerson){
     }
     return NULL;
 }
+Teacher* getTeacherById(Library* library, int idTeacher){
+    for(int i = 0; i < library->teacherMaxCapacity; i++){
+        if(library->teacherBooleanArray[i] != 0){
+            Teacher* teacher = library->teacherArray[i];
+            if(idTeacher == teacher->idTeacher)
+                return teacher;
+        }
+    }
+    return NULL;
+}
 
 void growStudent(Library* library){
     library->studentArray  = realloc(library->studentArray, sizeof(Student*) * library->studentMaxCapacity * 2);
@@ -255,6 +265,16 @@ Student* getStudent(Library* library, int idPerson){
         if(library->studentBooleanArray[i] != 0){
             Student* student = library->studentArray[i];
             if(idPerson == student->idPerson)
+                return student;
+        }
+    }
+    return NULL;
+}
+Student* getStudentById(Library* library, int idStudent){
+    for(int i = 0; i < library->teacherMaxCapacity; i++){
+        if(library->teacherBooleanArray[i] != 0){
+            Student* student = library->studentArray[i];
+            if(idStudent == student->idStudent)
                 return student;
         }
     }
