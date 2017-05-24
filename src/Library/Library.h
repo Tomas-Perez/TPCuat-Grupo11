@@ -41,8 +41,6 @@ struct Library{
     int bookMaxCapacity;
 
     int personIdGenerator;
-    int teacherIdGenerator;
-    int studentIdGenerator;
     int materialIdGenerator;
 };
 
@@ -52,25 +50,34 @@ void freeLibrary(Library* library);
 void growPerson(Library* library);
 int addPerson(Library* library, Person* person);
 void removePerson(Library* library, int idPerson);
+Person* getPersonById(Library* library, int idPerson);
+Person* getPersonByUsername(Library* library, char* username);
 
 void growTeacher(Library* library);
 int addTeacher(Library* library, Teacher* teacher);
-void removeTeacher(Library* library, int idTeacher);
+Teacher* getTeacher(Library* library, int idPerson);
+Teacher* getTeacherById(Library* library, int idTeacher);
 
 void growStudent(Library* library);
 int addStudent(Library* library, Student* student);
-void removeStudent(Library* library, int idStudent);
-
+Student* getStudent(Library* library, int idPerson);
+Student* getStudentById(Library* library, int idStudent);
 
 void growMaterial(Library* library);
 int addMaterial(Library* library, Material* material);
 void removeMaterial(Library* library, int idMaterial);
+Material* getMaterial(Library* library, int idMaterial);
 
 void growMagazine(Library* library);
 int addMagazine(Library* library, Magazine* magazine);
+Magazine* getMagazine(Library* library, int idMaterial);
 
 void growBook(Library* library);
-int addBook(Library* library, Material* material);
+int addBook(Library* library, Book* book);
+Book* getBook(Library* library, int idMaterial);
+
+int generateIdPerson(Library* library);
+int generateIdMaterial(Library* library);
 
 #endif //TPCUAT_GRUPO11_LIBRARY_H
 

@@ -13,7 +13,7 @@ HotelDatabase* newHotelDatabase(int initialCapacity, char* hotelName){
     result->invoiceAmount = 0;
     result->invoiceCapacity = initialCapacity;
     result->roomAmount = 0;
-    result->roomCapacity = 0;
+    result->roomCapacity = initialCapacity;
     result->roomNumberGen = 0;
     result->clientIDGen = 0;
     result->invoiceIDGen = 0;

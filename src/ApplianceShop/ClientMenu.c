@@ -30,7 +30,7 @@ void addApplianceToCartMenu(Database* database, Cart* cart, int* applianceIdArra
         printf("Please enter a valid number\n");
         scanf("%d", &indexInput);
     } while (indexInput == 0 || indexInput > database->amountOfAppliances);
-    if(indexInput == -1) return;
+    if(indexInput <= -1) return;
     int amount = 0;
     printf("How many would you like to buy?\n");
     do {

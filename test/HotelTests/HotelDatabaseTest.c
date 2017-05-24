@@ -1,4 +1,4 @@
-#include <afxres.h>
+#include <wchar.h>
 #include "../CUTest/CuTest.h"
 #include "../../src/Hotel/HotelDatabase.h"
 

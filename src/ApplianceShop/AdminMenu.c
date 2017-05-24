@@ -100,11 +100,12 @@ void addApplianceMenu(Database* database, int*** applianceIdArray, int* provider
     }
     printf("Provider (0 to list providers):\n");
     int providerIndex = 0;
-    while(providerIndex <= 0 && providerIndex > database->amountOfProviders){
+    while(providerIndex <= 0 || providerIndex > database->amountOfProviders){
         fseek(stdin,0,SEEK_END);
         scanf("%d", &providerIndex);
         if(providerIndex == 0){
             checkProviders(database, providerIdArray, **applianceIdArray);
+            printf("Provider (0 to list providers):\n");
         }
     }
     int idProvider = providerIdArray[providerIndex-1];
