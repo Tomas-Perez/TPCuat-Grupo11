@@ -1,9 +1,12 @@
 #include <stdio.h>
-#include <mem.h>
+#include <memory.h>
 #include "Room.h"
 #include "../Util/ScanUtil.h"
 
 int main() {
-    printf(scanChar());
+    char* a = scanChar();
+    int b = scanInt();
+    printf(a);
+    printf("%d", b);
     return 0;
 }

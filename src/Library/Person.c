@@ -14,10 +14,10 @@ Person* newPerson(int idPerson, char* username, int type, char* name, char* surn
     strcpy(person->username, username);
     person->surname = malloc(sizeof(char) * (strlen(surname) + 1));
     strcpy(person->surname, surname);
-    person->borrowedBooks = malloc(sizeof(int) * 10);
-    memset(person->borrowedBooks, 0 , sizeof(int) * 10);
-    person->amountOfBorrowedBooks = 0;
-    person->borrowedBooksMaxCapacity = 10;
+    person->borrowedMaterial = malloc(sizeof(int) * 10);
+    memset(person->borrowedMaterial, 0 , sizeof(int) * 10);
+    person->amountOfBorrowedMaterial = 0;
+    person->borrowedMaterialMaxCapacity = 10;
     return person;
 }
 void destroyPerson(Person* person){
@@ -27,34 +27,34 @@ void destroyPerson(Person* person){
     free(person);
 }
 
-void growBorrowedBooks(Person* person){
-    person->borrowedBooks = realloc(person->borrowedBooks, sizeof(int) * person->borrowedBooksMaxCapacity * 2);
-    for(int i = person->borrowedBooksMaxCapacity; i < person->borrowedBooksMaxCapacity * 2; i++){
-        person->borrowedBooks[i] = 0;
+void growBorrowedMaterial(Person *person){
+    person->borrowedMaterial = realloc(person->borrowedMaterial, sizeof(int) * person->borrowedMaterialMaxCapacity * 2);
+    for(int i = person->borrowedMaterialMaxCapacity; i < person->borrowedMaterialMaxCapacity * 2; i++){
+        person->borrowedMaterial[i] = 0;
     }
-    person->borrowedBooksMaxCapacity *= 2;
+    person->borrowedMaterialMaxCapacity *= 2;
 }
-void addBorrowedBook(Person* person, int idBook){
-    if(person->amountOfBorrowedBooks != person->borrowedBooksMaxCapacity) {
-        for (int i = 0; i < person->borrowedBooksMaxCapacity; i++) {
-            if (!person->borrowedBooks[i]) {
-                person->borrowedBooks[i] = idBook;
-                person->amountOfBorrowedBooks++;
+void addBorrowedMaterial(Person *person, int idBook){
+    if(person->amountOfBorrowedMaterial != person->borrowedMaterialMaxCapacity) {
+        for (int i = 0; i < person->borrowedMaterialMaxCapacity; i++) {
+            if (!person->borrowedMaterial[i]) {
+                person->borrowedMaterial[i] = idBook;
+                person->amountOfBorrowedMaterial++;
                 break;
             }
         }
     }
     else {
-        growBorrowedBooks(person);
-        person->borrowedBooks[person->amountOfBorrowedBooks] = idBook;
-        person->amountOfBorrowedBooks++;
+        growBorrowedMaterial(person);
+        person->borrowedMaterial[person->amountOfBorrowedMaterial] = idBook;
+        person->amountOfBorrowedMaterial++;
     }
 }
-void removeBorrowedBook(Person* person, int idBook){
-    for (int i = 0; i < person->borrowedBooksMaxCapacity; i++) {
-        if (person->borrowedBooks[i] == idBook) {
-            person->borrowedBooks[i] = 0;
-            person->amountOfBorrowedBooks--;
+void removeBorrowedMaterial(Person *person, int idBook){
+    for (int i = 0; i < person->borrowedMaterialMaxCapacity; i++) {
+        if (person->borrowedMaterial[i] == idBook) {
+            person->borrowedMaterial[i] = 0;
+            person->amountOfBorrowedMaterial--;
             return;
         }
     }

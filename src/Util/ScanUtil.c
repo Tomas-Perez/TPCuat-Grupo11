@@ -1,5 +1,6 @@
 #include <stdio.h>
-#include <mem.h>
+#include <memory.h>
+#include <malloc.h>
 #include "ScanUtil.h"
 
 int scanInt(){
@@ -21,10 +22,10 @@ int scanInt(){
 
 
 char* scanChar(){
-    char line[256];
+    char* line = malloc(sizeof(char) * 256);
     int empty = 1;
     while(empty) {
-        if (fgets(line, sizeof(line), stdin)) {
+        if (fgets(line, sizeof(line), stdin) && strlen(line) != 1) {
             return line;
         }
         else {
