@@ -6,9 +6,15 @@ void TestAdd(CuTest* tc){
 
     HotelDatabase* hotelDatabase = newHotelDatabase(1, "Vista");
 
-    HotelClient* client1 = newHotelClient("Alfonso","Ravera", 420);
-    HotelClient* client2 = newHotelClient("Roberta","Caballero", 65);
-    HotelClient* client3 = newHotelClient("Ricardo", "Ricardo", 666);
+    char* Alfonso = "Alfonso";
+    char* Ravera = "Ravera";
+    char* Roberta = "Roberta";
+    char* Caballero = "Caballero";
+    char* Ricardo = "Ricardo";
+
+    HotelClient* client1 = newHotelClient(Alfonso,Ravera, 420);
+    HotelClient* client2 = newHotelClient(Roberta,Caballero, 65);
+    HotelClient* client3 = newHotelClient(Ricardo, Ricardo, 666);
 
     addClient(hotelDatabase, client1);
     addClient(hotelDatabase, client2);
@@ -18,6 +24,10 @@ void TestAdd(CuTest* tc){
     CuAssertIntEquals(tc, 1, client2->clientID);
     CuAssertIntEquals(tc, 2, client3->clientID);
     CuAssertIntEquals(tc, 3, hotelDatabase->clientAmount);
+
+    destroyHotelClient(client1);
+    destroyHotelClient(client2);
+    destroyHotelClient(client3);
 
     Room* room1 = newRoom(DELUXE, 500);
     Room* room2 = newRoom(SINGLE, 200);
@@ -31,6 +41,10 @@ void TestAdd(CuTest* tc){
     CuAssertIntEquals(tc, 1, room2->number);
     CuAssertIntEquals(tc, 2, room3->number);
     CuAssertIntEquals(tc, 3, hotelDatabase->roomAmount);
+
+    destroyRoom(room1);
+    destroyRoom(room2);
+    destroyRoom(room3);
 
     HotelInvoice* invoice1 = newHotelInvoice("dadadsa", 15, 6000, 5, 2);
     HotelInvoice* invoice2 = newHotelInvoice("dacxz", 12, 1023, 5, 2);

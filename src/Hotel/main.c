@@ -5,6 +5,5 @@
 
 int main() {
     printf(scanChar());
-    //printf("%d", scanInt());
     return 0;
 }

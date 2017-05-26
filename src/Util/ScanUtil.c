@@ -1,5 +1,7 @@
 #include <stdio.h>
-#include <mem.h>
+#include <memory.h>
+#include <malloc.h>
+#include <ctype.h>
 #include "ScanUtil.h"
 
 int scanInt(){
@@ -19,16 +21,34 @@ int scanInt(){
     return i;
 }
 
+static void trim(char *str) {
+    int len = strlen(str);
+    char *frontp = str;
+    char *endp = str + len;
+
+    while(isspace((unsigned char) *frontp)) ++frontp;
+    if(endp != frontp){
+        while(isspace((unsigned char) *(--endp)) && endp != frontp);
+    }
+
+    if(str + len - 1 != endp) *(endp + 1) = '\0';
+    else if(frontp != str &&  endp == frontp)*str = '\0';
+
+    endp = str;
+    if(frontp != str) {
+        while(*frontp) {*endp++ = *frontp++;}
+        *endp = '\0';
+    }
+}
 
 char* scanChar(){
-    char line[256];
-    int empty = 1;
-    while(empty) {
-        if (fgets(line, sizeof(line), stdin)) {
-            return line;
+    size_t bufferSize = sizeof(char) * 256;
+    char* line = malloc(bufferSize);
+    while(1) {
+        if (fgets(line, bufferSize, stdin)) {
+            trim(line);
+            if(strlen(line) != 0) return line;
         }
-        else {
-            printf("Please enter a string");
-        }
+        printf("Please enter a string\n");
     }
 }
