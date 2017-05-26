@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Database.h"
+#include "../Util/ScanUtil.h"
 
 
 void clientMenu(Database* database);
@@ -24,8 +25,7 @@ int main() {
     while(1) {
         printf("Would you like to enter as a (1) User or (2) Admin?\n");
         printf("Otherwise exit with -1\n");
-        int choice = 0;
-        scanf("%d", &choice);
+        int choice = scanInt();
         switch (choice) {
             case 1:
                 clientMenu(database);
@@ -38,7 +38,6 @@ int main() {
                 exit(0);
             default:
                 printf("Please enter one of the options\n");
-                fseek(stdin,0,SEEK_END);
         }
     }
 }

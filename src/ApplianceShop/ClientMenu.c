@@ -3,6 +3,7 @@
 #include "Database.h"
 #include "Cart.h"
 #include "Invoice.h"
+#include "../Util/ScanUtil.h"
 
 int* getApplianceIdArray(Database* database){
     int* result = malloc(sizeof(int)*database->amountOfAppliances);
@@ -24,20 +25,18 @@ void addApplianceToCartMenu(Database* database, Cart* cart, int* applianceIdArra
                getManufacturer(appliance->idManufacturer, database)->name,
                getProvider(appliance->idProvider, database)->name);
     }
-    int indexInput = 0;
-    do {
-        fseek(stdin,0,SEEK_END);
+    int indexInput = scanInt();
+    while (indexInput == 0 || indexInput > database->amountOfAppliances) {
         printf("Please enter a valid number\n");
-        scanf("%d", &indexInput);
-    } while (indexInput == 0 || indexInput > database->amountOfAppliances);
+        indexInput = scanInt();
+    }
     if(indexInput <= -1) return;
-    int amount = 0;
+    int amount = scanInt();
     printf("How many would you like to buy?\n");
-    do {
-        fseek(stdin,0,SEEK_END);
+    while (amount <= 0){
         printf("Please enter a valid number\n");
-        scanf("%d", &amount);
-    } while (amount <= 0);
+        amount = scanInt();
+    }
     cartAddAppliance(cart, applianceIdArray[indexInput-1], amount);
     printf("The Appliance has been added to you cart\n");
 }
@@ -79,8 +78,7 @@ void clientMenu(Database* database){
         printf("2. Check cart\n");
         printf("3. Checkout\n");
         printf("-1. Exit\n");
-        int choice = 0;
-        scanf("%d", &choice);
+        int choice = scanInt();
         switch (choice) {
             case 1:
                 addApplianceToCartMenu(database, cart, applianceIdArray);
@@ -94,8 +92,6 @@ void clientMenu(Database* database){
                 return;
             default:
                 printf("Please enter one of the options\n");
-                fseek(stdin,0,SEEK_END);
         }
     }
-
 }

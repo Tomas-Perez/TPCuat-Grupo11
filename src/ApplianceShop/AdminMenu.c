@@ -1,6 +1,7 @@
 #include <stdio.h>
-#include <malloc.h>
+#include <stdlib.h>
 #include "Database.h"
+#include "../Util/ScanUtil.h"
 
 int* getApplianceIdArray(Database* database);
 
@@ -90,19 +91,13 @@ void checkManufacturers(Database* database, int* manufacturerIdArray, int* appli
 void addApplianceMenu(Database* database, int*** applianceIdArray, int* providerIdArray, int* manufacturerIdArray){
     printf("Add appliance:\n");
     printf("Name:\n");
-    char* name = malloc(sizeof(char) * 20);
-    scanf("%s", name);
+    char* name = scanChar();
     printf("Price:\n");
-    int price = 0;
-    while(price == 0){
-        fseek(stdin,0,SEEK_END);
-        scanf("%d", &price);
-    }
+    int price = scanInt();
     printf("Provider (0 to list providers):\n");
     int providerIndex = 0;
     while(providerIndex <= 0 || providerIndex > database->amountOfProviders){
-        fseek(stdin,0,SEEK_END);
-        scanf("%d", &providerIndex);
+        providerIndex = scanInt();
         if(providerIndex == 0){
             checkProviders(database, providerIdArray, **applianceIdArray);
             printf("Provider (0 to list providers):\n");
@@ -112,8 +107,7 @@ void addApplianceMenu(Database* database, int*** applianceIdArray, int* provider
     printf("Manufacturer (0 to list manufacturers):\n");
     int manufacturerIndex = -1;
     while(manufacturerIndex == -1 && manufacturerIndex >= -1 && manufacturerIndex <= database->amountOfManufacturers){
-        fseek(stdin,0,SEEK_END);
-        scanf("%d", &manufacturerIndex);
+        manufacturerIndex = scanInt();
         if(manufacturerIndex == 0){
             checkManufacturers(database, manufacturerIdArray, **applianceIdArray);
         }
@@ -137,8 +131,7 @@ void appliancesMenu(Database *database, int **applianceIdArray, int* providerIdA
         printf("2. Add appliance\n");
         printf("3. Remove appliance\n");
         printf("-1. Exit\n");
-        int choice = 0;
-        scanf("%d", &choice);
+        int choice = scanInt();
         switch (choice) {
             case 1:
                 checkAppliances(database, *applianceIdArray);
@@ -153,7 +146,6 @@ void appliancesMenu(Database *database, int **applianceIdArray, int* providerIdA
                 return;
             default:
                 printf("Please enter one of the options\n");
-                fseek(stdin,0,SEEK_END);
         }
     }
 }
@@ -161,26 +153,17 @@ void appliancesMenu(Database *database, int **applianceIdArray, int* providerIdA
 void addProviderMenu(Database *database, int ***providerIdArray){
     printf("Add provider:\n");
     printf("Name:\n");
-    char* name = malloc(sizeof(char) * 20);
-    scanf("%s", name);
+    char* name = scanChar();
     printf("Description:\n");
-    char* description = malloc(sizeof(char) * 60);
-    scanf("%s", description);
+    char* description = scanChar();
     printf("Address:\n");
-    char* address = malloc(sizeof(char) * 20);
-    scanf("%s", address);
+    char* address = scanChar();
     printf("City:\n");
-    char* city = malloc(sizeof(char) * 20);
-    scanf("%s", city);
+    char* city = scanChar();
     printf("Web:\n");
-    char* web = malloc(sizeof(char) * 20);
-    scanf("%s", web);
+    char* web = scanChar();
     printf("Phone:\n");
-    int phone = 0;
-    while(phone == 0){
-        scanf("%d", &phone);
-        fseek(stdin,0,SEEK_END);
-    }
+    int phone = scanInt();
     Provider* provider = newProvider(name, description, address, city, phone, web, getNextProviderId(database));
     addProvider(database, provider);
     free(**providerIdArray);
@@ -195,12 +178,10 @@ void addProviderMenu(Database *database, int ***providerIdArray){
 void removeProviderMenu(Database* database, int*** providerIdArray, int*** applianceIdArray){
     if(database->amountOfProviders > 0) {
         checkProviders(database, **providerIdArray, **applianceIdArray);
-        int choiceIndex = 0;
-        scanf("%d", &choiceIndex);
+        int choiceIndex = scanInt();
         while (choiceIndex <= 0 || choiceIndex > database->amountOfProviders) {
-            fseek(stdin, 0, SEEK_END);
             printf("Please enter a valid number\n");
-            scanf("%d", &choiceIndex);
+            choiceIndex = scanInt();
         }
         removeProvider(**providerIdArray[choiceIndex - 1], database);
         free(**providerIdArray);
@@ -216,8 +197,7 @@ void providersMenu(Database *database, int **applianceIdArray, int** providerIdA
         printf("2. Add provider\n");
         printf("3. Remove provider\n");
         printf("-1. Exit\n");
-        int choice = 0;
-        scanf("%d", &choice);
+        int choice = scanInt();
         switch (choice) {
             case 1:
                 checkProviders(database, *providerIdArray, *applianceIdArray);
@@ -232,7 +212,6 @@ void providersMenu(Database *database, int **applianceIdArray, int** providerIdA
                 return;
             default:
                 printf("Please enter one of the options\n");
-                fseek(stdin,0,SEEK_END);
         }
     }
 }
@@ -240,26 +219,17 @@ void providersMenu(Database *database, int **applianceIdArray, int** providerIdA
 void addManufacturerMenu(Database* database, int*** manufacturerIdArray){
     printf("Add Manufacturer:\n");
     printf("Name:\n");
-    char* name = malloc(sizeof(char) * 20);
-    scanf("%s", name);
+    char* name = scanChar();
     printf("Description:\n");
-    char* description = malloc(sizeof(char) * 60);
-    scanf("%s", description);
+    char* description = scanChar();
     printf("Address:\n");
-    char* address = malloc(sizeof(char) * 20);
-    scanf("%s", address);
+    char* address = scanChar();
     printf("City:\n");
-    char* city = malloc(sizeof(char) * 20);
-    scanf("%s", city);
+    char* city = scanChar();
     printf("Web:\n");
-    char* web = malloc(sizeof(char) * 20);
-    scanf("%s", web);
+    char* web = scanChar();
     printf("Phone:\n");
-    int phone = 0;
-    while(phone == 0){
-        scanf("%d", &phone);
-        fseek(stdin,0,SEEK_END);
-    }
+    int phone = scanInt();
     Manufacturer* manufacturer = newManufacturer(name, description, address, city, phone, web, getNextManufacturerId(database));
     addManufacturer(database, manufacturer);
     free(**manufacturerIdArray);
@@ -274,12 +244,10 @@ void addManufacturerMenu(Database* database, int*** manufacturerIdArray){
 void removeManufacturerMenu(Database* database, int*** manufacturerIdArray, int*** applianceIdArray){
     if(database->amountOfManufacturers > 0) {
         checkManufacturers(database, **manufacturerIdArray, **applianceIdArray);
-        int choiceIndex = 0;
-        scanf("%d", &choiceIndex);
+        int choiceIndex = scanInt();
         while (choiceIndex <= 0 || choiceIndex > database->amountOfManufacturers) {
-            fseek(stdin, 0, SEEK_END);
             printf("Please enter a valid number\n");
-            scanf("%d", &choiceIndex);
+            choiceIndex = scanInt();
         }
         removeProvider(**manufacturerIdArray[choiceIndex - 1], database);
         free(**manufacturerIdArray);
@@ -294,8 +262,7 @@ void manufacturersMenu(Database *database, int **applianceIdArray, int** manufac
         printf("2. Add manufacturer\n");
         printf("3. Remove manufacturer\n");
         printf("-1. Exit\n");
-        int choice = 0;
-        scanf("%d", &choice);
+        int choice = scanInt();
         switch (choice) {
             case 1:
                 checkManufacturers(database, *manufacturerIdArray, *applianceIdArray);
@@ -310,7 +277,6 @@ void manufacturersMenu(Database *database, int **applianceIdArray, int** manufac
                 return;
             default:
                 printf("Please enter one of the options\n");
-                fseek(stdin,0,SEEK_END);
         }
     }
 }
@@ -325,8 +291,7 @@ void adminMenu(Database* database){
         printf("2. Manufacturers\n");
         printf("3. Providers\n");
         printf("-1. Exit\n");
-        int choice = 0;
-        scanf("%d", &choice);
+        int choice = scanInt();
         switch (choice) {
             case 1:
                 appliancesMenu(database, &applianceIdArray, manufacturerIdArray, providerIdArray);
@@ -341,7 +306,6 @@ void adminMenu(Database* database){
                 return;
             default:
                 printf("Please enter one of the options\n");
-                fseek(stdin,0,SEEK_END);
         }
     }
 }
