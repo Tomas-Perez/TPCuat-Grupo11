@@ -2,6 +2,16 @@
 #include <malloc.h>
 #include <memory.h>
 
+/*
+ * Description: File containing functions related to the HotelClient ADT.
+ */
+
+/*
+ * Function: newHotelClient.
+ * Description: creates a new HotelClient.
+ * Returns: HotelClient pointer.
+ */
+
 HotelClient* newHotelClient(char* name, char* surname, int DNI){
     HotelClient* result = malloc(sizeof(HotelClient));
     result->DNI = DNI;
@@ -12,6 +22,12 @@ HotelClient* newHotelClient(char* name, char* surname, int DNI){
 
     return result;
 }
+
+/*
+ * Function: destroyHotelClient.
+ * Description: deallocates memory assigned to the HotelClient.
+ * Returns: --
+ */
 void destroyHotelClient(HotelClient* client){
     free(client->name);
     free(client->surname);
