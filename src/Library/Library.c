@@ -41,6 +41,13 @@ Library* newLibrary(){
     library->magazineMaxCapacity = initialsize;
     library->amountOfMagazine = 0;
 
+    library->borrowArray = malloc(sizeof(Borrow*) * initialsize);
+    library->borrowBooleanArray = malloc(sizeof(int) * initialsize);
+    memset(library->borrowBooleanArray, 0, sizeof(int) * initialsize);
+    library->borrowMaxCapacity = initialsize;
+    library->amountOfBorrow = 0;
+
+    library->borrowIdGenerator = 1;
     library->personIdGenerator = 1;
     library->materialIdGenerator = 1;
 
@@ -313,6 +320,17 @@ void removeMaterial(Library* library, int idMaterial){
     for(int i = 0; i < library->materialMaxCapacity; i++){
         if(library->materialBooleanArray[i] != 0){
             if(idMaterial == library->materialArray[i]->idMaterial){
+                for(int k = 0; k<library->personMaxCapacity; k++){
+                    if(library->personBooleanArray[k] != 0){
+                        removeBorrowedMaterial(library->personArray[k], idMaterial);
+                    }
+                }
+                for(int k = 0; k<library->borrowMaxCapacity; k++){
+                    if(library->borrowBooleanArray[k] != 0){
+                        if(library->borrowArray[k]->idMaterial == idMaterial)
+                            removeBorrow(library, library->borrowArray[k]->idBorrow);
+                    }
+                }
                 if(library->materialArray[i]->type == 1){
                     for(int j = 0; j < library->bookMaxCapacity; j++){
                         if(library->bookBooleanArray[j] != 0){
@@ -366,7 +384,7 @@ void growMagazine(Library* library){
 int addMagazine(Library* library, Magazine* magazine){
     if(library->amountOfMagazine != library->magazineMaxCapacity) {
         for (int i = 0; i < library->magazineMaxCapacity; i++) {
-            if (!library->magazineBooleanArray[i]) {
+            if (library->magazineBooleanArray[i] == 0) {
                 library->magazineArray[i] = magazine;
                 library->magazineBooleanArray[i] = 1;
                 library->amountOfMagazine++;
@@ -432,6 +450,62 @@ Book* getBook(Library* library, int idMaterial){
     return NULL;
 }
 
+void growBorrow(Library* library){
+    library->borrowArray  = realloc(library->borrowArray, sizeof(Borrow*) * library->borrowMaxCapacity * 2);
+    library->borrowBooleanArray = realloc(library->borrowBooleanArray, sizeof(int) * library->borrowMaxCapacity * 2);
+    for(int i = library->borrowMaxCapacity; i < library->borrowMaxCapacity * 2; i++){
+        library->borrowBooleanArray[i] = 0;
+    }
+    library->borrowMaxCapacity *= 2;
+}
+int addBorrow(Library* library, Borrow* borrow){
+    if(library->amountOfBorrow != library->borrowMaxCapacity) {
+        for (int i = 0; i < library->borrowMaxCapacity; i++) {
+            if (!library->borrowArray[i]) {
+                library->borrowArray[i] = borrow;
+                library->borrowBooleanArray[i] = 1;
+                library->amountOfBorrow++;
+                break;
+            }
+        }
+    }
+
+    else {
+        growBook(library);
+        library->borrowArray[library->amountOfBorrow] = borrow;
+        library->borrowBooleanArray[library->amountOfBorrow] = 1;
+        library->amountOfBorrow++;
+    }
+    return 1;
+}
+Borrow* getBorrow(Library* library, int idBorrow){
+    for(int i = 0; i < library->borrowMaxCapacity; i++){
+        if(library->borrowBooleanArray[i] != 0){
+            Borrow* borrow = library->borrowArray[i];
+            if(idBorrow == borrow->idBorrow)
+                return borrow;
+        }
+    }
+    return NULL;
+}
+
+void removeBorrow(Library* library, int idBorrow){
+    for(int i = 0; i < library->borrowMaxCapacity; i++){
+        if(library->borrowBooleanArray[i] != 0){
+            if(idBorrow == library->borrowArray[i]->idBorrow) {
+                destroyBorrow(library->borrowArray[i]);
+                library->borrowBooleanArray[i] = 0;
+                library->amountOfBorrow--;
+                return;
+            }
+        }
+    }
+}
+
+
+int generateIdBorrow(Library* library){
+    return ++library->borrowIdGenerator;
+}
 int generateIdPerson(Library* library){
     return ++library->personIdGenerator;
 }

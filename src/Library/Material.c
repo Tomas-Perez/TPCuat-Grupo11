@@ -7,6 +7,7 @@ Material* newMaterial(int idMaterial, int type, char* title, char* author, int y
     material->idMaterial = idMaterial;
     material->type = type;
     material->year = year;
+    material->isTaken = 0;
     material->title = malloc(sizeof(char) * (strlen(title)+1));
     strcpy(material->title, title);
     material->author = malloc(sizeof(char) * (strlen(author)+1));
