@@ -1,6 +1,10 @@
 #ifndef TPCUAT_GRUPO11_ROOM_H
 #define TPCUAT_GRUPO11_ROOM_H
 
+/*
+ * Description: Represents a hotel room, with a price per day and category, also a room number assigned by the hotel.
+ */
+
 typedef enum {SINGLE, DELUXE, MASTER}RoomType;
 
 typedef struct Room{

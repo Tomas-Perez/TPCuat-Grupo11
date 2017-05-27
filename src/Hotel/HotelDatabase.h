@@ -5,6 +5,11 @@
 #include "HotelClient.h"
 #include "HotelInvoice.h"
 
+/*
+ * Description: The HotelDatabase has a registry of all the rooms in a hotel, keeps track on the hotel's clients and
+ * saves the invoices of all transactions.
+ */
+
 typedef struct HotelDatabase{
     char* hotelName;
 
