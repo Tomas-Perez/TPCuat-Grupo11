@@ -26,9 +26,9 @@ typedef struct HotelDatabase{
 
 HotelDatabase* newHotelDatabase(int initialCapacity, char* hotelName);
 
-int addRoom(HotelDatabase* database, Room* room);
-int addClient(HotelDatabase* database, HotelClient* client);
-int addInvoice(HotelDatabase* database, HotelInvoice* invoice);
+void addRoom(HotelDatabase* database, Room* room);
+void addClient(HotelDatabase* database, HotelClient* client);
+void addInvoice(HotelDatabase* database, HotelInvoice* invoice);
 
 void removeRoom(HotelDatabase* database, int roomNumber);
 void removeClient(HotelDatabase* database, int clientID);

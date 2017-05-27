@@ -14,7 +14,7 @@ HotelDatabase* newHotelDatabase(int initialCapacity, char* hotelName){
     result->invoiceCapacity = initialCapacity;
     result->roomAmount = 0;
     result->roomCapacity = initialCapacity;
-    result->roomNumberGen = 0;
+    result->roomNumberGen = 1;
     result->clientIDGen = 0;
     result->invoiceIDGen = 0;
 
@@ -26,48 +26,45 @@ HotelDatabase* newHotelDatabase(int initialCapacity, char* hotelName){
 }
 
 static void growRooms(HotelDatabase* database){
-    realloc(database->rooms, sizeof(Room*) * database->roomCapacity*2);
+    database->rooms = realloc(database->rooms, sizeof(Room*) * database->roomCapacity*2);
     database->roomCapacity *= 2;
 }
 
 static void growClients(HotelDatabase* database){
-    realloc(database->clients, sizeof(HotelClient*) * database->clientCapacity*2);
+    database->clients = realloc(database->clients, sizeof(HotelClient*) * database->clientCapacity*2);
     database->clientCapacity *= 2;
 }
 
 static void growInvoices(HotelDatabase* database){
-    realloc(database->invoices, sizeof(HotelInvoice*) * database->invoiceCapacity*2);
+    database->invoices = realloc(database->invoices, sizeof(HotelInvoice*) * database->invoiceCapacity*2);
     database->invoiceCapacity *= 2;
 }
 
-int addRoom(HotelDatabase* database, Room* room){
+void addRoom(HotelDatabase* database, Room* room){
     if(database->roomAmount == database->roomCapacity){
         growRooms(database);
     }
     room->number = database->roomNumberGen++;
     database->rooms[database->roomAmount] = room;
     database->roomAmount++;
-    return 1;
 }
 
-int addClient(HotelDatabase* database, HotelClient* client){
+void addClient(HotelDatabase* database, HotelClient* client){
     if(database->clientAmount == database->clientCapacity){
         growClients(database);
     }
     client->clientID = database->clientIDGen++;
     database->clients[database->clientAmount] = client;
     database->clientAmount++;
-    return 1;
 }
 
-int addInvoice(HotelDatabase* database, HotelInvoice* invoice){
+void addInvoice(HotelDatabase* database, HotelInvoice* invoice){
     if(database->invoiceAmount == database->invoiceCapacity){
         growInvoices(database);
     }
     invoice->invoiceID = database->invoiceIDGen++;
     database->invoices[database->invoiceAmount] = invoice;
     database->invoiceAmount++;
-    return 1;
 }
 
 void removeRoom(HotelDatabase* database, int roomNumber){
@@ -110,6 +107,7 @@ Room* getRoom(HotelDatabase* database, int roomNumber){
     for(int i = 0; i < database->roomAmount; i++){
         if(database->rooms[i]->number == roomNumber) return database->rooms[i];
     }
+    return NULL;
 }
 
 HotelClient* getClient(HotelDatabase* database, int clientID){
@@ -125,6 +123,7 @@ HotelInvoice* getInvoice(HotelDatabase* database, int invoiceID){
     }
     return NULL;
 }
+
 
 void destroyHotelDatabase(HotelDatabase* database){
     for(int i = 0; i < database->roomAmount; i++){

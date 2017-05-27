@@ -11,5 +11,6 @@ typedef struct Room{
 
 Room* newRoom(RoomType type, int pricePerDay);
 void destroyRoom(Room* room);
+char* getRoomType(Room* room);
 
 #endif //TPCUAT_GRUPO11_ROOM_H

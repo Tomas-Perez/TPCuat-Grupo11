@@ -11,3 +11,14 @@ Room* newRoom(RoomType type, int pricePerDay){
 void destroyRoom(Room* room){
     free(room);
 }
+
+char* getRoomType(Room* room){
+    switch (room->type){
+        case SINGLE:
+            return "Single\0";
+        case DELUXE:
+            return "Deluxe\0";
+        case MASTER:
+            return "Master\0";
+    }
+}
