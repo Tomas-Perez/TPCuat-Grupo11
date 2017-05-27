@@ -19,4 +19,3 @@ void destroyAppliance(Appliance *appliance) {
     free(appliance->name);
     free(appliance);
 }
-
