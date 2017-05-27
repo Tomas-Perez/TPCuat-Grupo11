@@ -1,6 +1,10 @@
 #ifndef TPCUAT_GRUPO11_HOTELCLIENT_H
 #define TPCUAT_GRUPO11_HOTELCLIENT_H
 
+/*
+ * Description: The hotel client ADT contains relevant data of the a client of the Hotel system.
+ */
+
 typedef struct HotelClient{
     char* name;
     char* surname;

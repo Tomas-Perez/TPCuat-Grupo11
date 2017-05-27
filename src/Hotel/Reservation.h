@@ -3,6 +3,10 @@
 
 #include "HotelDatabase.h"
 
+/*
+ * Description: A reservation represents the step previous to a confirmed hotel room rental, before the client pays.
+ */
+
 typedef struct Reservation{
     int clientID;
     int roomNumber;

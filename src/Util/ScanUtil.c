@@ -6,7 +6,7 @@
 
 int scanInt(){
     char line[256];
-    int i;
+    int i = -1;
     int NaN = 1;
     while(NaN) {
         if (fgets(line, sizeof(line), stdin)) {
