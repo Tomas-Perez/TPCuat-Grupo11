@@ -12,8 +12,16 @@ User* newUser(char* name, char* address, char* city, int phoneNumber, UserRole r
     strcpy(result->city, city);
     result->phoneNumber = phoneNumber;
     result->role = role;
+    result->invoiceList = createStaticList(5);
     return result;
 }
+
+void addInvoice(User* user, Invoice* invoice){
+    invoice->invoiceID = user->invoideIDGen++;
+    goLast(user->invoiceList);
+    addNext(user->invoiceList, (int) invoice);
+}
+
 void destroyUser(User* user){
     free(user->name);
     free(user->address);

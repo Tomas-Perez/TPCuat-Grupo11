@@ -68,3 +68,16 @@ int cartGetTotal(Cart* cart, CameraShopDatabase* database){
     return result;
 }
 
+Invoice* checkout(Cart* cart, CameraShopDatabase* database){
+    StaticList* list = cart->cartLineList;
+    StaticList* invoiceLineList = createStaticList(list->size);
+    for(int i = 0; i < list->size; i++){
+        goTo(list, i);
+        CartLine* line = (CartLine*) getActual(list);
+        Product* product = getProduct(line->productID, database);
+        InvoiceLine* invoiceLine = newInvoiceLine(product->name, product->price, line->amount);
+        addNext(invoiceLineList, (int) invoiceLine);
+    }
+    return newInvoice(cartGetTotal(cart, database), invoiceLineList);
+}
+

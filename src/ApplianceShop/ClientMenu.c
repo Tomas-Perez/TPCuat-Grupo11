@@ -31,8 +31,8 @@ void addApplianceToCartMenu(Database* database, Cart* cart, int* applianceIdArra
         indexInput = scanInt();
     }
     if(indexInput <= -1) return;
-    int amount = scanInt();
     printf("How many would you like to buy?\n");
+    int amount = scanInt();
     while (amount <= 0){
         printf("Please enter a valid number\n");
         amount = scanInt();
@@ -53,6 +53,8 @@ void checkCartDisplay(Database *database, Cart *cart){
             }
         }
         printf("Total Price: %d\n\n", cartGetTotal(cart, database));
+    } else {
+        printf("You have no items in your cart.\n");
     }
 }
 
@@ -63,8 +65,8 @@ void checkoutDisplay(Database* database, Cart* cart){
         printf("%s (x%d): %d\n", appliance->name, invoice->invoiceLines[i]->amount, appliance->price*invoice->invoiceLines[i]->amount);
         printf("--------------------\n");
     }
-    printf("Total Price: %d", invoice->total);
-    free(cart);
+    printf("Total Price: %d\n", invoice->total);
+    destroyCart(cart);
     free(invoice);
     printf("Thank you for you purchase, logging out... \n\n");
 }
