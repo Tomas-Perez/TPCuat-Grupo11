@@ -3,7 +3,7 @@
 #include "Provider.h"
 
 Provider* newProvider(char* name, char* description, char* address,
-                      char* city, int phoneNumber, char* web, int providerId){
+                      char* city, int phoneNumber, char* web){
     Provider* provider = malloc(sizeof(Provider));
     provider->name = malloc(sizeof(char) * (strlen(name) + 1));
     strcpy(provider->name, name);
@@ -16,7 +16,6 @@ Provider* newProvider(char* name, char* description, char* address,
     provider->web = malloc(sizeof(char) * (strlen(web) + 1));
     strcpy(provider->web, web);
     provider->phoneNumber = phoneNumber;
-    provider->providerId = providerId;
     return provider;
 }
 

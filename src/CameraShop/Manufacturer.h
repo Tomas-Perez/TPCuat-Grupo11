@@ -12,7 +12,7 @@ typedef struct Manufacturer{
 }Manufacturer;
 
 Manufacturer* newManufacturer(char* name, char* description, char* address,
-                              char* city, int phoneNumber, char* web, int manufacturerId);
+                              char* city, int phoneNumber, char* web);
 void destroyManufacturer(Manufacturer* manufacturer);
 
 #endif //TPCUAT_GRUPO11_MANUFACTURER_H

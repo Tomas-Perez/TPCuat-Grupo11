@@ -3,7 +3,7 @@
 #include "Manufacturer.h"
 
 Manufacturer* newManufacturer(char* name, char* description, char* address,
-                              char* city, int phoneNumber, char* web, int manufacturerId){
+                              char* city, int phoneNumber, char* web){
     Manufacturer* result = malloc(sizeof(Manufacturer));
 
     result->name = malloc(sizeof(char)*(strlen(name)+1));
@@ -18,7 +18,6 @@ Manufacturer* newManufacturer(char* name, char* description, char* address,
     strcpy(result->city, city);
     strcpy(result->web, web);
 
-    result->manufacturerId = manufacturerId;
     result->phoneNumber = phoneNumber;
 
     return result;

@@ -16,8 +16,9 @@ typedef struct Camera{
 }Camera;
 
 Camera* newCamera(char* name, int megaPixels, int zoom, int hasLCD, CameraType cameraType);
-void addAccessory(Camera* camera, int accessoryID);
-void removeAccessory(Camera* camera, int accessoryID);
+void addCameraAccessory(Camera* camera, int accessoryID);
+void removeCameraAccessory(Camera* camera, int accessoryID);
+int containsAccessory(Camera* camera, int accessoryID);
 void destroyCamera(Camera* camera);
 
 

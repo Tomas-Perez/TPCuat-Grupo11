@@ -13,19 +13,29 @@ Camera* newCamera(char* name, int megaPixels, int zoom, int hasLCD, CameraType c
     result->accessoryList = createStaticList(5);
     return result;
 }
-void addAccessory(Camera* camera, int accessoryID){
-    StaticList* list = camera->accessoryList;
-    goLast(list);
-    addNext(list, accessoryID);
-}
-void removeAccessory(Camera* camera, int accessoryID){
+int containsAccessory(Camera* camera, int accessoryID){
     StaticList* list = camera->accessoryList;
     for(int i = 0; i < list->size; i++){
         goTo(list, 0);
         if(getActual(list) == accessoryID) {
-            removeS(list);
-            break;
+            return i;
         }
+    }
+    return -1;
+}
+void addCameraAccessory(Camera* camera, int accessoryID){
+    if(containsAccessory(camera, accessoryID) == -1) {
+        StaticList *list = camera->accessoryList;
+        goLast(list);
+        addNext(list, accessoryID);
+    }
+}
+void removeCameraAccessory(Camera* camera, int accessoryID){
+    int accessoryIndex = containsAccessory(camera, accessoryID);
+    if(accessoryIndex != -1){
+        StaticList* list = camera->accessoryList;
+        goTo(list, accessoryIndex);
+        removeS(list);
     }
 }
 void destroyCamera(Camera* camera){

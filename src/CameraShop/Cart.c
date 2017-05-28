@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <string.h>
 #include "Cart.h"
 
 Cart* newCart(int initialCapacity){
@@ -9,72 +8,63 @@ Cart* newCart(int initialCapacity){
 }
 
 void destroyCart(Cart* cart){
+    StaticList* list = cart->cartLineList;
+    for(int i = 0; i < list->size; i++){
+        goTo(list, i);
+        destroyCartLine((CartLine*) getActual(list));
+    }
+    freeStaticList(list);
+    free(cart->cartLineList);
     free(cart);
 }
-//TODO fix this shit
-void cartAddAppliance(Cart* cart, int applianceId, int amount){
-    int lineIndex = cartContainsAppliance(cart, applianceId);
+
+void cartAddAppliance(Cart* cart, int productID, int amount){
+    StaticList* list = cart->cartLineList;
+    int lineIndex = cartContainsAppliance(cart, productID);
     if(lineIndex == -1) {
-        if (cart->amountOfLines == cart->maxCapacity) {
-            cartGrow(cart);
-            cart->cartLines[cart->amountOfLines] = newCartLine(applianceId, amount);
-            cart->spacesTaken[cart->amountOfLines] = 1;
-        } else {
-            for (int i = 0; i < cart->maxCapacity; i++) {
-                if (cart->spacesTaken[i] == 0) {
-                    cart->cartLines[i] = newCartLine(applianceId, amount);
-                    cart->spacesTaken[i] = 1;
-                    break;
-                }
-            }
-        }
-        cart->amountOfLines++;
+        goLast(list);
+        CartLine* line = newCartLine(productID, amount);
+        addNext(list, (int) line);
     } else {
-        cart->cartLines[lineIndex]->amount += amount;
+        goTo(list, lineIndex);
+        CartLine* line = (CartLine*) getActual(list);
+        line->amount += amount;
     }
 }
 
-int cartContainsAppliance(Cart* cart, int applianceId){
-    for(int i = 0; i < cart->maxCapacity; i++){
-        if(cart->spacesTaken[i] != 0){
-            if(cart->cartLines[i]->applianceId == applianceId) return i;
-        }
+int cartContainsAppliance(Cart* cart, int productID){
+    StaticList* list = cart->cartLineList;
+    for(int i = 0; i < list->size; i++){
+        goTo(list, i);
+        CartLine* line = (CartLine*) getActual(list);
+        if(line->productID == productID) return i;
     }
     return -1;
 }
 
-void cartRemoveAppliance(Cart* cart, int applianceId, int amount){
-    int lineIndex = cartContainsAppliance(cart, applianceId);
+void cartRemoveAppliance(Cart* cart, int productID, int amount){
+    StaticList* list = cart->cartLineList;
+    int lineIndex = cartContainsAppliance(cart, productID);
     if(lineIndex != -1){
-        CartLine* line = cart->cartLines[lineIndex];
+        goTo(list, lineIndex);
+        CartLine* line = (CartLine*) getActual(list);
         line->amount -= amount;
         if(line->amount <= 0){
-            cart->spacesTaken[lineIndex] = 0;
             destroyCartLine(line);
-            cart->amountOfLines--;
+            removeS(list);
         }
     }
 }
 
-int cartGetTotal(Cart* cart, Database* database){
+int cartGetTotal(Cart* cart, CameraShopDatabase* database){
+    StaticList* list = cart->cartLineList;
     int result = 0;
-    for(int i = 0; i < cart->maxCapacity; i++){
-        if(cart->spacesTaken[i]){
-            int id = cart->cartLines[i]->applianceId;
-            int amount = cart->cartLines[i]->amount;
-            Appliance* appliance = getAppliance(id, database);
-            result += appliance->price * amount;
-        }
+    for(int i = 0; i < list->size; i++){
+        goTo(list, i);
+        CartLine* line = (CartLine*) getActual(list);
+        Product* product = getProduct(line->productID, database);
+        result += product->price * line->amount;
     }
     return result;
 }
 
-void cartGrow(Cart* cart){
-    int maxCapacity = cart->maxCapacity;
-    cart->cartLines = realloc(cart->cartLines, sizeof(CartLine*) * (maxCapacity*2));
-    cart->spacesTaken = realloc(cart->spacesTaken, sizeof(int) * (maxCapacity*2));
-    cart->maxCapacity = maxCapacity*2;
-    for(int i = maxCapacity; i < cart->maxCapacity; i++){
-        cart->spacesTaken[i] = 0;
-    }
-}

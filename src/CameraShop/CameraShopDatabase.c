@@ -1,5 +1,6 @@
 #include "CameraShopDatabase.h"
 #include <stdlib.h>
+#include <string.h>
 
 CameraShopDatabase* newCameraShopDatabase(int initialCapacity){
     CameraShopDatabase* result = malloc(sizeof(CameraShopDatabase));
@@ -8,10 +9,12 @@ CameraShopDatabase* newCameraShopDatabase(int initialCapacity){
     result->providerList = createStaticList(initialCapacity);
     result->cameraList = createStaticList(initialCapacity);
     result->accessoryList = createStaticList(initialCapacity);
+    result->userList = createStaticList(initialCapacity);
 
     result->idManufacturerGenerator = 0;
     result->idProductGenerator = 0;
     result->idProviderGenerator = 0;
+    result->idUserGenerator = 0;
 }
 void destroyDatabase(CameraShopDatabase* database){
     StaticList* list = database->cameraList;
@@ -44,11 +47,23 @@ void destroyDatabase(CameraShopDatabase* database){
         destroyProduct ((Product*) getActual(list));
     }
     freeStaticList(list);
+    list = database->userList;
+    for(int i = 0; i < list->size; i++){
+        goTo(list, i);
+        destroyUser ((User*) getActual(list));
+    }
+    freeStaticList(list);
     free(list);
+    free(database->accessoryList);
+    free(database->productList);
+    free(database->cameraList);
+    free(database->productList);
+    free(database->manufacturerList);
+    free(database->userList);
     free(database);
 }
-static void addProduct(CameraShopDatabase* database, char* name, ProductType type, int manufacturerID, int providerID){
-    Product* product = newProduct(database->idProductGenerator, name, type, manufacturerID, providerID);
+static void addProduct(CameraShopDatabase* database, char* name, ProductType type, int manufacturerID, int providerID, int price){
+    Product* product = newProduct(database->idProductGenerator, name, type, manufacturerID, providerID, price);
     goLast(database->productList);
     addNext(database->productList, (int) product);
 }
@@ -60,9 +75,11 @@ static void removeProduct(CameraShopDatabase* database, int idProduct){
         if(product->productID == idProduct){
             destroyProduct(product);
             removeS(list);
+            free(product);
             break;
         }
     }
+    free(list);
 }
 Provider* getProvider(int idProvider, CameraShopDatabase* database){
     StaticList* list = database->providerList;
@@ -71,6 +88,17 @@ Provider* getProvider(int idProvider, CameraShopDatabase* database){
         Provider* provider = (Provider*) getActual(list);
         if(provider->providerId == idProvider) return provider;
     }
+    free(list);
+    return NULL;
+}
+User* getUser(char* name, CameraShopDatabase* database){
+    StaticList* list = database->userList;
+    for(int i = 0; i < list->size; i++){
+        goTo(list, i);
+        User* user = (User*) getActual(list);
+        if(strcmp(user->name, name)) return user;
+    }
+    free(list);
     return NULL;
 }
 Product* getProduct(int idProduct, CameraShopDatabase* database){
@@ -80,6 +108,7 @@ Product* getProduct(int idProduct, CameraShopDatabase* database){
         Product* product = (Product*) getActual(list);
         if(product->productID == idProduct) return product;
     }
+    free(list);
     return NULL;
 }
 Manufacturer* getManufacturer(int idManufacturer, CameraShopDatabase* database){
@@ -89,6 +118,7 @@ Manufacturer* getManufacturer(int idManufacturer, CameraShopDatabase* database){
         Manufacturer* manufacturer = (Manufacturer*) getActual(list);
         if(manufacturer->manufacturerId == idManufacturer) return manufacturer;
     }
+    free(list);
     return NULL;
 }
 Camera* getCamera(int idProduct, CameraShopDatabase* database){
@@ -98,6 +128,7 @@ Camera* getCamera(int idProduct, CameraShopDatabase* database){
         Camera* camera = (Camera*) getActual(list);
         if(camera->productID == idProduct) return camera;
     }
+    free(list);
     return NULL;
 }
 Accessory* getAccessory(int idProduct, CameraShopDatabase* database){
@@ -107,6 +138,7 @@ Accessory* getAccessory(int idProduct, CameraShopDatabase* database){
         Accessory* accessory = (Accessory*) getActual(list);
         if(accessory->productID == idProduct) return accessory;
     }
+    free(list);
     return NULL;
 }
 void addProvider(CameraShopDatabase* database, Provider* provider){
@@ -114,19 +146,28 @@ void addProvider(CameraShopDatabase* database, Provider* provider){
     goLast(database->providerList);
     addNext(database->providerList, (int) provider);
 }
+int addUser(CameraShopDatabase* database, User* user){
+    if(getUser(user->name, database) == NULL) {
+        user->userID = database->idUserGenerator++;
+        goLast(database->userList);
+        addNext(database->userList, (int) user);
+        return 1;
+    }
+    return 0;
+}
 void addManufacturer(CameraShopDatabase* database, Manufacturer* manufacturer){
     manufacturer->manufacturerId = database->idManufacturerGenerator++;
     goLast(database->manufacturerList);
     addNext(database->manufacturerList, (int) manufacturer);
 }
-void addCamera(CameraShopDatabase* database, Camera* camera, int providerID, int manufacturerID){
-    addProduct(database, camera->name, CAMERA, manufacturerID, providerID);
+void addCamera(CameraShopDatabase* database, Camera* camera, int providerID, int manufacturerID, int price){
+    addProduct(database, camera->name, CAMERA, manufacturerID, providerID, price);
     camera->productID = database->idProductGenerator++;
     goLast(database->cameraList);
     addNext(database->cameraList, (int) camera);
 }
-void addAccessory(CameraShopDatabase* database, Accessory* accessory, int providerID, int manufacturerID){
-    addProduct(database, accessory->name, ACCESSORY, manufacturerID, providerID);
+void addAccessory(CameraShopDatabase* database, Accessory* accessory, int providerID, int manufacturerID, int price){
+    addProduct(database, accessory->name, ACCESSORY, manufacturerID, providerID, price);
     accessory->productID = database->idProductGenerator++;
     goLast(database->accessoryList);
     addNext(database->accessoryList, (int) accessory);
@@ -143,6 +184,20 @@ void removeProvider(int idProvider, CameraShopDatabase* database){
             break;
         }
     }
+    free(list);
+}
+void removeUser(int idUser, CameraShopDatabase* database){
+    StaticList* list = database->userList;
+    for(int i = 0; i < list->size; i++){
+        goTo(list, i);
+        User* user = (User*) getActual(list);
+        if(user->userID == idUser){
+            destroyUser(user);
+            removeS(list);
+            break;
+        }
+    }
+    free(list);
 }
 void removeManufacturer(int idManufacturer, CameraShopDatabase* database){
     StaticList* list = database->manufacturerList;
@@ -155,6 +210,7 @@ void removeManufacturer(int idManufacturer, CameraShopDatabase* database){
             break;
         }
     }
+    free(list);
 }
 
 void removeCamera(int idProduct, CameraShopDatabase* database){
@@ -169,6 +225,7 @@ void removeCamera(int idProduct, CameraShopDatabase* database){
             break;
         }
     }
+    free(list);
 }
 void removeAccessory(int idProduct, CameraShopDatabase* database){
     StaticList* list = database->accessoryList;
@@ -179,7 +236,47 @@ void removeAccessory(int idProduct, CameraShopDatabase* database){
             removeProduct(database, idProduct);
             destroyAccessory(accessory);
             removeS(list);
+            StaticList* cameraList = database->cameraList;
+            for(int j = 0; j < cameraList->size; j++){
+                goTo(cameraList, j);
+                removeCameraAccessory((Camera*) getActual(cameraList), idProduct);
+            }
+            free(cameraList);
             break;
         }
     }
+    free(list);
+}
+StaticList* getProductIdList(CameraShopDatabase* database){
+    StaticList* list = database->productList;
+    StaticList* result = createStaticList(list->size);
+    for(int i = 0; i < list->size; i++){
+        goTo(list, i);
+        Product* product = (Product*) getActual(list);
+        addNext(result, product->productID);
+    }
+    free(list);
+    return result;
+}
+StaticList* getManufacturerIdList(CameraShopDatabase* database){
+    StaticList* list = database->manufacturerList;
+    StaticList* result = createStaticList(list->size);
+    for(int i = 0; i < list->size; i++){
+        goTo(list, i);
+        Manufacturer* manufacturer = (Manufacturer*) getActual(list);
+        addNext(result, manufacturer->manufacturerId);
+    }
+    free(list);
+    return result;
+}
+StaticList* getProviderIdList(CameraShopDatabase* database){
+    StaticList* list = database->providerList;
+    StaticList* result = createStaticList(list->size);
+    for(int i = 0; i < list->size; i++){
+        goTo(list, i);
+        Provider* provider = (Provider*) getActual(list);
+        addNext(result, provider->providerId);
+    }
+    free(list);
+    return result;
 }
