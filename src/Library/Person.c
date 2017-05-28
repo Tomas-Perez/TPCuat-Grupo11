@@ -34,11 +34,11 @@ void growBorrowedMaterial(Person *person){
     }
     person->borrowedMaterialMaxCapacity *= 2;
 }
-void addBorrowedMaterial(Person *person, int idBook){
+void addBorrowedMaterial(Person *person, int idMaterial){
     if(person->amountOfBorrowedMaterial != person->borrowedMaterialMaxCapacity) {
         for (int i = 0; i < person->borrowedMaterialMaxCapacity; i++) {
             if (!person->borrowedMaterial[i]) {
-                person->borrowedMaterial[i] = idBook;
+                person->borrowedMaterial[i] = idMaterial;
                 person->amountOfBorrowedMaterial++;
                 break;
             }
@@ -46,13 +46,13 @@ void addBorrowedMaterial(Person *person, int idBook){
     }
     else {
         growBorrowedMaterial(person);
-        person->borrowedMaterial[person->amountOfBorrowedMaterial] = idBook;
+        person->borrowedMaterial[person->amountOfBorrowedMaterial] = idMaterial;
         person->amountOfBorrowedMaterial++;
     }
 }
-void removeBorrowedMaterial(Person *person, int idBook){
+void removeBorrowedMaterial(Person *person, int idMaterial){
     for (int i = 0; i < person->borrowedMaterialMaxCapacity; i++) {
-        if (person->borrowedMaterial[i] == idBook) {
+        if (person->borrowedMaterial[i] == idMaterial) {
             person->borrowedMaterial[i] = 0;
             person->amountOfBorrowedMaterial--;
             return;
