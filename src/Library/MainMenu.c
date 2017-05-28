@@ -2,6 +2,7 @@
 #include <malloc.h>
 #include <memory.h>
 #include "Library.h"
+#include "../Util/ScanUtil.h"
 
 void adminMenu(Library* library);
 
@@ -29,11 +30,10 @@ void logInMenu(Library* library){
 void accountCreationMenu(Library* library){
     printf("\n-- New Account --\n");
     printf("(-1 to cancel)\n\n");
-    char* username = malloc(sizeof(char) * 20);
+    char* username;
     while(1) {
         printf("Username:\n");
-        fseek(stdin,0,SEEK_END);
-        scanf("%s", username);
+        username = scanChar();
         if(strcmp(username,"-1") == 0){
             return;
         }
@@ -43,22 +43,19 @@ void accountCreationMenu(Library* library){
         printf("Username already taken.\n");
     }
     printf("Name:\n");
-    char *name = malloc(sizeof(char) * 20);
-    scanf("%s", name);
+    char *name = scanChar();
     if(strcmp(name,"-1") == 0){
         return;
     }
     printf("Surname:\n");
-    char *surname = malloc(sizeof(char) * 20);
-    scanf("%s", surname);
+    char *surname = scanChar();
     if(strcmp(surname,"-1") == 0){
         return;
     }
     int phone = 0;
     while(1) {
         printf("Phone:\n");
-        fseek(stdin, 0, SEEK_END);
-        scanf("%d", &phone);
+        phone = scanInt();
         if (phone == -1) {
             return;
         }
@@ -71,8 +68,7 @@ void accountCreationMenu(Library* library){
     while(1) {
         printf("1. Teacher\n");
         printf("2. Student\n");
-        fseek(stdin, 0, SEEK_END);
-        scanf("%d", &type);
+        type = scanInt();
         if (type == -1) {
             return;
         } else if(type == 1 || type == 2){
@@ -84,8 +80,7 @@ void accountCreationMenu(Library* library){
     while(1) {
         if(type == 2) {
             printf("Student id:\n");
-            fseek(stdin, 0, SEEK_END);
-            scanf("%d", &id);
+            id = scanInt();
             if (id == -1) {
                 return;
             }
@@ -97,8 +92,7 @@ void accountCreationMenu(Library* library){
         }
         else if(type == 1) {
             printf("Teacher id:\n");
-            fseek(stdin, 0, SEEK_END);
-            scanf("%d", &id);
+            id = scanInt();
             if (id == -1) {
                 return;
             }
@@ -129,8 +123,7 @@ void mainMenu(Library* library){
         printf("1. Log in as admin\n");
         printf("2. Create account\n");
         printf("-1. exit\n");
-        int choice = 0;
-        scanf("%d", &choice);
+        int choice = scanInt();
         switch (choice) {
             case 1:
                 logInMenu(library);
@@ -142,7 +135,6 @@ void mainMenu(Library* library){
                 return;
             default:
                 printf("Please enter one of the options\n");
-                fseek(stdin,0,SEEK_END);
         }
     }
 }

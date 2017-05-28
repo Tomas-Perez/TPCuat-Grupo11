@@ -17,8 +17,7 @@ struct Person{
 
 Person* newPerson(int idPerson, char* username, int type, char* name, char* surname, int phone);
 void destroyPerson(Person* person);
-void growBorrowedMaterial(Person *person);
-void addBorrowedMaterial(Person *person, int idBook);
-void removeBorrowedMaterial(Person *person, int idBook);
+void addBorrowedMaterial(Person *person, int idMaterial);
+void removeBorrowedMaterial(Person *person, int idMaterial);
 
 #endif //TPCUAT_GRUPO11_PERSON_H
