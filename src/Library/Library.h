@@ -7,6 +7,7 @@
 #include "Material.h"
 #include "Magazine.h"
 #include "Book.h"
+#include "Borrow.h"
 
 typedef struct Library Library;
 struct Library{
@@ -40,6 +41,12 @@ struct Library{
     int amountOfBook;
     int bookMaxCapacity;
 
+    Borrow** borrowArray;
+    int* borrowBooleanArray;
+    int amountOfBorrow;
+    int borrowMaxCapacity;
+
+    int borrowIdGenerator;
     int personIdGenerator;
     int materialIdGenerator;
 };
@@ -76,6 +83,12 @@ void growBook(Library* library);
 int addBook(Library* library, Book* book);
 Book* getBook(Library* library, int idMaterial);
 
+void growBorrow(Library* library);
+int addBorrow(Library* library, Borrow* borrow);
+Borrow* getBorrow(Library* library, int idBorrow);
+void removeBorrow(Library* library, int idBorrow);
+
+int generateIdBorrow(Library* library);
 int generateIdPerson(Library* library);
 int generateIdMaterial(Library* library);
 

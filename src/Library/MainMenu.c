@@ -3,10 +3,10 @@
 #include <memory.h>
 #include "Library.h"
 
-void personMenu(Library* library, Person* person);
+void adminMenu(Library* library);
 
 void logInMenu(Library* library){
-    printf("\n-- Log in --\n");
+    printf("\n-- Admin log in --\n");
     printf("(-1 to cancel)\n");
     char* username = malloc(sizeof(char) * 20);
     while(1) {
@@ -17,10 +17,10 @@ void logInMenu(Library* library){
             return;
         }
         Person* person = getPersonByUsername(library, username);
-        if (person == NULL) {
-            printf("No such user.\n");
+        if (person == NULL || person->type != 3) {
+            printf("No such admin.\n");
         } else{
-            personMenu(library, person);
+            adminMenu(library);
             break;
         }
     }
@@ -82,7 +82,7 @@ void accountCreationMenu(Library* library){
     }
     int id = 0;
     while(1) {
-        if(type == 1) {
+        if(type == 2) {
             printf("Student id:\n");
             fseek(stdin, 0, SEEK_END);
             scanf("%d", &id);
@@ -95,7 +95,7 @@ void accountCreationMenu(Library* library){
                 printf("There is already someone with that id.\n");
             }
         }
-        else if(type == 2) {
+        else if(type == 1) {
             printf("Teacher id:\n");
             fseek(stdin, 0, SEEK_END);
             scanf("%d", &id);
@@ -125,8 +125,8 @@ void accountCreationMenu(Library* library){
 
 void mainMenu(Library* library){
     while(1) {
-        printf("Welcome to the library\n");
-        printf("1. Log in\n");
+        printf("\nWelcome to the library\n");
+        printf("1. Log in as admin\n");
         printf("2. Create account\n");
         printf("-1. exit\n");
         int choice = 0;
