@@ -25,41 +25,27 @@ CameraShopDatabase* setup(){
     addProvider(cameraShopDatabase, johnnyTheProvider);
     addCamera(cameraShopDatabase, camera, dailyMail->providerId, nikon->manufacturerId, 666);
     addCamera(cameraShopDatabase, camera1, dailyMail->providerId, canon->manufacturerId, 200);
-    /*
     addCamera(cameraShopDatabase, camera2, johnnyTheProvider->providerId, nikon->manufacturerId, 150);
-     */
-    /*
     addAccessory(cameraShopDatabase, tripod, johnnyTheProvider->providerId, nikon->manufacturerId, 20);
     addAccessory(cameraShopDatabase, bipod, johnnyTheProvider->providerId, canon->manufacturerId, 50);
     addCameraAccessory(camera, tripod->productID);
     addCameraAccessory(camera, bipod->productID);
-     */
-    User* admin = newUser("admin", 520,  "admin street", "admin town", 1, ADMIN);
+    User* admin = newUser("admin", 520,  "admin street", "admin town", 1, ADMIN, 1);
     addUser(cameraShopDatabase, admin);
-    printf(getProvider(0, cameraShopDatabase)->name);
-    printf(getProvider(1, cameraShopDatabase)->name);
-    printf(getManufacturer(0, cameraShopDatabase)->name);
-    printf(getManufacturer(1, cameraShopDatabase)->name);
-    printf(getProduct(0, cameraShopDatabase)->name);
-    printf(getCamera(0, cameraShopDatabase)->name);
-    printf(getAccessory(0, cameraShopDatabase)->name);
-    printf(getUser("admin", cameraShopDatabase)->name);
+    User* client = newUser("client", 444, "false street 123", "springfield", 2314324, CLIENT, 1);
+    addUser(cameraShopDatabase, client);
     return cameraShopDatabase;
 }
 
 int main() {
-    /*
-    CameraShopDatabase* cameraShopDatabase = newCameraShopDatabase(5);
-    Camera* camera = newCamera("Nikon 35D", 20, 20, 1, DSLR);
-    Manufacturer* canon = newManufacturer("Canon", "We are a worse Nikon", "Camera 122", "Detroit", 319, "www.canon.nikon.nikon");
-    addManufacturer(cameraShopDatabase, canon);
-    addCamera(cameraShopDatabase, camera, 0, 0, 666);
-    Manufacturer* manufacturer = getManufacturer(0, cameraShopDatabase);
-    Camera* camera1 = getCamera(0, cameraShopDatabase);
-    Product* product = getProduct(0, cameraShopDatabase);
-    */
     CameraShopDatabase* cameraShopDatabase = setup();
     /*
+    StaticList* productIDList = getProductIdList(cameraShopDatabase);
+    for(int i = 0; i < productIDList->size; i++){
+        goTo(productIDList, i);
+        printf("%d", getActual(productIDList));
+    }
+    */
     while(1) {
         printf("Welcome to Nikon Argentina\n");
         printf("1. Log in\n");
@@ -72,14 +58,15 @@ int main() {
                 if(user == NULL) break;
                 else if(user->role == ADMIN) adminMenu(cameraShopDatabase, user);
                 else clientMenu(cameraShopDatabase, user);
+                break;
             }
             case 2:
                 registerMenu(cameraShopDatabase);
+                break;
             case 0:
                 exit(0);
             default:
                 printf("Please enter a valid number\n");
         }
     }
-     */
 }

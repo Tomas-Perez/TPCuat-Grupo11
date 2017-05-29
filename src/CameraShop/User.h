@@ -14,11 +14,13 @@ typedef struct User{
     int phoneNumber;
     int userID;
     UserRole role;
-    StaticList* invoiceList;
-    int invoideIDGen;
+    Invoice** invoiceList;
+    int invoiceAmount;
+    int invoiceCapacity;
+    int invoiceIDGen;
 }User;
 
-User* newUser(char* name, int DNI, char* address, char* city, int phoneNumber, UserRole role);
+User* newUser(char* name, int DNI, char* address, char* city, int phoneNumber, UserRole role, int invoiceCapacity);
 void destroyUser(User* user);
 void addInvoice(User* user, Invoice* invoice);
 

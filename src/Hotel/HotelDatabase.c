@@ -100,6 +100,7 @@ void addInvoice(HotelDatabase* database, HotelInvoice* invoice){
 void removeRoom(HotelDatabase* database, int roomNumber){
     for(int i = 0; i < database->roomAmount; i++){
         if(database->rooms[i]->number == roomNumber){
+            destroyRoom(database->rooms[i]);
             for(; i < database->roomAmount - 1; i++){
                 database->rooms[i] = database->rooms[i+1];
             }
@@ -117,6 +118,7 @@ void removeRoom(HotelDatabase* database, int roomNumber){
 void removeClient(HotelDatabase* database, int clientID){
     for(int i = 0; i < database->clientAmount; i++){
         if(database->clients[i]->clientID == clientID){
+            destroyHotelClient(database->clients[i]);
             for(; i < database->clientAmount - 1; i++){
                 database->clients[i] = database->clients[i+1];
             }
@@ -134,6 +136,7 @@ void removeClient(HotelDatabase* database, int clientID){
 void removeInvoice(HotelDatabase* database, int invoiceID){
     for(int i = 0; i < database->invoiceAmount; i++){
         if(database->invoices[i]->invoiceID == invoiceID){
+            destroyHotelInvoice(database->invoices[i]);
             for(; i < database->invoiceAmount - 1; i++){
                 database->invoices[i] = database->invoices[i+1];
             }

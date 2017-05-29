@@ -10,12 +10,29 @@
 #include "User.h"
 
 typedef struct CameraShopDatabase{
-    StaticList* providerList;
-    StaticList* manufacturerList;
-    StaticList* productList;
-    StaticList* cameraList;
-    StaticList* accessoryList;
-    StaticList* userList;
+    Provider** providerList;
+    int providerAmount;
+    int providerCapacity;
+
+    Manufacturer** manufacturerList;
+    int manufacturerAmount;
+    int manufacturerCapacity;
+
+    Product** productList;
+    int productAmount;
+    int productCapacity;
+
+    Camera** cameraList;
+    int cameraAmount;
+    int cameraCapacity;
+
+    Accessory** accessoryList;
+    int accessoryAmount;
+    int accessoryCapacity;
+
+    User** userList;
+    int userAmount;
+    int userCapacity;
 
     int idProviderGenerator;
     int idManufacturerGenerator;

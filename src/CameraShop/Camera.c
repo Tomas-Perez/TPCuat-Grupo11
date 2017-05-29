@@ -13,7 +13,7 @@ Camera* newCamera(char* name, int megaPixels, int zoom, int hasLCD, CameraType c
     result->accessoryList = createStaticList(5);
     return result;
 }
-int containsAccessory(Camera* camera, int accessoryID){
+static int containsAccessory(Camera* camera, int accessoryID){
     StaticList* list = camera->accessoryList;
     for(int i = 0; i < list->size; i++){
         goTo(list, 0);

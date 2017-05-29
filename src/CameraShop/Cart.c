@@ -74,6 +74,6 @@ Invoice* checkout(Cart* cart, CameraShopDatabase* database){
         InvoiceLine* invoiceLine = newInvoiceLine(product->name, product->price, line->amount);
         invoiceLines[i] = invoiceLine;
     }
-    return newInvoice(cartGetTotal(cart, database), invoiceLineList);
+    return newInvoice(cartGetTotal(cart, database), invoiceLines, cart->amountOfLines);
 }
 

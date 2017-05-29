@@ -66,12 +66,10 @@ void addProductToCartMenu(CameraShopDatabase* database, Cart* cart){
 
 
 void checkCartDisplay(CameraShopDatabase *database, Cart *cart){
-    StaticList* list = cart->cartLines;
-    if(list->size > 0){
+    if(cart->amountOfLines > 0){
         printf("These are the items currently in your cart.\n");
-        for(int i = 0; i < list->size; i++){
-            goTo(list, i);
-            CartLine* cartLine = (CartLine*) getActual(list);
+        for(int i = 0; i < cart->amountOfLines; i++){
+            CartLine* cartLine = cart->cartLines[i];
             Product* product = getProduct(cartLine->productID, database);
             printf("%s: \nPrice per unit: %d \nAmount:%d\n", product->name, product->price, cartLine->amount);
             printf("--------------------\n");
@@ -84,10 +82,8 @@ void checkCartDisplay(CameraShopDatabase *database, Cart *cart){
 }
 
 void checkInvoice(Invoice* invoice){
-    StaticList *list = invoice->invoiceLines;
-    for (int i = 0; i < list->size; i++) {
-        goTo(list, i);
-        InvoiceLine* line = (InvoiceLine*) getActual(list);
+    for (int i = 0; i < invoice->amountOfLines; i++) {
+        InvoiceLine* line = invoice->invoiceLines[i];
         printf("%s (x%d): %d\n", line->productName, line->amount,
                line->productPrice * line->amount);
         printf("--------------------\n");
@@ -96,7 +92,7 @@ void checkInvoice(Invoice* invoice){
 }
 
 void checkoutDisplay(CameraShopDatabase* database, Cart* cart, User* user){
-    if(cart->cartLines->size > 0) {
+    if(cart->amountOfLines > 0) {
         Invoice *invoice = checkout(cart, database);
         checkInvoice(invoice);
         addInvoice(user, invoice);
@@ -107,11 +103,9 @@ void checkoutDisplay(CameraShopDatabase* database, Cart* cart, User* user){
 }
 
 void invoiceDisplay(User* user){
-    StaticList* list = user->invoiceList;
-    if(list->size > 0) {
-        for (int i = 0; i < list->size; i++) {
-            goTo(list, i);
-            Invoice *invoice = (Invoice *) getActual(list);
+    if(user->invoiceAmount > 0) {
+        for (int i = 0; i < user->invoiceAmount; i++) {
+            Invoice *invoice = user->invoiceList[i];
             checkInvoice(invoice);
         }
     } else {
@@ -124,10 +118,10 @@ void clientMenu(CameraShopDatabase* database, User* user){
     Cart* cart = newCart(5);
     while(1) {
         printf("Client Menu\n");
-        printf("1. Buy Appliances\n");
+        printf("1. Buy Product\n");
         printf("2. Check cart\n");
-        printf("3. Checkout");
-        printf("4. Check Invoices");
+        printf("3. Checkout\n");
+        printf("4. Check Invoices\n");
         printf("0. Exit\n");
         int choice = scanInt();
         switch (choice) {
