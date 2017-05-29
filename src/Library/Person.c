@@ -7,7 +7,6 @@ Person* newPerson(int idPerson, char* username, int type, char* name, char* surn
     person->idPerson = idPerson;
     person->type = type;
     person->phone = phone;
-    person->debt = 0;
     person->name = malloc(sizeof(char) * (strlen(name) + 1));
     strcpy(person->name, name);
     person->username = malloc(sizeof(char) * (strlen(username) + 1));

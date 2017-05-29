@@ -9,11 +9,10 @@ void adminMenu(Library* library);
 void logInMenu(Library* library){
     printf("\n-- Admin log in --\n");
     printf("(-1 to cancel)\n");
-    char* username = malloc(sizeof(char) * 20);
+    char* username;
     while(1) {
         printf("Username:\n");
-        fseek(stdin,0,SEEK_END);
-        scanf("%s", username);
+        username = scanChar();
         if(strcmp(username,"-1") == 0){
             return;
         }
