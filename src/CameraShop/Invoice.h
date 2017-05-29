@@ -6,11 +6,12 @@
 
 typedef struct Invoice{
     int invoiceID;
-    StaticList* invoiceLineList;
+    InvoiceLine** invoiceLines;
+    int amountOfLines;
     int total;
 }Invoice;
 
-Invoice* newInvoice(int total, StaticList* invoiceLineList);
+Invoice* newInvoice(int total, InvoiceLine** invoiceLines, int amountOfLines);
 void destroyInvoice(Invoice* invoice);
 
 #endif //TPCUAT_GRUPO11_INVOICE_H

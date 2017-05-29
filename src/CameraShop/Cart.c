@@ -3,65 +3,63 @@
 
 Cart* newCart(int initialCapacity){
     Cart* result = malloc(sizeof(Cart));
-    result->cartLineList = createStaticList(initialCapacity);
+    result->cartLines = malloc(sizeof(CartLine*)*initialCapacity);
+    result->maxCapacity = initialCapacity;
+    result->amountOfLines = 0;
     return result;
 }
 
 void destroyCart(Cart* cart){
-    StaticList* list = cart->cartLineList;
-    for(int i = 0; i < list->size; i++){
-        goTo(list, i);
-        destroyCartLine((CartLine*) getActual(list));
+    for(int i = 0; i < cart->amountOfLines; i++){
+        destroyCartLine(cart->cartLines[i]);
     }
-    freeStaticList(list);
-    free(cart->cartLineList);
+    free(cart->cartLines);
     free(cart);
 }
 
+static void growCart(Cart* cart){
+    cart->maxCapacity *= 2;
+    cart->cartLines = realloc(cart->cartLines, sizeof(CartLine*)*cart->maxCapacity);
+}
+
 void cartAddAppliance(Cart* cart, int productID, int amount){
-    StaticList* list = cart->cartLineList;
     int lineIndex = cartContainsAppliance(cart, productID);
     if(lineIndex == -1) {
-        goLast(list);
-        CartLine* line = newCartLine(productID, amount);
-        addNext(list, (int) line);
+        if(cart->amountOfLines == cart->maxCapacity) growCart(cart);
+        cart->cartLines[cart->amountOfLines] = newCartLine(productID, amount);
+        cart->amountOfLines++;
     } else {
-        goTo(list, lineIndex);
-        CartLine* line = (CartLine*) getActual(list);
+        CartLine* line = cart->cartLines[lineIndex];
         line->amount += amount;
     }
 }
 
 int cartContainsAppliance(Cart* cart, int productID){
-    StaticList* list = cart->cartLineList;
-    for(int i = 0; i < list->size; i++){
-        goTo(list, i);
-        CartLine* line = (CartLine*) getActual(list);
+    for(int i = 0; i < cart->amountOfLines; i++){
+        CartLine* line = cart->cartLines[i];
         if(line->productID == productID) return i;
     }
     return -1;
 }
 
 void cartRemoveAppliance(Cart* cart, int productID, int amount){
-    StaticList* list = cart->cartLineList;
     int lineIndex = cartContainsAppliance(cart, productID);
     if(lineIndex != -1){
-        goTo(list, lineIndex);
-        CartLine* line = (CartLine*) getActual(list);
+        CartLine* line = cart->cartLines[lineIndex];
         line->amount -= amount;
         if(line->amount <= 0){
             destroyCartLine(line);
-            removeS(list);
+            for(int i = lineIndex; i < cart->amountOfLines - 1; i++){
+                cart->cartLines[i] = cart->cartLines[i+1];
+            }
         }
     }
 }
 
 int cartGetTotal(Cart* cart, CameraShopDatabase* database){
-    StaticList* list = cart->cartLineList;
     int result = 0;
-    for(int i = 0; i < list->size; i++){
-        goTo(list, i);
-        CartLine* line = (CartLine*) getActual(list);
+    for(int i = 0; i < cart->amountOfLines; i++){
+        CartLine* line = cart->cartLines[i];
         Product* product = getProduct(line->productID, database);
         result += product->price * line->amount;
     }
@@ -69,14 +67,12 @@ int cartGetTotal(Cart* cart, CameraShopDatabase* database){
 }
 
 Invoice* checkout(Cart* cart, CameraShopDatabase* database){
-    StaticList* list = cart->cartLineList;
-    StaticList* invoiceLineList = createStaticList(list->size);
-    for(int i = 0; i < list->size; i++){
-        goTo(list, i);
-        CartLine* line = (CartLine*) getActual(list);
+    InvoiceLine** invoiceLines = malloc(sizeof(InvoiceLine*)*cart->amountOfLines);
+    for(int i = 0; i < cart->amountOfLines; i++){
+        CartLine* line = cart->cartLines[i];
         Product* product = getProduct(line->productID, database);
         InvoiceLine* invoiceLine = newInvoiceLine(product->name, product->price, line->amount);
-        addNext(invoiceLineList, (int) invoiceLine);
+        invoiceLines[i] = invoiceLine;
     }
     return newInvoice(cartGetTotal(cart, database), invoiceLineList);
 }

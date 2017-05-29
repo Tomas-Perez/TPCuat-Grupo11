@@ -8,7 +8,9 @@
 #include "InvoiceLine.h"
 
 typedef struct Cart{
-    StaticList* cartLineList;
+    CartLine** cartLines;
+    int amountOfLines;
+    int maxCapacity;
 }Cart;
 
 Cart* newCart(int initialCapacity);

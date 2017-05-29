@@ -2,19 +2,17 @@
 #include "Invoice.h"
 
 
-Invoice* newInvoice(int total, StaticList* invoiceLineList){
+Invoice* newInvoice(int total, InvoiceLine** invoiceLines, int amountOfLines){
     Invoice* invoice = malloc(sizeof(Invoice));
     invoice->total = total;
-    invoice->invoiceLineList = invoiceLineList;
+    invoice->invoiceLines = invoiceLines;
+    invoice->amountOfLines = amountOfLines;
     return invoice;
 }
 void destroyInvoice(Invoice* invoice){
-    StaticList* list = invoice->invoiceLineList;
-    for(int i = 0; i < list->size; i++){
-        goTo(list, i);
-        destroyInvoiceLine((InvoiceLine*) getActual(list));
+    for(int i = 0; i < invoice->amountOfLines; i++){
+        destroyInvoiceLine(invoice->invoiceLines[i]);
     }
-    freeStaticList(invoice->invoiceLineList);
-    free(invoice->invoiceLineList);
+    free(invoice->invoiceLines);
     free(invoice);
 }

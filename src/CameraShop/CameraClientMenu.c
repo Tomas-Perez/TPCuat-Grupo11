@@ -66,7 +66,7 @@ void addProductToCartMenu(CameraShopDatabase* database, Cart* cart){
 
 
 void checkCartDisplay(CameraShopDatabase *database, Cart *cart){
-    StaticList* list = cart->cartLineList;
+    StaticList* list = cart->cartLines;
     if(list->size > 0){
         printf("These are the items currently in your cart.\n");
         for(int i = 0; i < list->size; i++){
@@ -84,7 +84,7 @@ void checkCartDisplay(CameraShopDatabase *database, Cart *cart){
 }
 
 void checkInvoice(Invoice* invoice){
-    StaticList *list = invoice->invoiceLineList;
+    StaticList *list = invoice->invoiceLines;
     for (int i = 0; i < list->size; i++) {
         goTo(list, i);
         InvoiceLine* line = (InvoiceLine*) getActual(list);
@@ -96,7 +96,7 @@ void checkInvoice(Invoice* invoice){
 }
 
 void checkoutDisplay(CameraShopDatabase* database, Cart* cart, User* user){
-    if(cart->cartLineList->size > 0) {
+    if(cart->cartLines->size > 0) {
         Invoice *invoice = checkout(cart, database);
         checkInvoice(invoice);
         addInvoice(user, invoice);
