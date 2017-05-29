@@ -12,10 +12,18 @@ typedef struct BlockbusterDatabase BlockbusterDatabase;
 struct BlockbusterDatabase{
     int income;
 
-    StaticList* clientList;
-    StaticList* adminList;
-    StaticList* movieList;
-    StaticList* rentList;
+    Client** clients;
+    int clientMaxCapacity;
+    int amountOfClients;
+    Admin** admins;
+    int adminMaxCapacity;
+    int amountOfAdmins;
+    Movie** movies;
+    int movieMaxCapacity;
+    int amountOfMovies;
+    Rent** rents;
+    int rentMaxCapacity;
+    int amountOfRents;
 
     int movieIdGenerator;
     int rentIdGenerator;
