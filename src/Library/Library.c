@@ -471,7 +471,7 @@ int addBorrow(Library* library, Borrow* borrow){
     }
 
     else {
-        growBook(library);
+        growBorrow(library);
         library->borrowArray[library->amountOfBorrow] = borrow;
         library->borrowBooleanArray[library->amountOfBorrow] = 1;
         library->amountOfBorrow++;

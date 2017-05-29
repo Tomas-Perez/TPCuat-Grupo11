@@ -9,7 +9,6 @@ struct Person{
     char* username;
     char* surname;
     int phone;
-    double debt;
     int* borrowedMaterial;
     int amountOfBorrowedMaterial;
     int borrowedMaterialMaxCapacity;
@@ -18,6 +17,6 @@ struct Person{
 Person* newPerson(int idPerson, char* username, int type, char* name, char* surname, int phone);
 void destroyPerson(Person* person);
 void addBorrowedMaterial(Person *person, int idMaterial);
-void removeBorrowedMaterial(Person *person, int idMaterial);
+void removeBorrowedMaterial(Person *person, int idMater);
 
 #endif //TPCUAT_GRUPO11_PERSON_H

@@ -54,36 +54,29 @@ struct Library{
 Library* newLibrary();
 void freeLibrary(Library* library);
 
-void growPerson(Library* library);
 int addPerson(Library* library, Person* person);
 void removePerson(Library* library, int idPerson);
 Person* getPersonById(Library* library, int idPerson);
 Person* getPersonByUsername(Library* library, char* username);
 
-void growTeacher(Library* library);
 int addTeacher(Library* library, Teacher* teacher);
 Teacher* getTeacher(Library* library, int idPerson);
 Teacher* getTeacherById(Library* library, int idTeacher);
 
-void growStudent(Library* library);
 int addStudent(Library* library, Student* student);
 Student* getStudent(Library* library, int idPerson);
 Student* getStudentById(Library* library, int idStudent);
 
-void growMaterial(Library* library);
 int addMaterial(Library* library, Material* material);
 void removeMaterial(Library* library, int idMaterial);
 Material* getMaterial(Library* library, int idMaterial);
 
-void growMagazine(Library* library);
 int addMagazine(Library* library, Magazine* magazine);
 Magazine* getMagazine(Library* library, int idMaterial);
 
-void growBook(Library* library);
 int addBook(Library* library, Book* book);
 Book* getBook(Library* library, int idMaterial);
 
-void growBorrow(Library* library);
 int addBorrow(Library* library, Borrow* borrow);
 Borrow* getBorrow(Library* library, int idBorrow);
 void removeBorrow(Library* library, int idBorrow);
