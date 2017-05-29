@@ -6,195 +6,209 @@ BlockbusterDatabase* blockbusterDatabase(int initialCapacity){
 
     blockbusterDatabase->income = 0;
 
-    blockbusterDatabase->clientList = createStaticList(initialCapacity);
-    blockbusterDatabase->adminList = createStaticList(initialCapacity);
-    blockbusterDatabase->movieList = createStaticList(initialCapacity);
-    blockbusterDatabase->rentList = createStaticList(initialCapacity);
+    blockbusterDatabase->clients = malloc(sizeof(Client*)*initialCapacity);
+    blockbusterDatabase->admins = malloc(sizeof(Admin*)*initialCapacity);
+    blockbusterDatabase->movies = malloc(sizeof(Movie*)*initialCapacity);
+    blockbusterDatabase->rents = malloc(sizeof(Rent*)*initialCapacity);
+
+    blockbusterDatabase->clientMaxCapacity = initialCapacity;
+    blockbusterDatabase->adminMaxCapacity = initialCapacity;
+    blockbusterDatabase->movieMaxCapacity = initialCapacity;
+    blockbusterDatabase->rentMaxCapacity = initialCapacity;
+
+    blockbusterDatabase->amountOfClients = 0;
+    blockbusterDatabase->amountOfAdmins = 0;
+    blockbusterDatabase->amountOfMovies = 0;
+    blockbusterDatabase->amountOfRents = 0;
 
     blockbusterDatabase->movieIdGenerator = 1;
     blockbusterDatabase->rentIdGenerator = 1;
 
     return blockbusterDatabase;
 }
+
 void destroyBlockbusterDatabase(BlockbusterDatabase* blockbusterDatabase){
-    StaticList* list = blockbusterDatabase->clientList;
-    for(int i = 0; i < list->size; i++){
-        goTo(list, i);
-        destroyClient ((Client*) getActual(list));
+    for(int i = 0; i < blockbusterDatabase->amountOfClients; i++){
+        destroyClient (blockbusterDatabase->clients[i]);
     }
-    freeStaticList(list);
-
-    list = blockbusterDatabase->adminList;
-    for(int i = 0; i < list->size; i++){
-        goTo(list, i);
-        destroyAdmin ((Admin*) getActual(list));
+    free(blockbusterDatabase->clients);
+    for(int i = 0; i < blockbusterDatabase->amountOfAdmins; i++){
+        destroyAdmin (blockbusterDatabase->admins[i]);
     }
-    freeStaticList(list);
-
-    list = blockbusterDatabase->movieList;
-    for(int i = 0; i < list->size; i++){
-        goTo(list, i);
-        destroyMovie ((Movie*) getActual(list));
+    free(blockbusterDatabase->admins);
+    for(int i = 0; i < blockbusterDatabase->amountOfMovies; i++){
+        destroyMovie (blockbusterDatabase->movies[i]);
     }
-    freeStaticList(list);
-
-    list = blockbusterDatabase->rentList;
-    for(int i = 0; i < list->size; i++){
-        goTo(list, i);
-        destroyRent ((Rent*) getActual(list));
+    free(blockbusterDatabase->movies);
+    for(int i = 0; i < blockbusterDatabase->amountOfRents; i++){
+        destroyRent (blockbusterDatabase->rents[i]);
     }
-    freeStaticList(list);
-
+    free(blockbusterDatabase->rents);
     free(blockbusterDatabase);
 }
 
+static void growClients(BlockbusterDatabase* blockbusterDatabase){
+    blockbusterDatabase->clients = realloc(blockbusterDatabase->clients, sizeof(Client*) * blockbusterDatabase->clientMaxCapacity*2);
+    blockbusterDatabase->clientMaxCapacity *= 2;
+}
+
+static void growAdmins(BlockbusterDatabase* blockbusterDatabase){
+    blockbusterDatabase->admins = realloc(blockbusterDatabase->admins, sizeof(Admin*) * blockbusterDatabase->adminMaxCapacity*2);
+    blockbusterDatabase->adminMaxCapacity *= 2;
+}
+
+static void growMovies(BlockbusterDatabase* blockbusterDatabase){
+    blockbusterDatabase->movies = realloc(blockbusterDatabase->movies, sizeof(Movie*) * blockbusterDatabase->movieMaxCapacity*2);
+    blockbusterDatabase->movieMaxCapacity *= 2;
+}
+
+static void growRents(BlockbusterDatabase* blockbusterDatabase){
+    blockbusterDatabase->rents = realloc(blockbusterDatabase->rents, sizeof(Rent*) * blockbusterDatabase->rentMaxCapacity*2);
+    blockbusterDatabase->rentMaxCapacity *= 2;
+}
+
 int addClient(BlockbusterDatabase* blockbusterDatabase, Client* client){
-    if(getClient(blockbusterDatabase, client->dni) == NULL)
+    if(getClient(blockbusterDatabase, client->dni) != NULL)
         return 0;
-    goLast(blockbusterDatabase->clientList);
-    addNext(blockbusterDatabase->clientList, (int) client);
+    if(blockbusterDatabase->amountOfClients == blockbusterDatabase->clientMaxCapacity){
+        growClients(blockbusterDatabase);
+    }
+    blockbusterDatabase->clients[blockbusterDatabase->amountOfClients] = client;
+    blockbusterDatabase->amountOfClients++;
     return 1;
-}
-void removeClient(BlockbusterDatabase* blockbusterDatabase, int dni){
-    for(int i = 0; i < blockbusterDatabase->clientList->size; i++){
-        goTo(blockbusterDatabase->clientList, i);
-        Client* client = (Client*) getActual(blockbusterDatabase->clientList);
-        if(client->dni == dni){
-
-            for(int k = 0; i < client->activeRents->size; k++){
-                goTo(client->activeRents, k);
-                Movie* movie = getMovie(blockbusterDatabase, getRent(blockbusterDatabase ,getActual(client->activeRents))->idMovie);
-                movie->isTaken = 0;
-            }
-
-            for(int j = 0; i < blockbusterDatabase->rentList->size; j++){
-                goTo(blockbusterDatabase->rentList, j);
-                Rent* rent = (Rent*) getActual(blockbusterDatabase->rentList);
-                if(rent->dni == dni){
-                    destroyRent(rent);
-                    removeS(blockbusterDatabase->rentList);
-                    free(rent);
-                }
-            }
-
-            destroyClient(client);
-            removeS(blockbusterDatabase->clientList);
-            free(client);
-            return;
-        }
-    }
-}
-Client* getClient(BlockbusterDatabase* blockbusterDatabase, int dni){
-    for(int i = 0; i < blockbusterDatabase->clientList->size; i++){
-        goTo(blockbusterDatabase->clientList, i);
-        Client* client = (Client*) getActual(blockbusterDatabase->clientList);
-        if(client->dni == dni){
-            return client;
-        }
-    }
-    return NULL;
 }
 
 int addAdmin(BlockbusterDatabase* blockbusterDatabase, Admin* admin){
-    if(getAdmin(blockbusterDatabase, admin->dni) == NULL)
+    if(getAdmin(blockbusterDatabase, admin->dni) != NULL)
         return 0;
-    goLast(blockbusterDatabase->adminList);
-    addNext(blockbusterDatabase->adminList, (int) admin);
+    if(blockbusterDatabase->amountOfAdmins == blockbusterDatabase->adminMaxCapacity){
+        growAdmins(blockbusterDatabase);
+    }
+    blockbusterDatabase->admins[blockbusterDatabase->amountOfAdmins] = admin;
+    blockbusterDatabase->amountOfAdmins++;
     return 1;
-}
-void removeAdmin(BlockbusterDatabase* blockbusterDatabase, int dni){
-    for(int i = 0; i < blockbusterDatabase->adminList->size; i++){
-        goTo(blockbusterDatabase->adminList, i);
-        Admin* admin = (Admin*) getActual(blockbusterDatabase->adminList);
-        if(admin->dni == dni){
-            destroyAdmin(admin);
-            removeS(blockbusterDatabase->adminList);
-            free(admin);
-            return;
-        }
-    }
-}
-Admin* getAdmin(BlockbusterDatabase* blockbusterDatabase, int dni){
-    for(int i = 0; i < blockbusterDatabase->adminList->size; i++){
-        goTo(blockbusterDatabase->adminList, i);
-        Admin* admin = (Admin*) getActual(blockbusterDatabase->adminList);
-        if(admin->dni == dni){
-            return admin;
-        }
-    }
-    return NULL;
 }
 
 int addMovie(BlockbusterDatabase* blockbusterDatabase, Movie* movie){
-    if(getMovie(blockbusterDatabase, movie->idMovie) == NULL)
+    if(getMovie(blockbusterDatabase, movie->idMovie) != NULL)
         return 0;
-    goLast(blockbusterDatabase->movieList);
-    addNext(blockbusterDatabase->movieList, (int) movie);
+    if(blockbusterDatabase->amountOfMovies == blockbusterDatabase->movieMaxCapacity){
+        growMovies(blockbusterDatabase);
+    }
+    blockbusterDatabase->movies[blockbusterDatabase->amountOfMovies] = movie;
+    blockbusterDatabase->amountOfMovies++;
     return 1;
 }
-void removeMovie(BlockbusterDatabase* blockbusterDatabase, int idMovie){
-    for(int i = 0; i < blockbusterDatabase->movieList->size; i++){
-        goTo(blockbusterDatabase->movieList, i);
-        Movie* movie = (Movie*) getActual(blockbusterDatabase->movieList);
-        if(movie->idMovie == idMovie){
-            for(int j = 0; i < blockbusterDatabase->rentList->size; j++){
-                goTo(blockbusterDatabase->rentList, j);
-                Rent* rent = (Rent*) getActual(blockbusterDatabase->rentList);
-                if(rent->idMovie == idMovie){
-                    removeRent(blockbusterDatabase, rent->idRent);
-                    destroyRent(rent);
-                    removeS(blockbusterDatabase->rentList);
-                    free(rent);
+
+int addRent(BlockbusterDatabase* blockbusterDatabase, Rent* rent){
+    if(getRent(blockbusterDatabase, rent->idRent) != NULL)
+        return 0;
+    if(blockbusterDatabase->amountOfRents == blockbusterDatabase->rentMaxCapacity){
+        growRents(blockbusterDatabase);
+    }
+    blockbusterDatabase->rents[blockbusterDatabase->amountOfRents] = rent;
+    blockbusterDatabase->amountOfRents++;
+    return 1;
+}
+
+void removeClient(BlockbusterDatabase* blockbusterDatabase, int dni){
+    for(int i = 0; i < blockbusterDatabase->amountOfClients; i++){
+        if(blockbusterDatabase->clients[i]->dni == dni){
+
+            for(int k = 0; k < blockbusterDatabase->clients[i]->activeRents->size; k++){
+                goTo(blockbusterDatabase->clients[i]->activeRents, k);
+                getMovie(blockbusterDatabase,
+                         getRent(blockbusterDatabase, getActual(blockbusterDatabase->clients[i]->activeRents))->idMovie)->isTaken = 0;
+            }
+
+            for(int j = 0; j < blockbusterDatabase->amountOfRents; j++){
+                if(blockbusterDatabase->rents[j]->dni == dni){
+                    removeRent(blockbusterDatabase, blockbusterDatabase->rents[j]->idRent);
                 }
             }
-            destroyMovie(movie);
-            removeS(blockbusterDatabase->movieList);
-            free(movie);
-            return;
+            destroyClient(blockbusterDatabase->clients[i]);
+            for(; i < blockbusterDatabase->amountOfClients - 1; i++){
+                blockbusterDatabase->clients[i] = blockbusterDatabase->clients[i+1];
+            }
+            blockbusterDatabase->amountOfClients--;
+            break;
         }
     }
 }
-Movie* getMovie(BlockbusterDatabase* blockbusterDatabase, int idMovie){
-    for(int i = 0; i < blockbusterDatabase->movieList->size; i++){
-        goTo(blockbusterDatabase->movieList, i);
-        Movie* movie = (Movie*) getActual(blockbusterDatabase->movieList);
-        if(movie->idMovie == idMovie){
-            return movie;
+
+void removeAdmin(BlockbusterDatabase* blockbusterDatabase, int dni){
+    for(int i = 0; i < blockbusterDatabase->amountOfAdmins; i++){
+        if(blockbusterDatabase->admins[i]->dni == dni){
+            destroyAdmin(blockbusterDatabase->admins[i]);
+            for(; i < blockbusterDatabase->amountOfAdmins - 1; i++){
+                blockbusterDatabase->admins[i] = blockbusterDatabase->admins[i+1];
+            }
+            blockbusterDatabase->amountOfAdmins--;
+            break;
         }
+    }
+}
+
+void removeMovie(BlockbusterDatabase* blockbusterDatabase, int idMovie){
+    for(int i = 0; i < blockbusterDatabase->amountOfMovies; i++){
+        if(blockbusterDatabase->movies[i]->idMovie == idMovie){
+            for(int j = 0; i < blockbusterDatabase->amountOfRents; j++){
+                if(blockbusterDatabase->rents[j]->idMovie == idMovie){
+                    removeRent(blockbusterDatabase, blockbusterDatabase->rents[j]->idRent);
+                }
+            }
+            destroyMovie(blockbusterDatabase->movies[i]);
+            for(; i < blockbusterDatabase->amountOfMovies - 1; i++){
+                blockbusterDatabase->movies[i] = blockbusterDatabase->movies[i+1];
+            }
+            blockbusterDatabase->amountOfMovies--;
+            break;
+        }
+    }
+}
+
+
+void removeRent(BlockbusterDatabase* blockbusterDatabase, int dni){
+    for(int i = 0; i < blockbusterDatabase->amountOfRents; i++){
+        if(blockbusterDatabase->rents[i]->dni == dni){
+            destroyRent(blockbusterDatabase->rents[i]);
+            for(int k = 0; k < blockbusterDatabase->amountOfClients; k++){
+                clientRemoveRent(blockbusterDatabase->clients[k], blockbusterDatabase->rents[i]->idRent);
+            }
+            for(; i < blockbusterDatabase->amountOfRents - 1; i++){
+                blockbusterDatabase->rents[i] = blockbusterDatabase->rents[i+1];
+            }
+            blockbusterDatabase->amountOfRents--;
+            break;
+        }
+    }
+}
+
+Client* getClient(BlockbusterDatabase* blockbusterDatabase, int dni){
+    for(int i = 0; i < blockbusterDatabase->amountOfClients; i++) {
+        if (blockbusterDatabase->clients[i]->dni == dni) return blockbusterDatabase->clients[i];
     }
     return NULL;
 }
 
-int addRent(BlockbusterDatabase* blockbusterDatabase, Rent* rent){
-    if(getRent(blockbusterDatabase, rent->idRent) == NULL)
-        return 0;
-    goLast(blockbusterDatabase->rentList);
-    addNext(blockbusterDatabase->rentList, (int) rent);
-    return 1;
-}
-void removeRent(BlockbusterDatabase* blockbusterDatabase, int idRent){
-    for(int i = 0; i < blockbusterDatabase->rentList->size; i++){
-        goTo(blockbusterDatabase->rentList, i);
-        Rent* rent = (Rent*) getActual(blockbusterDatabase->rentList);
-        if(rent->idRent == idRent){
-            for(int k = 0; i < blockbusterDatabase->clientList->size; k++){
-                goTo(blockbusterDatabase->clientList, k);
-                clientRemoveRent((Client*) getActual(blockbusterDatabase->clientList), rent->idRent);
-            }
-            destroyRent(rent);
-            removeS(blockbusterDatabase->rentList);
-            free(rent);
-            return;
-        }
+Admin* getAdmin(BlockbusterDatabase* blockbusterDatabase, int dni){
+    for(int i = 0; i < blockbusterDatabase->amountOfAdmins; i++) {
+        if (blockbusterDatabase->admins[i]->dni == dni) return blockbusterDatabase->admins[i];
     }
+    return NULL;
 }
+
+Movie* getMovie(BlockbusterDatabase* blockbusterDatabase, int idMovie){
+    for(int i = 0; i < blockbusterDatabase->amountOfMovies; i++) {
+        if (blockbusterDatabase->movies[i]->idMovie == idMovie) return blockbusterDatabase->movies[i];
+    }
+    return NULL;
+}
+
+
 Rent* getRent(BlockbusterDatabase* blockbusterDatabase, int idRent){
-    for(int i = 0; i < blockbusterDatabase->rentList->size; i++){
-        goTo(blockbusterDatabase->rentList, i);
-        Rent* rent = (Rent*) getActual(blockbusterDatabase->rentList);
-        if(rent->idRent == idRent){
-            return rent;
-        }
+    for(int i = 0; i < blockbusterDatabase->amountOfRents; i++) {
+        if (blockbusterDatabase->rents[i]->idRent == idRent) return blockbusterDatabase->rents[i];
     }
     return NULL;
 }
@@ -208,12 +222,11 @@ int generateIdRent(BlockbusterDatabase* blockbusterDatabase){
 
 StaticList* getActiveRents(BlockbusterDatabase* blockbusterDatabase){
     StaticList* list = createStaticList(10);
-    for(int i = 0; i < blockbusterDatabase->rentList->size; i++){
-        goTo(blockbusterDatabase->rentList, i);
-        Rent* rent = (Rent*) getActual(blockbusterDatabase->rentList);
-        if(getMovie(blockbusterDatabase, rent->idMovie)->isTaken){
+    for(int i = 0; i < blockbusterDatabase->amountOfRents; i++){
+        if(blockbusterDatabase->rents[i]->completed != 0){
             goLast(list);
-            addNext(list, (int) rent);
+            addNext(list, blockbusterDatabase->rents[i]->idRent);
         }
     }
+    return list;
 }

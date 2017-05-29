@@ -121,7 +121,33 @@ void addApplianceMenu(Database* database, int*** applianceIdArray, int* provider
 }
 
 void removeApplianceMenu(Database* database, int*** applianceIdArray){
-    //TODO
+    if(database->amountOfAppliances > 0){
+        printf("Appliances:\n");
+        for (int i = 0; i < database->amountOfAppliances; i++){
+            Appliance* appliance = getAppliance(**applianceIdArray[i],database);
+            printf("%d.\n%s\nPrice: %d \n", i+1, appliance->name, appliance->price);
+            printf("Manufacturer: %s\nProvider: %s\n\n",
+                   getManufacturer(appliance->idManufacturer, database)->name,
+                   getProvider(appliance->idProvider, database)->name);
+        }
+    }
+    int appliance = 0;
+    while(1){
+        printf("\nInsert number of the appliance to remove:\n");
+        printf("(-1 to exit)\n");
+        appliance = scanInt();
+        if(appliance == -1){
+            return;
+        }
+        if(appliance > 0 && appliance <= database->amountOfAppliances){
+            removeAppliance(**applianceIdArray[appliance-1], database);
+            printf("Appliance removed.\n");
+            **applianceIdArray = getApplianceIdArray(database);
+            return;
+        } else{
+            printf("Please insert a valid number.\n");
+        }
+    }
 }
 
 void appliancesMenu(Database *database, int **applianceIdArray, int* providerIdArray, int* manufacturerIdArray){
