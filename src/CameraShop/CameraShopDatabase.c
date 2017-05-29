@@ -168,7 +168,7 @@ void addCamera(CameraShopDatabase* database, Camera* camera, int providerID, int
     addProduct(database, camera->name, CAMERA, manufacturerID, providerID, price);
     camera->productID = database->idProductGenerator++;
     if(database->cameraAmount == database->cameraCapacity) growCamera(database);
-    database->cameraList[database->cameraCapacity++] = camera;
+    database->cameraList[database->cameraAmount++] = camera;
 }
 void addAccessory(CameraShopDatabase* database, Accessory* accessory, int providerID, int manufacturerID, int price){
     addProduct(database, accessory->name, ACCESSORY, manufacturerID, providerID, price);
@@ -185,6 +185,16 @@ void removeProvider(int idProvider, CameraShopDatabase* database){
             database->providerAmount--;
             for(; i < database->providerAmount; i++){
                 database->providerList[i] = database->providerList[i+1];
+            }
+            StaticList* productIDList = getProductIdList(database);
+            for(int j = 0; j < productIDList->size; j++){
+                goTo(productIDList, i);
+                Product* product = getProduct(getActual(productIDList), database);
+                if(product->providerID == idProvider) {
+                    if (product->productType == CAMERA) {
+                        removeCamera(getActual(productIDList), database);
+                    } else removeAccessory(getActual(productIDList), database);
+                }
             }
             break;
         }
@@ -211,6 +221,16 @@ void removeManufacturer(int idManufacturer, CameraShopDatabase* database){
             database->manufacturerAmount--;
             for(; i < database->manufacturerAmount; i++){
                 database->manufacturerList[i] = database->manufacturerList[i+1];
+            }
+            StaticList* productIDList = getProductIdList(database);
+            for(int j = 0; j < productIDList->size; j++){
+                goTo(productIDList, i);
+                Product* product = getProduct(getActual(productIDList), database);
+                if(product->manufacturerID == idManufacturer) {
+                    if (product->productType == CAMERA) {
+                        removeCamera(getActual(productIDList), database);
+                    } else removeAccessory(getActual(productIDList), database);
+                }
             }
             break;
         }

@@ -26,11 +26,11 @@ void addApplianceToCartMenu(Database* database, Cart* cart, int* applianceIdArra
                getProvider(appliance->idProvider, database)->name);
     }
     int indexInput = scanInt();
-    while (indexInput == 0 || indexInput > database->amountOfAppliances) {
-        printf("Please enter a valid number\n");
+    while (indexInput == 0 || indexInput > database->amountOfAppliances || indexInput < -1) {
+        printf("Please enter a valid number.\n");
         indexInput = scanInt();
     }
-    if(indexInput <= -1) return;
+    if(indexInput == -1) return;
     printf("How many would you like to buy?\n");
     int amount = scanInt();
     while (amount <= 0){
@@ -91,6 +91,7 @@ void clientMenu(Database* database){
             case 3:
                 checkoutDisplay(database, cart);
             case -1:
+                destroyCart(cart);
                 return;
             default:
                 printf("Please enter one of the options\n");

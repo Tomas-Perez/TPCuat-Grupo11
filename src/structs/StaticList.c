@@ -148,7 +148,7 @@ void goLast(StaticList *list){
 
 void goTo(StaticList* list, int positionToGo){
 
-    if(positionToGo > 0 && positionToGo < list->size) list->current = positionToGo;
+    if(positionToGo >= 0 && positionToGo < list->size) list->current = positionToGo;
 }
 
 /*

@@ -248,13 +248,11 @@ void addManufacturerMenu(Database* database, int*** manufacturerIdArray){
     char* name = scanChar();
     printf("Description:\n");
     char* description = scanChar();
-    char* description = scanChar();
     printf("Address:\n");
     char* address = scanChar();
     printf("City:\n");
     char* city = scanChar();
     printf("Web:\n");
-    char* web = scanChar();
     char* web = scanChar();
     printf("Phone:\n");
     int phone = scanInt();

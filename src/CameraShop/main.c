@@ -3,7 +3,7 @@
 #include "CameraShopDatabase.h"
 #include "../Util/ScanUtil.h"
 
-void adminMenu(CameraShopDatabase* database, User* user);
+void adminMenu(CameraShopDatabase* database);
 void clientMenu(CameraShopDatabase* database, User* user);
 User* loginMenu(CameraShopDatabase* database);
 void registerMenu(CameraShopDatabase* database);
@@ -39,13 +39,6 @@ CameraShopDatabase* setup(){
 
 int main() {
     CameraShopDatabase* cameraShopDatabase = setup();
-    /*
-    StaticList* productIDList = getProductIdList(cameraShopDatabase);
-    for(int i = 0; i < productIDList->size; i++){
-        goTo(productIDList, i);
-        printf("%d", getActual(productIDList));
-    }
-    */
     while(1) {
         printf("Welcome to Nikon Argentina\n");
         printf("1. Log in\n");
@@ -56,7 +49,7 @@ int main() {
             case 1: {
                 User *user = loginMenu(cameraShopDatabase);
                 if(user == NULL) break;
-                else if(user->role == ADMIN) adminMenu(cameraShopDatabase, user);
+                else if(user->role == ADMIN) adminMenu(cameraShopDatabase);
                 else clientMenu(cameraShopDatabase, user);
                 break;
             }
