@@ -21,6 +21,8 @@ User* loginMenu(CameraShopDatabase* database){
 }
 
 void registerMenu(CameraShopDatabase* database){
+    printf("Please enter you DNI");
+    int DNI = scanInt();
     printf("Please enter your city\n");
     char* city = scanChar();
     printf("Please enter your address\n");
@@ -30,7 +32,7 @@ void registerMenu(CameraShopDatabase* database){
     enterUsername:
     printf("Please enter your username\n");
     char *name = scanChar();
-    User *user = newUser(name, address, city, phone, CLIENT);
+    User *user = newUser(name, DNI, address, city, phone, CLIENT);
     if (addUser(database, user)) {
         printf("You have registered successfully\n");
     } else {

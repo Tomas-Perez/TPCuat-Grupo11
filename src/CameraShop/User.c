@@ -2,8 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-User* newUser(char* name, char* address, char* city, int phoneNumber, UserRole role){
+User* newUser(char* name, int DNI, char* address, char* city, int phoneNumber, UserRole role){
     User* result = malloc(sizeof(User));
+    result->DNI = DNI;
     result->name = malloc(sizeof(char)*(strlen(name)+1));
     strcpy(result->name, name);
     result->address = malloc(sizeof(char)*(strlen(address)+1));
@@ -13,6 +14,7 @@ User* newUser(char* name, char* address, char* city, int phoneNumber, UserRole r
     result->phoneNumber = phoneNumber;
     result->role = role;
     result->invoiceList = createStaticList(5);
+    result->invoideIDGen = 0;
     return result;
 }
 

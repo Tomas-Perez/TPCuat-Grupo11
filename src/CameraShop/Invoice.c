@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include "Invoice.h"
 
+
 Invoice* newInvoice(int total, StaticList* invoiceLineList){
     Invoice* invoice = malloc(sizeof(Invoice));
     invoice->total = total;

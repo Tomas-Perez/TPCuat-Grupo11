@@ -4,6 +4,8 @@
 #include "CartLine.h"
 #include "../structs/StaticList.h"
 #include "CameraShopDatabase.h"
+#include "Invoice.h"
+#include "InvoiceLine.h"
 
 typedef struct Cart{
     StaticList* cartLineList;

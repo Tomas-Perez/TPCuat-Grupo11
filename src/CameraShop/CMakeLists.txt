@@ -1,4 +1,6 @@
-set(cameraShop_SRCS Cart.c CartLine.c Manufacturer.c Provider.c CameraShopDatabase.c Product.c Camera.c Accessory.c User.c CameraAdminMenu.c CameraClientMenu.c LoginMenu.c)
+set(cameraShop_SRCS Cart.c CartLine.c Manufacturer.c Provider.c CameraShopDatabase.c Product.c Camera.c Accessory.c User.c CameraAdminMenu.c CameraClientMenu.c LoginMenu.c Invoice.c InvoiceLine.c)
 add_library(cameraShop ${cameraShop_SRCS})
 add_executable(cameraShopEXE main.c)
-target_link_libraries(cameraShopEXE cameraShop util structs)
+target_link_libraries(cameraShopEXE cameraShop)
+target_link_libraries(cameraShopEXE util)
+target_link_libraries(cameraShopEXE structs)

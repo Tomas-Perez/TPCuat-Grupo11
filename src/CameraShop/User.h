@@ -18,8 +18,7 @@ typedef struct User{
     int invoideIDGen;
 }User;
 
-User* newUser(char* name, char* address,
-                      char* city, int phoneNumber, UserRole role);
+User* newUser(char* name, int DNI, char* address, char* city, int phoneNumber, UserRole role);
 void destroyUser(User* user);
 void addInvoice(User* user, Invoice* invoice);
 

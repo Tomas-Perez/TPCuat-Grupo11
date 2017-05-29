@@ -7,7 +7,7 @@ typedef struct Accessory{
     char* comment;
 }Accessory;
 
-Accessory* createAccessory(char* name, char* comment);
+Accessory* newAccessory(char *name, char *comment);
 void destroyAccessory(Accessory* accessory);
 
 #endif //TPCUAT_GRUPO11_ACCESSORY_H

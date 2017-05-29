@@ -2,7 +2,7 @@
 #define TPCUAT_GRUPO11_INVOICE_H
 
 #include "InvoiceLine.h"
-#include "Cart.h"
+#include "../structs/StaticList.h"
 
 typedef struct Invoice{
     int invoiceID;
