@@ -174,13 +174,13 @@ void removeMovie(BlockbusterDatabase* blockbusterDatabase, int idMovie){
 void removeRent(BlockbusterDatabase* blockbusterDatabase, int idRent){
     for(int i = 0; i < blockbusterDatabase->amountOfRents; i++){
         if(blockbusterDatabase->rents[i]->idRent == idRent){
-            destroyRent(blockbusterDatabase->rents[i]);
             for(int k = 0; k < blockbusterDatabase->amountOfClients; k++){
-                clientRemoveRent(blockbusterDatabase->clients[k], blockbusterDatabase->rents[i]->idRent);
+                clientRemoveRent(blockbusterDatabase->clients[k], idRent);
             }
             for(; i < blockbusterDatabase->amountOfRents - 1; i++){
                 blockbusterDatabase->rents[i] = blockbusterDatabase->rents[i+1];
             }
+            destroyRent(blockbusterDatabase->rents[i]);
             blockbusterDatabase->amountOfRents--;
             break;
         }
