@@ -69,5 +69,7 @@ void removeUser(int idUser, CameraShopDatabase* database);
 StaticList* getProviderIdList(CameraShopDatabase* database);
 StaticList* getManufacturerIdList(CameraShopDatabase* database);
 StaticList* getProductIdList(CameraShopDatabase* database);
+StaticList* getCameraIdList(CameraShopDatabase* database);
+StaticList* getAccessoryIdList(CameraShopDatabase* database);
 
 #endif //TPCUAT_GRUPO11_CAMERASHOPDATABASE_H

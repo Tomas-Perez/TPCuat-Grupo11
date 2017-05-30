@@ -5,6 +5,7 @@
 
 
 void checkProducts(CameraShopDatabase* database, StaticList* productIDList);
+void checkProductDetails(CameraShopDatabase* database, int productID);
 
 void checkManufacturers(CameraShopDatabase* database, StaticList* manufacturerIDList){
     if(database->manufacturerAmount > 0){
@@ -299,12 +300,38 @@ void removeProductMenu(CameraShopDatabase* database){
     } else printf("There are no available products.\n");
 }
 
+void addAccessoryToCamera(CameraShopDatabase* database){
+    printf("Select a camera.\n");
+    StaticList* cameraIDList = getCameraIdList(database);
+    checkProducts(database, cameraIDList);
+    int indexInput = scanInt();
+    while (indexInput <= 0 || indexInput > cameraIDList->size) {
+        printf("Please enter a valid number.\n");
+        indexInput = scanInt();
+    }
+    printf("You chose:\n");
+    goTo(cameraIDList, indexInput - 1);
+    checkProductDetails(database, getActual(cameraIDList));
+    printf("Select an accessory to add.\n");
+    StaticList* accessoryIDList = getAccessoryIdList(database);
+    checkProducts(database, accessoryIDList);
+    int accessoryInput = scanInt();
+    while (accessoryInput <= 0 || accessoryInput > accessoryIDList->size) {
+        printf("Please enter a valid number.\n");
+        accessoryInput = scanInt();
+    }
+    goTo(accessoryIDList, accessoryInput - 1);
+    addCameraAccessory(getCamera(getActual(cameraIDList), database), getActual(accessoryIDList));
+    printf("Accessory successfully added.\n");
+}
+
 void productMenu(CameraShopDatabase* database){
     while(1) {
         printf("Product Menu\n");
         printf("1. Check Products\n");
         printf("2. Add Product\n");
-        printf("3. Remove Product\n");
+        printf("3. Add Accessory to Camera\n");
+        printf("4. Remove Product\n");
         printf("0. Exit\n");
         int choice = scanInt();
         switch (choice) {
@@ -316,6 +343,9 @@ void productMenu(CameraShopDatabase* database){
                 addProductMenu(database);
                 break;
             case 3:
+                addAccessoryToCamera(database);
+                break;
+            case 4:
                 removeProductMenu(database);
                 break;
             case 0:

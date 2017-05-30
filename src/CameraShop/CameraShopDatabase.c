@@ -399,6 +399,36 @@ StaticList* getProductIdList(CameraShopDatabase* database){
 }
 
 /*
+ * Function: getCameraIDList
+ * Description: returns a list with the IDs of all cameras.
+ * Returns: StaticList pointer
+ */
+
+StaticList* getCameraIdList(CameraShopDatabase* database){
+    StaticList* result = createStaticList(database->cameraAmount);
+    for(int i = 0; i < database->cameraAmount; i++){
+        Camera* camera = database->cameraList[i];
+        addNext(result, camera->productID);
+    }
+    return result;
+}
+
+/*
+ * Function: getAccessoryIDList
+ * Description: returns a list with the IDs of all accessories.
+ * Returns: StaticList pointer
+ */
+
+StaticList* getAccessoryIdList(CameraShopDatabase* database){
+    StaticList* result = createStaticList(database->accessoryAmount);
+    for(int i = 0; i < database->accessoryAmount; i++){
+        Accessory* accessory = database->accessoryList[i];
+        addNext(result, accessory->productID);
+    }
+    return result;
+}
+
+/*
  * Function: getManufacturerIDList
  * Description: returns a list with the IDs of all manufacturers.
  * Returns: StaticList pointer
