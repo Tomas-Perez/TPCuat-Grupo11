@@ -31,7 +31,7 @@ void checkManufacturers(CameraShopDatabase* database, StaticList* manufacturerID
             printf("-----------------\n\n");
             freeStaticList(productIDList);
         }
-    }
+    } else printf("There are no available manufacturers.\n");
 }
 
 void addManufacturerMenu(CameraShopDatabase* database){
@@ -58,17 +58,19 @@ void addManufacturerMenu(CameraShopDatabase* database){
 }
 
 void removeManufacturerMenu(CameraShopDatabase* database){
-    StaticList* manufacturerIDList = getManufacturerIdList(database);
-    checkManufacturers(database, manufacturerIDList);
-    printf("Choose manufacturer to remove.\n");
-    int manufacturerChoice = scanInt();
-    while(manufacturerChoice < 0 || manufacturerChoice > manufacturerIDList->size){
-        printf("Please enter a valid number.\n");
-        manufacturerChoice = scanInt();
-    }
-    goTo(manufacturerIDList, manufacturerChoice - 1);
-    removeManufacturer(getActual(manufacturerIDList), database);
-    freeStaticList(manufacturerIDList);
+    if(database->manufacturerAmount > 0) {
+        StaticList *manufacturerIDList = getManufacturerIdList(database);
+        checkManufacturers(database, manufacturerIDList);
+        printf("Choose manufacturer to remove.\n");
+        int manufacturerChoice = scanInt();
+        while (manufacturerChoice < 0 || manufacturerChoice > manufacturerIDList->size) {
+            printf("Please enter a valid number.\n");
+            manufacturerChoice = scanInt();
+        }
+        goTo(manufacturerIDList, manufacturerChoice - 1);
+        removeManufacturer(getActual(manufacturerIDList), database);
+        freeStaticList(manufacturerIDList);
+    } else printf("There are no available manufacturers.\n");
 }
 
 void manufacturerMenu(CameraShopDatabase* database){
@@ -123,7 +125,7 @@ void checkProviders(CameraShopDatabase* database, StaticList* providerIDList){
             printf("-----------------\n\n");
             freeStaticList(productIDList);
         }
-    }
+    } else printf("There are no available providers.\n");
 }
 
 void addProviderMenu(CameraShopDatabase* database){
@@ -150,17 +152,19 @@ void addProviderMenu(CameraShopDatabase* database){
 }
 
 void removeProviderMenu(CameraShopDatabase* database){
-    StaticList* providerIDList = getProviderIdList(database);
-    checkProviders(database, providerIDList);
-    printf("Choose provider to remove.\n");
-    int providerChoice = scanInt();
-    while(providerChoice < 0 || providerChoice > providerIDList->size){
-        printf("Please enter a valid number.\n");
-        providerChoice = scanInt();
-    }
-    goTo(providerIDList, providerChoice - 1);
-    removeProvider(getActual(providerIDList), database);
-    freeStaticList(providerIDList);
+    if(database->providerAmount > 0) {
+        StaticList *providerIDList = getProviderIdList(database);
+        checkProviders(database, providerIDList);
+        printf("Choose provider to remove.\n");
+        int providerChoice = scanInt();
+        while (providerChoice < 0 || providerChoice > providerIDList->size) {
+            printf("Please enter a valid number.\n");
+            providerChoice = scanInt();
+        }
+        goTo(providerIDList, providerChoice - 1);
+        removeProvider(getActual(providerIDList), database);
+        freeStaticList(providerIDList);
+    } else printf("There are no available providers.\n");
 }
 
 void providerMenu(CameraShopDatabase* database){
@@ -277,20 +281,22 @@ void addProductMenu(CameraShopDatabase* database){
 }
 
 void removeProductMenu(CameraShopDatabase* database){
-    StaticList* productIDList = getProductIdList(database);
-    checkProducts(database, productIDList);
-    printf("Choose product to remove.\n");
-    int productChoice = scanInt();
-    while(productChoice < 0 || productChoice > productIDList->size){
-        printf("Please enter a valid number.\n");
-        productChoice = scanInt();
-    }
-    goTo(productIDList, productChoice - 1);
-    int productID = getActual(productIDList);
-    if(getProduct(productID, database)->productType == CAMERA){
-        removeCamera(productID, database);
-    } else removeAccessory(productID, database);
-    freeStaticList(productIDList);
+    if(database->productAmount > 0) {
+        StaticList *productIDList = getProductIdList(database);
+        checkProducts(database, productIDList);
+        printf("Choose product to remove.\n");
+        int productChoice = scanInt();
+        while (productChoice <= 0 || productChoice > productIDList->size) {
+            printf("Please enter a valid number.\n");
+            productChoice = scanInt();
+        }
+        goTo(productIDList, productChoice - 1);
+        int productID = getActual(productIDList);
+        if (getProduct(productID, database)->productType == CAMERA) {
+            removeCamera(productID, database);
+        } else removeAccessory(productID, database);
+        freeStaticList(productIDList);
+    } else printf("There are no available products.\n");
 }
 
 void productMenu(CameraShopDatabase* database){

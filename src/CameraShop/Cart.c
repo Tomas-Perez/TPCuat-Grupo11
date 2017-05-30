@@ -49,7 +49,8 @@ void cartRemoveProduct(Cart* cart, int productID, int amount){
         line->amount -= amount;
         if(line->amount <= 0){
             destroyCartLine(line);
-            for(int i = lineIndex; i < cart->amountOfLines - 1; i++){
+            cart->amountOfLines--;
+            for(int i = lineIndex; i < cart->amountOfLines; i++){
                 cart->cartLines[i] = cart->cartLines[i+1];
             }
         }
@@ -76,4 +77,3 @@ Invoice* checkout(Cart* cart, CameraShopDatabase* database){
     }
     return newInvoice(cartGetTotal(cart, database), invoiceLines, cart->amountOfLines);
 }
-

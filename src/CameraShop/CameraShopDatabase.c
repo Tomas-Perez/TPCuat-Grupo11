@@ -257,6 +257,7 @@ void removeAccessory(int idProduct, CameraShopDatabase* database){
         if(accessory->productID == idProduct){
             destroyAccessory(accessory);
             database->accessoryAmount--;
+            removeProduct(database, idProduct);
             for(; i < database->accessoryAmount; i++){
                 database->accessoryList[i] = database->accessoryList[i+1];
             }
