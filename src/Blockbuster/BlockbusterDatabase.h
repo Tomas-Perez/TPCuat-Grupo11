@@ -11,6 +11,7 @@ typedef struct BlockbusterDatabase BlockbusterDatabase;
 
 struct BlockbusterDatabase{
     int income;
+    int rentCost;
 
     Client** clients;
     int clientMaxCapacity;
@@ -29,7 +30,7 @@ struct BlockbusterDatabase{
     int rentIdGenerator;
 };
 
-BlockbusterDatabase* blockbusterDatabase(int initialCapacity);
+BlockbusterDatabase* newBlockbusterDatabase(int initialCapacity, int rentCost);
 void destroyBlockbusterDatabase(BlockbusterDatabase* blockbusterDatabase);
 
 int addClient(BlockbusterDatabase* blockbusterDatabase, Client* client);
@@ -43,6 +44,7 @@ Admin* getAdmin(BlockbusterDatabase* blockbusterDatabase, int dni);
 int addMovie(BlockbusterDatabase* blockbusterDatabase, Movie* movie);
 void removeMovie(BlockbusterDatabase* blockbusterDatabase, int idMovie);
 Movie* getMovie(BlockbusterDatabase* blockbusterDatabase, int idMovie);
+Movie* getMovieByName(BlockbusterDatabase* blockbusterDatabase, char* name);
 
 int addRent(BlockbusterDatabase* blockbusterDatabase, Rent* rent);
 void removeRent(BlockbusterDatabase* blockbusterDatabase, int idRent);

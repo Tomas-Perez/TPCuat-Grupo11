@@ -4,7 +4,6 @@
 #include "../Util/ScanUtil.h"
 
 void adminMenu(BlockbusterDatabase* database);
-
 void accountCreationMenu(BlockbusterDatabase* database){
     printf("\n-- New Account --\n");
     printf("(-1 to cancel)\n\n");
