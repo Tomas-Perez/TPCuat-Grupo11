@@ -1,5 +1,6 @@
 #include <malloc.h>
 #include <memory.h>
+#include <stdio.h>
 #include "Client.h"
 
 
@@ -31,12 +32,11 @@ int clientAddRent(Client* client, int idRent){
     return 1;
 }
 void clientRemoveRent(Client* client, int idRent){
-    StaticList* list = client->activeRents;
-    for(int i = 0; i < list->size; i++){
-        goTo(list, i);
-        if(getActual(list) == idRent){
-            removeS(list);
-            break;
+    for(int i = 0; i < client->activeRents->size; i++){
+        goTo(client->activeRents, i);
+        if(getActual(client->activeRents) == idRent){
+            removeS(client->activeRents);
+            return;
         }
     }
 }

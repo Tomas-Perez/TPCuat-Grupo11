@@ -1,10 +1,12 @@
 #include <malloc.h>
+#include <memory.h>
 #include "BlockbusterDatabase.h"
 
-BlockbusterDatabase* blockbusterDatabase(int initialCapacity){
+BlockbusterDatabase* newBlockbusterDatabase(int initialCapacity, int rentCost){
     BlockbusterDatabase* blockbusterDatabase = malloc(sizeof(BlockbusterDatabase));
 
     blockbusterDatabase->income = 0;
+    blockbusterDatabase->rentCost = rentCost;
 
     blockbusterDatabase->clients = malloc(sizeof(Client*)*initialCapacity);
     blockbusterDatabase->admins = malloc(sizeof(Admin*)*initialCapacity);
@@ -108,6 +110,7 @@ int addRent(BlockbusterDatabase* blockbusterDatabase, Rent* rent){
     }
     blockbusterDatabase->rents[blockbusterDatabase->amountOfRents] = rent;
     blockbusterDatabase->amountOfRents++;
+    blockbusterDatabase->income += blockbusterDatabase->rentCost;
     return 1;
 }
 
@@ -152,7 +155,7 @@ void removeAdmin(BlockbusterDatabase* blockbusterDatabase, int dni){
 void removeMovie(BlockbusterDatabase* blockbusterDatabase, int idMovie){
     for(int i = 0; i < blockbusterDatabase->amountOfMovies; i++){
         if(blockbusterDatabase->movies[i]->idMovie == idMovie){
-            for(int j = 0; i < blockbusterDatabase->amountOfRents; j++){
+            for(int j = 0; j < blockbusterDatabase->amountOfRents; j++){
                 if(blockbusterDatabase->rents[j]->idMovie == idMovie){
                     removeRent(blockbusterDatabase, blockbusterDatabase->rents[j]->idRent);
                 }
@@ -168,9 +171,9 @@ void removeMovie(BlockbusterDatabase* blockbusterDatabase, int idMovie){
 }
 
 
-void removeRent(BlockbusterDatabase* blockbusterDatabase, int dni){
+void removeRent(BlockbusterDatabase* blockbusterDatabase, int idRent){
     for(int i = 0; i < blockbusterDatabase->amountOfRents; i++){
-        if(blockbusterDatabase->rents[i]->dni == dni){
+        if(blockbusterDatabase->rents[i]->idRent == idRent){
             destroyRent(blockbusterDatabase->rents[i]);
             for(int k = 0; k < blockbusterDatabase->amountOfClients; k++){
                 clientRemoveRent(blockbusterDatabase->clients[k], blockbusterDatabase->rents[i]->idRent);
@@ -205,6 +208,12 @@ Movie* getMovie(BlockbusterDatabase* blockbusterDatabase, int idMovie){
     return NULL;
 }
 
+Movie* getMovieByName(BlockbusterDatabase* blockbusterDatabase, char* name){
+    for(int i = 0; i < blockbusterDatabase->amountOfMovies; i++) {
+        if (strcmp(blockbusterDatabase->movies[i]->name, name) == 0) return blockbusterDatabase->movies[i];
+    }
+    return NULL;
+}
 
 Rent* getRent(BlockbusterDatabase* blockbusterDatabase, int idRent){
     for(int i = 0; i < blockbusterDatabase->amountOfRents; i++) {
