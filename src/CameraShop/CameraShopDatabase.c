@@ -188,7 +188,7 @@ void removeProvider(int idProvider, CameraShopDatabase* database){
             }
             StaticList* productIDList = getProductIdList(database);
             for(int j = 0; j < productIDList->size; j++){
-                goTo(productIDList, i);
+                goTo(productIDList, j);
                 Product* product = getProduct(getActual(productIDList), database);
                 if(product->providerID == idProvider) {
                     if (product->productType == CAMERA) {
@@ -224,7 +224,7 @@ void removeManufacturer(int idManufacturer, CameraShopDatabase* database){
             }
             StaticList* productIDList = getProductIdList(database);
             for(int j = 0; j < productIDList->size; j++){
-                goTo(productIDList, i);
+                goTo(productIDList, j);
                 Product* product = getProduct(getActual(productIDList), database);
                 if(product->manufacturerID == idManufacturer) {
                     if (product->productType == CAMERA) {
@@ -260,8 +260,8 @@ void removeAccessory(int idProduct, CameraShopDatabase* database){
             for(; i < database->accessoryAmount; i++){
                 database->accessoryList[i] = database->accessoryList[i+1];
             }
-            for(int j = 0; j < database->cameraAmount; i++){
-                Camera* camera = database->cameraList[i];
+            for(int j = 0; j < database->cameraAmount; j++){
+                Camera* camera = database->cameraList[j];
                 removeCameraAccessory(camera, idProduct);
             }
             break;

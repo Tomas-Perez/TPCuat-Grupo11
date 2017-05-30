@@ -22,8 +22,16 @@ static void growCart(Cart* cart){
     cart->cartLines = realloc(cart->cartLines, sizeof(CartLine*)*cart->maxCapacity);
 }
 
-void cartAddAppliance(Cart* cart, int productID, int amount){
-    int lineIndex = cartContainsAppliance(cart, productID);
+static int cartContainsProduct(Cart* cart, int productID){
+    for(int i = 0; i < cart->amountOfLines; i++){
+        CartLine* line = cart->cartLines[i];
+        if(line->productID == productID) return i;
+    }
+    return -1;
+}
+
+void cartAddProduct(Cart* cart, int productID, int amount){
+    int lineIndex = cartContainsProduct(cart, productID);
     if(lineIndex == -1) {
         if(cart->amountOfLines == cart->maxCapacity) growCart(cart);
         cart->cartLines[cart->amountOfLines] = newCartLine(productID, amount);
@@ -34,16 +42,8 @@ void cartAddAppliance(Cart* cart, int productID, int amount){
     }
 }
 
-int cartContainsAppliance(Cart* cart, int productID){
-    for(int i = 0; i < cart->amountOfLines; i++){
-        CartLine* line = cart->cartLines[i];
-        if(line->productID == productID) return i;
-    }
-    return -1;
-}
-
-void cartRemoveAppliance(Cart* cart, int productID, int amount){
-    int lineIndex = cartContainsAppliance(cart, productID);
+void cartRemoveProduct(Cart* cart, int productID, int amount){
+    int lineIndex = cartContainsProduct(cart, productID);
     if(lineIndex != -1){
         CartLine* line = cart->cartLines[lineIndex];
         line->amount -= amount;

@@ -156,7 +156,7 @@ void appliancesMenu(Database *database, int **applianceIdArray, int* providerIdA
         printf("1. Check appliances\n");
         printf("2. Add appliance\n");
         printf("3. Remove appliance\n");
-        printf("-1. Exit\n");
+        printf("0. Exit\n");
         int choice = scanInt();
         switch (choice) {
             case 1:
@@ -168,7 +168,7 @@ void appliancesMenu(Database *database, int **applianceIdArray, int* providerIdA
             case 3:
                 removeApplianceMenu(database, &applianceIdArray);
                 break;
-            case -1:
+            case 0:
                 return;
             default:
                 printf("Please enter one of the options\n");
@@ -222,7 +222,7 @@ void providersMenu(Database *database, int **applianceIdArray, int** providerIdA
         printf("1. Check providers\n");
         printf("2. Add provider\n");
         printf("3. Remove provider\n");
-        printf("-1. Exit\n");
+        printf("0. Exit\n");
         int choice = scanInt();
         switch (choice) {
             case 1:
@@ -234,7 +234,7 @@ void providersMenu(Database *database, int **applianceIdArray, int** providerIdA
             case 3:
                 removeProviderMenu(database, &providerIdArray, &applianceIdArray);
                 break;
-            case -1:
+            case 0:
                 return;
             default:
                 printf("Please enter one of the options\n");
@@ -287,7 +287,7 @@ void manufacturersMenu(Database *database, int **applianceIdArray, int** manufac
         printf("1. Check manufacturers\n");
         printf("2. Add manufacturer\n");
         printf("3. Remove manufacturer\n");
-        printf("-1. Exit\n");
+        printf("0. Exit\n");
         int choice = scanInt();
         switch (choice) {
             case 1:
@@ -299,7 +299,7 @@ void manufacturersMenu(Database *database, int **applianceIdArray, int** manufac
             case 3:
                 removeManufacturerMenu(database, &manufacturerIdArray, &applianceIdArray);
                 break;
-            case -1:
+            case 0:
                 return;
             default:
                 printf("Please enter one of the options\n");
@@ -316,7 +316,7 @@ void adminMenu(Database* database){
         printf("1. Appliances\n");
         printf("2. Manufacturers\n");
         printf("3. Providers\n");
-        printf("-1. Exit\n");
+        printf("0. Exit\n");
         int choice = scanInt();
         switch (choice) {
             case 1:
@@ -328,7 +328,7 @@ void adminMenu(Database* database){
             case 3:
                 providersMenu(database, &applianceIdArray, &providerIdArray);
                 break;
-            case -1:
+            case 0:
                 return;
             default:
                 printf("Please enter one of the options\n");

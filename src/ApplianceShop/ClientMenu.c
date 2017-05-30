@@ -79,7 +79,7 @@ void clientMenu(Database* database){
         printf("1. Buy Appliances\n");
         printf("2. Check cart\n");
         printf("3. Checkout\n");
-        printf("-1. Exit\n");
+        printf("0. Exit\n");
         int choice = scanInt();
         switch (choice) {
             case 1:
@@ -90,7 +90,7 @@ void clientMenu(Database* database){
                 break;
             case 3:
                 checkoutDisplay(database, cart);
-            case -1:
+            case 0:
                 destroyCart(cart);
                 return;
             default:

@@ -6,7 +6,7 @@
 
 void checkProductMainInfo(CameraShopDatabase* database, int productID){
     Product* product = getProduct(productID, database);
-    printf("%s (%s)\nPrice: $%d \n", product->name, product->productType == CAMERA ? "Camera" : "Accessory", product->price);
+    printf("%s (%s) $%d\n", product->name, product->productType == CAMERA ? "Camera" : "Accessory", product->price);
     printf("Manufacturer: %s\nProvider: %s\n\n",
            getManufacturer(product->manufacturerID, database)->name,
            getProvider(product->providerID, database)->name);
@@ -61,7 +61,7 @@ void addProductToCartMenu(CameraShopDatabase* database, Cart* cart){
         printf("Please enter a valid number.\n");
         amount = scanInt();
     }
-    cartAddAppliance(cart, getActual(productIDList), amount);
+    cartAddProduct(cart, getActual(productIDList), amount);
     printf("The product has been added to you cart.\n");
     freeStaticList(productIDList);
 }
@@ -73,7 +73,7 @@ void checkCartDisplay(CameraShopDatabase *database, Cart *cart){
         for(int i = 0; i < cart->amountOfLines; i++){
             CartLine* cartLine = cart->cartLines[i];
             Product* product = getProduct(cartLine->productID, database);
-            printf("%s (x%d): $%d\n", product->name, product->price, cartLine->amount);
+            printf("%s $%d (x%d): $%d\n", product->name, product->price, cartLine->amount, product->price * cartLine->amount);
             printf("--------------------\n");
         }
         printf("Total Price: $%d\n\n", cartGetTotal(cart, database));
@@ -86,7 +86,7 @@ void checkCartDisplay(CameraShopDatabase *database, Cart *cart){
 void checkInvoice(Invoice* invoice){
     for (int i = 0; i < invoice->amountOfLines; i++) {
         InvoiceLine* line = invoice->invoiceLines[i];
-        printf("%s (x%d): $%d\n", line->productName, line->amount,
+        printf("%s $%d (x%d): $%d\n", line->productName, line->productPrice , line->amount,
                line->productPrice * line->amount);
         printf("--------------------\n");
     }
@@ -115,35 +115,45 @@ void invoiceDisplay(User* user){
     }
 }
 
+void removeProductFromCartMenu(CameraShopDatabase* database, Cart* cart){
+    checkCartDisplay(database, cart);
+    for(int i = 0; i < cart->amountOfLines; i++){
+
+    }
+}
+
 
 void clientMenu(CameraShopDatabase* database, User* user){
-    Cart* cart = newCart(5);
-    while(1) {
-        printf("Client Menu\n");
-        printf("1. Buy Product\n");
-        printf("2. Check cart\n");
-        printf("3. Checkout\n");
-        printf("4. Check Invoices\n");
-        printf("0. Exit\n");
-        int choice = scanInt();
-        switch (choice) {
-            case 1:
-                addProductToCartMenu(database, cart);
-                break;
-            case 2:
-                checkCartDisplay(database, cart);
-                break;
-            case 3:
-                checkoutDisplay(database, cart, user);
-                destroyCart(cart);
-                return;
-            case 4:
-                invoiceDisplay(user);
-                break;
-            case 0:
-                return;
-            default:
-                printf("Please enter one of the options\n");
+    begin: {
+        Cart *cart = newCart(5);
+        while (1) {
+            printf("Client Menu\n");
+            printf("1. Buy Product\n");
+            printf("2. Check cart\n");
+            printf("3. Checkout\n");
+            printf("4. Check Invoices\n");
+            printf("0. Exit\n");
+            int choice = scanInt();
+            switch (choice) {
+                case 1:
+                    addProductToCartMenu(database, cart);
+                    break;
+                case 2:
+                    checkCartDisplay(database, cart);
+                    break;
+                case 3:
+                    checkoutDisplay(database, cart, user);
+                    destroyCart(cart);
+                    goto begin;
+                case 4:
+                    invoiceDisplay(user);
+                    break;
+                case 0:
+                    destroyCart(cart);
+                    return;
+                default:
+                    printf("Please enter one of the options\n");
+            }
         }
     }
 }

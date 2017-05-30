@@ -20,7 +20,14 @@ void checkManufacturers(CameraShopDatabase* database, StaticList* manufacturerID
                    manufacturer->city, manufacturer->phoneNumber, manufacturer->web);
             printf("Products: \n");
             StaticList* productIDList = getProductIdList(database);
-            checkProducts(database, productIDList);
+            for(int j = 0; j < productIDList->size; j++){
+                goTo(productIDList, j);
+                Product* product = getProduct(getActual(productIDList), database);
+                if(product->manufacturerID == manufacturer->manufacturerId) {
+                    printf("%s (%s) $%d\n", product->name,
+                           product->productType == CAMERA ? "Camera" : "Accessory", product->price);
+                }
+            }
             printf("-----------------\n\n");
             freeStaticList(productIDList);
         }
@@ -105,7 +112,14 @@ void checkProviders(CameraShopDatabase* database, StaticList* providerIDList){
                    provider->city, provider->phoneNumber, provider->web);
             printf("Products: \n");
             StaticList* productIDList = getProductIdList(database);
-            checkProducts(database, productIDList);
+            for(int j = 0; j < productIDList->size; j++){
+                goTo(productIDList, j);
+                Product* product = getProduct(getActual(productIDList), database);
+                if(product->providerID == provider->providerId) {
+                    printf("%s (%s) $%d\n", product->name,
+                           product->productType == CAMERA ? "Camera" : "Accessory", product->price);
+                }
+            }
             printf("-----------------\n\n");
             freeStaticList(productIDList);
         }
