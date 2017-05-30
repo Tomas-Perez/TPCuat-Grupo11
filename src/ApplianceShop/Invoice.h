@@ -4,6 +4,10 @@
 #include "InvoiceLine.h"
 #include "Cart.h"
 
+/*
+ * Description: Represents an invoice for an ApplianceShop purchase.
+ */
+
 typedef struct Invoice{
     InvoiceLine** invoiceLines;
     int amountOfLines;

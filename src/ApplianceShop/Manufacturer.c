@@ -2,6 +2,16 @@
 #include <memory.h>
 #include "Manufacturer.h"
 
+/*
+ * Description: Contains all functions related to the Manufacturer ADT.
+ */
+
+/*
+ * Function: newManufacturer
+ * Description: Creates a new manufacturer with the given data.
+ * Returns: Manufacturer pointer.
+ */
+
 Manufacturer* newManufacturer(char* name, char* description, char* address,
                               char* city, int phoneNumber, char* web, int manufacturerId){
     Manufacturer* result = malloc(sizeof(Manufacturer));
@@ -24,6 +34,11 @@ Manufacturer* newManufacturer(char* name, char* description, char* address,
     return result;
 }
 
+/*
+ * Function: destroyManufacturer
+ * Description: Deallocates all memory related to the manufacturer.
+ * Returns: --
+ */
 void destroyManufacturer(Manufacturer* manufacturer){
     free(manufacturer->name);
     free(manufacturer->address);

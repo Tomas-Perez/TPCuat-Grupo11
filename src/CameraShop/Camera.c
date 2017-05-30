@@ -2,6 +2,16 @@
 #include <stdlib.h>
 #include <string.h>
 
+/*
+ * Contains functions related to the camera ADT.
+ */
+
+/*
+ * Function: newCamera
+ * Description: creates a new Camera from the given data.
+ * Returns: --
+ */
+
 Camera* newCamera(char* name, int megaPixels, int zoom, int hasLCD, CameraType cameraType){
     Camera* result = malloc(sizeof(Camera));
     result->name = malloc(sizeof(char)*(strlen(name)+1));
@@ -13,6 +23,7 @@ Camera* newCamera(char* name, int megaPixels, int zoom, int hasLCD, CameraType c
     result->accessoryList = createStaticList(5);
     return result;
 }
+
 static int containsAccessory(Camera* camera, int accessoryID){
     StaticList* list = camera->accessoryList;
     for(int i = 0; i < list->size; i++){
@@ -23,6 +34,13 @@ static int containsAccessory(Camera* camera, int accessoryID){
     }
     return -1;
 }
+
+/*
+ * Function: addCameraAccessory
+ * Description: adds an accessory id to the camera's accessory list.
+ * Returns: --
+ */
+
 void addCameraAccessory(Camera* camera, int accessoryID){
     if(containsAccessory(camera, accessoryID) == -1) {
         StaticList *list = camera->accessoryList;
@@ -30,6 +48,12 @@ void addCameraAccessory(Camera* camera, int accessoryID){
         addNext(list, accessoryID);
     }
 }
+
+/*
+ * Function: removeCameraAccessory
+ * Description: removes an accessory id from the camera's accessory list.
+ * Returns: --
+ */
 void removeCameraAccessory(Camera* camera, int accessoryID){
     int accessoryIndex = containsAccessory(camera, accessoryID);
     if(accessoryIndex != -1){
@@ -38,6 +62,12 @@ void removeCameraAccessory(Camera* camera, int accessoryID){
         removeS(list);
     }
 }
+
+/*
+ * Function: destroyCamera
+ * Description: deallocates all memory assigned to the camera.
+ * Returns: --
+ */
 void destroyCamera(Camera* camera){
     free(camera->name);
     freeStaticList(camera->accessoryList);

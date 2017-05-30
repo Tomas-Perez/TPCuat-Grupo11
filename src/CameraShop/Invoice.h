@@ -4,6 +4,9 @@
 #include "InvoiceLine.h"
 #include "../structs/StaticList.h"
 
+/*
+ * Description: Represents an invoice for a CameraShop purchase.
+ */
 typedef struct Invoice{
     int invoiceID;
     InvoiceLine** invoiceLines;

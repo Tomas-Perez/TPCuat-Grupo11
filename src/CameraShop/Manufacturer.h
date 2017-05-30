@@ -1,6 +1,10 @@
 #ifndef TPCUAT_GRUPO11_MANUFACTURER_H
 #define TPCUAT_GRUPO11_MANUFACTURER_H
 
+/*
+ * Description: Contains all information related to a manufacturer in the CameraShop system.
+ */
+
 typedef struct Manufacturer{
     char* name;
     char* description;

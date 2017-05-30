@@ -9,6 +9,14 @@
 #include "Accessory.h"
 #include "User.h"
 
+/*
+ * Description: Contains all data needed for the CameraShopDatabase, including:
+ *  - Providers
+ *  - Manufacturers
+ *  - Products
+ *  - Users
+ */
+
 typedef struct CameraShopDatabase{
     Provider** providerList;
     int providerAmount;

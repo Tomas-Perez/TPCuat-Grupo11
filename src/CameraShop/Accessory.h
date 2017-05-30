@@ -1,6 +1,10 @@
 #ifndef TPCUAT_GRUPO11_ACCESSORY_H
 #define TPCUAT_GRUPO11_ACCESSORY_H
 
+/*
+ * Description: Represents a camera accessory in the Camera Shop system.
+ */
+
 typedef struct Accessory{
     char* name;
     int productID;

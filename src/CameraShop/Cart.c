@@ -1,6 +1,14 @@
 #include <stdlib.h>
 #include "Cart.h"
+/*
+ * Description: Contains the functions related to the cart ADT.
+ */
 
+/*
+ * Function: newCart
+ * Description: creates a new cart with the given initial capacity;
+ * Returns: --
+ */
 Cart* newCart(int initialCapacity){
     Cart* result = malloc(sizeof(Cart));
     result->cartLines = malloc(sizeof(CartLine*)*initialCapacity);
@@ -9,6 +17,11 @@ Cart* newCart(int initialCapacity){
     return result;
 }
 
+/*
+ * Function: destroyCart
+ * Description: Deallocates all memory assigned to the cart.
+ * Returns: --
+ */
 void destroyCart(Cart* cart){
     for(int i = 0; i < cart->amountOfLines; i++){
         destroyCartLine(cart->cartLines[i]);
@@ -30,6 +43,11 @@ static int cartContainsProduct(Cart* cart, int productID){
     return -1;
 }
 
+/*
+ * Function: cartAddProduct
+ * Description: Adds a specific amount of product to the cart.
+ * Returns: --
+ */
 void cartAddProduct(Cart* cart, int productID, int amount){
     int lineIndex = cartContainsProduct(cart, productID);
     if(lineIndex == -1) {
@@ -42,6 +60,11 @@ void cartAddProduct(Cart* cart, int productID, int amount){
     }
 }
 
+/*
+ * Function: cartRemoveProduct
+ * Description: Removes a specific amount of product from the cart.
+ * Returns: --
+ */
 void cartRemoveProduct(Cart* cart, int productID, int amount){
     int lineIndex = cartContainsProduct(cart, productID);
     if(lineIndex != -1){
@@ -57,6 +80,11 @@ void cartRemoveProduct(Cart* cart, int productID, int amount){
     }
 }
 
+/*
+ * Function: getTotal
+ * Description: Given a database, it calculates the total price of the products in the cart.
+ * Returns: total price of the cart.
+ */
 int cartGetTotal(Cart* cart, CameraShopDatabase* database){
     int result = 0;
     for(int i = 0; i < cart->amountOfLines; i++){
@@ -66,6 +94,12 @@ int cartGetTotal(Cart* cart, CameraShopDatabase* database){
     }
     return result;
 }
+
+/*
+ * Function: checkout
+ * Description: Given a database, creates an invoice for the current cart purchase.
+ * Returns: current purchase Invoice.
+ */
 
 Invoice* checkout(Cart* cart, CameraShopDatabase* database){
     InvoiceLine** invoiceLines = malloc(sizeof(InvoiceLine*)*cart->amountOfLines);

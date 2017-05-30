@@ -1,6 +1,16 @@
-#include <malloc.h>
-#include <memory.h>
+#include <stdlib.h>
+#include <string.h>
 #include "Provider.h"
+
+/*
+ * Description: Contains all functions related to the Provider ADT.
+ */
+
+/*
+ * Function: newProvider
+ * Description: Creates a new provider from the given data.
+ * Returns: Provider pointer.
+ */
 
 Provider* newProvider(char* name, char* description, char* address,
                       char* city, int phoneNumber, char* web){
@@ -19,6 +29,11 @@ Provider* newProvider(char* name, char* description, char* address,
     return provider;
 }
 
+/*
+ * Function: destroyProvider
+ * Description: Deallocates all memory assigned to the provider.
+ * Returns: --
+ */
 void destroyProvider(Provider* provider){
     free(provider->address);
     free(provider->web);

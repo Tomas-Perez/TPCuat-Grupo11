@@ -2,6 +2,16 @@
 #include <stdlib.h>
 #include <string.h>
 
+/*
+ * Description: Contains the functions related to the CameraShopDatabase
+ */
+
+/*
+ * Function: newCameraShopDatabase
+ * Description: creates a new CameraShopDatabase with the given initial capacity.
+ * Returns: CameraShopDatabase pointer
+ */
+
 CameraShopDatabase* newCameraShopDatabase(int initialCapacity){
     CameraShopDatabase* result = malloc(sizeof(CameraShopDatabase));
     result->productCapacity = initialCapacity*2;
@@ -33,6 +43,12 @@ CameraShopDatabase* newCameraShopDatabase(int initialCapacity){
 
     return result;
 }
+
+/*
+ * Function: destroyDatabase
+ * Description: deallocates all memory assigned to the CameraShopDatabase
+ * Returns: --
+ */
 void destroyDatabase(CameraShopDatabase* database){
     for(int i = 0; i < database->cameraCapacity; i++){
         destroyCamera (database->cameraList[i]);
@@ -103,6 +119,12 @@ static void removeProduct(CameraShopDatabase* database, int idProduct){
         }
     }
 }
+
+/*
+ * Function: getProvider
+ * Description: finds a provider with the given id on the database.
+ * Returns: Provider pointer if it exists, NULL otherwise.
+ */
 Provider* getProvider(int idProvider, CameraShopDatabase* database){
     for(int i = 0; i < database->providerAmount; i++){
         Provider* provider = database->providerList[i];
@@ -110,6 +132,11 @@ Provider* getProvider(int idProvider, CameraShopDatabase* database){
     }
     return NULL;
 }
+/*
+ * Function: getUser
+ * Description: finds a user with the given id on the database.
+ * Returns: User pointer if it exists, NULL otherwise.
+ */
 User* getUser(char* name, CameraShopDatabase* database){
     for(int i = 0; i < database->userAmount; i++){
         User* user = database->userList[i];
@@ -117,6 +144,13 @@ User* getUser(char* name, CameraShopDatabase* database){
     }
     return NULL;
 }
+
+/*
+ * Function: getProduct
+ * Description: finds a product with the given id on the database.
+ * Returns: Product pointer if it exists, NULL otherwise.
+ */
+
 Product* getProduct(int idProduct, CameraShopDatabase* database){
     for(int i = 0; i < database->productAmount; i++){
         Product* product = database->productList[i];
@@ -124,6 +158,13 @@ Product* getProduct(int idProduct, CameraShopDatabase* database){
     }
     return NULL;
 }
+
+/*
+ * Function: getManufacturer
+ * Description: finds a manufacturer with the given id on the database.
+ * Returns: Manufacturer pointer if it exists, NULL otherwise.
+ */
+
 Manufacturer* getManufacturer(int idManufacturer, CameraShopDatabase* database){
     for(int i = 0; i < database->manufacturerAmount; i++){
         Manufacturer* manufacturer = database->manufacturerList[i];
@@ -131,6 +172,12 @@ Manufacturer* getManufacturer(int idManufacturer, CameraShopDatabase* database){
     }
     return NULL;
 }
+
+/*
+ * Function: getCamera
+ * Description: finds a camera with the given id on the database.
+ * Returns: Camera pointer if it exists, NULL otherwise.
+ */
 Camera* getCamera(int idProduct, CameraShopDatabase* database){
     for(int i = 0; i < database->cameraAmount; i++){
         Camera* camera = database->cameraList[i];
@@ -138,6 +185,13 @@ Camera* getCamera(int idProduct, CameraShopDatabase* database){
     }
     return NULL;
 }
+
+/*
+ * Function: getAccessory
+ * Description: finds an accessory with the given id on the database.
+ * Returns: Accessory pointer if it exists, NULL otherwise.
+ */
+
 Accessory* getAccessory(int idProduct, CameraShopDatabase* database){
     for(int i = 0; i < database->accessoryAmount; i++){
         Accessory* accessory = database->accessoryList[i];
@@ -145,11 +199,23 @@ Accessory* getAccessory(int idProduct, CameraShopDatabase* database){
     }
     return NULL;
 }
+
+/*
+ * Function: addProvider
+ * Description: adds a given provider to the database
+ * Returns: --
+ */
 void addProvider(CameraShopDatabase* database, Provider* provider){
     provider->providerId = database->idProviderGenerator++;
     if(database->providerAmount == database->providerCapacity) growProvider(database);
     database->providerList[database->providerAmount++] = provider;
 }
+
+/*
+ * Function: addUser
+ * Description: adds a given user to the database, if its username does not exist already.
+ * Returns: 1 if the user was added, 0 if it wasn't.
+ */
 int addUser(CameraShopDatabase* database, User* user){
     if(getUser(user->name, database) == NULL) {
         user->userID = database->idUserGenerator++;
@@ -159,17 +225,37 @@ int addUser(CameraShopDatabase* database, User* user){
     }
     return 0;
 }
+
+/*
+ * Function: addManufacturer
+ * Description: adds a given manufacturer to the database
+ * Returns: --
+ */
 void addManufacturer(CameraShopDatabase* database, Manufacturer* manufacturer){
     manufacturer->manufacturerId = database->idManufacturerGenerator++;
     if(database->manufacturerAmount == database->manufacturerCapacity) growManufacturer(database);
     database->manufacturerList[database->manufacturerAmount++] = manufacturer;
 }
+
+/*
+ * Function: addCamera
+ * Description: adds a given camera to the database, connects it with its provider, manufacturer
+ * and assigns its price.
+ * Returns: --
+ */
 void addCamera(CameraShopDatabase* database, Camera* camera, int providerID, int manufacturerID, int price){
     addProduct(database, camera->name, CAMERA, manufacturerID, providerID, price);
     camera->productID = database->idProductGenerator++;
     if(database->cameraAmount == database->cameraCapacity) growCamera(database);
     database->cameraList[database->cameraAmount++] = camera;
 }
+
+/*
+ * Function: addAccessory
+ * Description: adds a given accessory to the database, connects it with its provider, manufacturer
+ * and assigns its price.
+ * Returns: --
+ */
 void addAccessory(CameraShopDatabase* database, Accessory* accessory, int providerID, int manufacturerID, int price){
     addProduct(database, accessory->name, ACCESSORY, manufacturerID, providerID, price);
     accessory->productID = database->idProductGenerator++;
@@ -177,6 +263,11 @@ void addAccessory(CameraShopDatabase* database, Accessory* accessory, int provid
     database->accessoryList[database->accessoryAmount++] = accessory;
 }
 
+/*
+ * Function: removeProvider
+ * Description: removes the provider with the given ID from the database.
+ * Returns: --
+ */
 void removeProvider(int idProvider, CameraShopDatabase* database){
     for(int i = 0; i < database->providerAmount; i++){
         Provider* provider = database->providerList[i];
@@ -200,6 +291,12 @@ void removeProvider(int idProvider, CameraShopDatabase* database){
         }
     }
 }
+
+/*
+ * Function: removeUser
+ * Description: removes the user with the given ID from the database.
+ * Returns: --
+ */
 void removeUser(int idUser, CameraShopDatabase* database){
     for(int i = 0; i < database->userAmount; i++){
         User* user = database->userList[i];
@@ -213,6 +310,12 @@ void removeUser(int idUser, CameraShopDatabase* database){
         }
     }
 }
+
+/*
+ * Function: removeManufacturer
+ * Description: removes the manufacturer with the given ID from the database.
+ * Returns: --
+ */
 void removeManufacturer(int idManufacturer, CameraShopDatabase* database){
     for(int i = 0; i < database->manufacturerAmount; i++){
         Manufacturer* manufacturer = database->manufacturerList[i];
@@ -237,6 +340,11 @@ void removeManufacturer(int idManufacturer, CameraShopDatabase* database){
     }
 }
 
+/*
+ * Function: removeCamera
+ * Description: removes the camera with the given ID from the database.
+ * Returns: --
+ */
 void removeCamera(int idProduct, CameraShopDatabase* database){
     for(int i = 0; i < database->cameraAmount; i++){
         Camera* camera = database->cameraList[i];
@@ -251,6 +359,12 @@ void removeCamera(int idProduct, CameraShopDatabase* database){
         }
     }
 }
+
+/*
+ * Function: removeAccessory
+ * Description: removes the accessory with the given ID from the database.
+ * Returns: --
+ */
 void removeAccessory(int idProduct, CameraShopDatabase* database){
     for(int i = 0; i < database->accessoryAmount; i++){
         Accessory* accessory = database->accessoryList[i];
@@ -269,6 +383,12 @@ void removeAccessory(int idProduct, CameraShopDatabase* database){
         }
     }
 }
+
+/*
+ * Function: getProductIDList
+ * Description: returns a list with the IDs of all products.
+ * Returns: StaticList pointer
+ */
 StaticList* getProductIdList(CameraShopDatabase* database){
     StaticList* result = createStaticList(database->productAmount);
     for(int i = 0; i < database->productAmount; i++){
@@ -277,6 +397,12 @@ StaticList* getProductIdList(CameraShopDatabase* database){
     }
     return result;
 }
+
+/*
+ * Function: getManufacturerIDList
+ * Description: returns a list with the IDs of all manufacturers.
+ * Returns: StaticList pointer
+ */
 StaticList* getManufacturerIdList(CameraShopDatabase* database){
     StaticList* result = createStaticList(database->manufacturerAmount);
     for(int i = 0; i < database->manufacturerAmount; i++){
@@ -285,6 +411,12 @@ StaticList* getManufacturerIdList(CameraShopDatabase* database){
     }
     return result;
 }
+
+/*
+ * Function: getProviderIDList
+ * Description: returns a list with the IDs of all products.
+ * Returns: StaticList pointer
+ */
 StaticList* getProviderIdList(CameraShopDatabase* database){
     StaticList* result = createStaticList(database->providerAmount);
     for(int i = 0; i < database->providerAmount; i++){

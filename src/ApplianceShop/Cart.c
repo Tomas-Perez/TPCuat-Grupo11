@@ -2,6 +2,16 @@
 #include <string.h>
 #include "Cart.h"
 
+/*
+ * Description: Contains the functions related to the cart ADT.
+ */
+
+/*
+ * Function: newCart
+ * Description: creates a new cart with the given initial capacity;
+ * Returns: --
+ */
+
 Cart* newCart(int initialCapacity){
     Cart* result = malloc(sizeof(Cart));
 
@@ -15,6 +25,12 @@ Cart* newCart(int initialCapacity){
     return result;
 }
 
+/*
+ * Function: destroyCart
+ * Description: Deallocates all memory assigned to the cart.
+ * Returns: --
+ */
+
 void destroyCart(Cart* cart){
     for(int i = 0; i < cart->maxCapacity; i++){
         if(cart->spacesTaken[i]) destroyCartLine(cart->cartLines[i]);
@@ -23,6 +39,12 @@ void destroyCart(Cart* cart){
     free(cart->spacesTaken);
     free(cart);
 }
+
+/*
+ * Function: cartAddAppliance
+ * Description: Adds a specific amount of appliances to the cart.
+ * Returns: --
+ */
 
 void cartAddAppliance(Cart* cart, int applianceId, int amount){
     int lineIndex = cartContainsAppliance(cart, applianceId);
@@ -55,6 +77,12 @@ int cartContainsAppliance(Cart* cart, int applianceId){
     return -1;
 }
 
+/*
+ * Function: cartRemoveAppliance
+ * Description: Removes a specific amount of appliances from the cart.
+ * Returns: --
+ */
+
 void cartRemoveAppliance(Cart* cart, int applianceId, int amount){
     int lineIndex = cartContainsAppliance(cart, applianceId);
     if(lineIndex != -1){
@@ -67,6 +95,12 @@ void cartRemoveAppliance(Cart* cart, int applianceId, int amount){
         }
     }
 }
+
+/*
+ * Function: getTotal
+ * Description: Given a database, it calculates the total price of the products in the cart.
+ * Returns: total price of the cart.
+ */
 
 int cartGetTotal(Cart* cart, Database* database){
     int result = 0;

@@ -4,6 +4,10 @@
 #include "CartLine.h"
 #include "Database.h"
 
+/*
+ * Description: A cart saves the appliances the client buys from the shop.
+ */
+
 typedef struct Cart{
     CartLine** cartLines;
     int maxCapacity;

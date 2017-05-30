@@ -1,6 +1,10 @@
 #ifndef TPCUAT_GRUPO11_APPLIANCE_H
 #define TPCUAT_GRUPO11_APPLIANCE_H
 
+/*
+ * Description: Represents an Appliance in the ApplianceShop system.
+ */
+
 typedef struct Appliance{
     char* name;
     int price;

@@ -3,6 +3,10 @@
 
 #include "../structs/StaticList.h"
 
+/*
+ * Description: Represents a camera in the Camera Shop system.
+ */
+
 typedef enum{DSLR, COMPACT}CameraType;
 
 typedef struct Camera{

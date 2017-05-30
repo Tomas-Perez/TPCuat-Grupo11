@@ -4,6 +4,10 @@
 #include "../structs/StaticList.h"
 #include "Invoice.h"
 
+/*
+ * Description: Represents an user in the CameraShop system.
+ */
+
 typedef enum{ADMIN, CLIENT}UserRole;
 
 typedef struct User{

@@ -1,5 +1,15 @@
-#include <malloc.h>
+#include <stdlib.h>
 #include "Invoice.h"
+
+/*
+ * Description: contains the functions related to the Invoice ADT.
+ */
+
+/*
+ * Function: newInvoice
+ * Description: creates an invoice with the given data.
+ * Returns: Invoice pointer.
+ */
 
 Invoice* newInvoice(Cart* cart, Database* database){
     Invoice* invoice = malloc(sizeof(Invoice));
@@ -16,7 +26,14 @@ Invoice* newInvoice(Cart* cart, Database* database){
         }
     }
     return invoice;
-};
+}
+
+/*
+ * Function: destroyInvoice
+ * Description: Deallocates all memory assgined to the invoice.
+ * Returns: --
+ */
+
 void destroyInvoice(Invoice* invoice){
     for(int i = 0; i < invoice->amountOfLines; i++){
         destroyInvoiceLine(invoice->invoiceLines[i]);

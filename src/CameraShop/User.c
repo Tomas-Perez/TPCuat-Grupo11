@@ -2,6 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 
+/*
+ * Function: newUser
+ * Description: creates a new user from the given data.
+ * Returns: User pointer
+ */
+
 User* newUser(char* name, int DNI, char* address, char* city, int phoneNumber, UserRole role, int invoiceCapacity){
     User* result = malloc(sizeof(User));
     result->DNI = DNI;
@@ -25,12 +31,22 @@ static void grow(User* user){
     user->invoiceList = realloc(user->invoiceList, sizeof(Invoice*)*user->invoiceCapacity);
 }
 
+/*
+ * Function: addInvoice
+ * Description: Adds an invoice to the users list.
+ * Returns: --
+ */
 void addInvoice(User* user, Invoice* invoice){
     invoice->invoiceID = user->invoiceIDGen++;
     if(user->invoiceAmount == user->invoiceCapacity) grow(user);
     user->invoiceList[user->invoiceAmount++] = invoice;
 }
 
+/*
+ * Function: destroyUser
+ * Description: Deallocates all memory assigned to the user.
+ * Returns: --
+ */
 void destroyUser(User* user){
     for(int i = 0; i < user->invoiceAmount; i++){
         destroyInvoice(user->invoiceList[i]);
