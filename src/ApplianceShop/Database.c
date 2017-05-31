@@ -1,7 +1,11 @@
 #include <stdlib.h>
 #include "Database.h"
 
-
+/*
+ * Function: newDatabase
+ * Description: Creates a new Database with the given data.
+ * Returns: Database pointer.
+ */
 Database* newDatabase(){
     Database* database = malloc(sizeof(Database));
     int initialSize = 25;
@@ -28,7 +32,11 @@ Database* newDatabase(){
 
     return database;
 }
-
+/*
+ * Function: destroyDatabase
+ * Description: Deallocates all memory related to the Database.
+ * Returns: --
+ */
 void destroyDatabase(Database* database){
     for(int i = 0; i < database->providerMaxCapacity; i++){
         if(database->booleanArrayProvider[i] != 0){
@@ -54,7 +62,11 @@ void destroyDatabase(Database* database){
 
     free(database);
 }
-
+/*
+ * Function: getProvider
+ * Description: finds a Provider with the given id in the database.
+ * Returns: Provider pointer if it exists, NULL otherwise.
+ */
 Provider* getProvider(int idProvider, Database* database){
     for(int i = 0; i < database->providerMaxCapacity; i++){
         if(database->booleanArrayProvider[i] != 0){
@@ -65,6 +77,11 @@ Provider* getProvider(int idProvider, Database* database){
     }
     return NULL;
 }
+/*
+ * Function: getAppliance
+ * Description: finds a Appliance with the given id in the database.
+ * Returns: Appliance pointer if it exists, NULL otherwise.
+ */
 Appliance* getAppliance(int idAppliance, Database* database){
     for(int i = 0; i < database->applianceMaxCapacity; i++){
         if(database->booleanArrayAppliance[i] != 0){
@@ -75,6 +92,11 @@ Appliance* getAppliance(int idAppliance, Database* database){
     }
     return NULL;
 }
+/*
+ * Function: getManufacturer
+ * Description: finds a Manufacturer with the given id in the database.
+ * Returns: Manufacturer pointer if it exists, NULL otherwise.
+ */
 Manufacturer* getManufacturer(int idManufacturer, Database* database){
     for(int i = 0; i < database->manufacturerMaxCapacity; i++){
         if(database->booleanArrayManufacturer[i] != 0){
@@ -85,6 +107,11 @@ Manufacturer* getManufacturer(int idManufacturer, Database* database){
     }
     return NULL;
 }
+/*
+ * Function: growProvider
+ * Description: Increases the size of the Provider array.
+ * Returns: --
+ */
 void growProvider(Database* database){
     database->arrayProvider = realloc(database->arrayProvider, sizeof(Provider*) * database->providerMaxCapacity * 2);
     database->booleanArrayProvider = realloc(database->booleanArrayProvider, sizeof(int) * database->providerMaxCapacity * 2);
@@ -93,6 +120,11 @@ void growProvider(Database* database){
     }
     database->providerMaxCapacity *= 2;
 }
+/*
+ * Function: growAppliance
+ * Description: Increases the size of the Appliance array.
+ * Returns: --
+ */
 void growAppliance(Database* database){
     database->arrayAppliance = realloc(database->arrayAppliance, sizeof(Appliance*) * database->applianceMaxCapacity * 2);
     database->booleanArrayAppliance = realloc(database->booleanArrayAppliance, sizeof(int) * database->applianceMaxCapacity * 2);
@@ -101,6 +133,11 @@ void growAppliance(Database* database){
     }
     database->applianceMaxCapacity *= 2;
 }
+/*
+ * Function: growManufacturer
+ * Description: Increases the size of the Manufacturer array.
+ * Returns: --
+ */
 void growManufacturer(Database* database){
     database->arrayManufacturer = realloc(database->arrayManufacturer, sizeof(Manufacturer*) * database->manufacturerMaxCapacity * 2);
     database->booleanArrayManufacturer = realloc(database->booleanArrayManufacturer, sizeof(int) * database->manufacturerMaxCapacity * 2);
@@ -109,7 +146,11 @@ void growManufacturer(Database* database){
     }
     database->manufacturerMaxCapacity *= 2;
 }
-
+/*
+ * Function: addProvider
+ * Description: adds a given Provider to the database.
+ * Returns: 1 if the Provider was added, 0 if it wasn't.
+ */
 void addProvider(Database* database, Provider* provider){
     if(database->amountOfProviders != database->providerMaxCapacity) {
         for (int i = 0; i < database->providerMaxCapacity; i++) {
@@ -129,6 +170,11 @@ void addProvider(Database* database, Provider* provider){
         database->amountOfProviders++;
     }
 }
+/*
+ * Function: addAppliance
+ * Description: adds a given Appliance to the database.
+ * Returns: 1 if the Appliance was added, 0 if it wasn't.
+ */
 void addAppliance(Database* database, Appliance* appliance){
     if(database->amountOfAppliances != database->applianceMaxCapacity) {
         for (int i = 0; i < database->applianceMaxCapacity; i++) {
@@ -147,6 +193,11 @@ void addAppliance(Database* database, Appliance* appliance){
         database->amountOfAppliances++;
     }
 }
+/*
+ * Function: addManufacturer
+ * Description: adds a given Manufacturer to the database.
+ * Returns: 1 if the Manufacturer was added, 0 if it wasn't.
+ */
 void addManufacturer(Database* database, Manufacturer* manufacturer){
     if(database->amountOfManufacturers != database->manufacturerMaxCapacity) {
         for (int i = 0; i < database->manufacturerMaxCapacity; i++) {
@@ -165,6 +216,11 @@ void addManufacturer(Database* database, Manufacturer* manufacturer){
         database->amountOfManufacturers++;
     }
 }
+/*
+ * Function: removeProvider
+ * Description: removes the Provider with the given id from the database.
+ * Returns: --
+ */
 void removeProvider(int idProvider, Database* database){
     for(int i = 0; i < database->providerMaxCapacity; i++){
         if(database->booleanArrayProvider[i] != 0){
@@ -186,6 +242,11 @@ void removeProvider(int idProvider, Database* database){
         }
     }
 }
+/*
+ * Function: removeAppliance
+ * Description: removes the Appliance with the given id from the database.
+ * Returns: --
+ */
 void removeAppliance(int idAppliance, Database* database){
     for(int i = 0; i < database->applianceMaxCapacity; i++){
         if(database->booleanArrayAppliance[i] != 0){
@@ -198,7 +259,11 @@ void removeAppliance(int idAppliance, Database* database){
         }
     }
 }
-
+/*
+ * Function: removeManufacturer
+ * Description: removes the Manufacturer with the given id from the database.
+ * Returns: --
+ */
 void removeManufacturer(int idManufacturer, Database* database){
     for(int i = 0; i < database->manufacturerMaxCapacity; i++){
         if(database->booleanArrayManufacturer[i] != 0){
@@ -221,16 +286,31 @@ void removeManufacturer(int idManufacturer, Database* database){
     }
 }
 
+/*
+ * Function: getNextProviderId
+ * Description: Generates the next Provider id.
+ * Returns: int that is the next id.
+ */
 int getNextProviderId(Database* database){
     int result = database->idProviderGenerator;
     database->idProviderGenerator += 1;
     return result;
 }
+/*
+ * Function: getNextApplianceId
+ * Description: Generates the next Appliance id.
+ * Returns: int that is the next id.
+ */
 int getNextApplianceId(Database* database){
     int result = database->idApplianceGenerator;
     database->idApplianceGenerator += 1;
     return result;
 }
+/*
+ * Function: getNextManufacturerId
+ * Description: Generates the next Manufacturer id.
+ * Returns: int that is the next id.
+ */
 int getNextManufacturerId(Database* database) {
     int result = database->idManufacturerGenerator;
     database->idManufacturerGenerator += 1;

@@ -2,6 +2,11 @@
 #include <memory.h>
 #include "Library.h"
 
+/*
+ * Function: newLibrary
+ * Description: Creates a new Library with the given data.
+ * Returns: Library pointer.
+ */
 Library* newLibrary(){
     Library* library = malloc(sizeof(Library));
     int initialsize = 50;
@@ -53,6 +58,12 @@ Library* newLibrary(){
 
     return library;
 }
+
+/*
+ * Function: destroyLibrary
+ * Description: Deallocates all memory related to the Library.
+ * Returns: --
+ */
 void freeLibrary(Library* library){
     for(int i = 0; i < library->personMaxCapacity; i++){
         if(library->personBooleanArray[i] != 0){
@@ -103,6 +114,11 @@ void freeLibrary(Library* library){
     free(library->bookBooleanArray);
 }
 
+/*
+ * Function: growPerson
+ * Description: Increases the size of the person array.
+ * Returns: --
+ */
 void growPerson(Library* library){
     library->personArray  = realloc(library->personArray, sizeof(Person*) * library->personMaxCapacity * 2);
     library->personBooleanArray = realloc(library->personBooleanArray, sizeof(int) * library->personMaxCapacity * 2);
@@ -111,6 +127,12 @@ void growPerson(Library* library){
     }
     library->personMaxCapacity *= 2;
 }
+
+/*
+ * Function: addPerson
+ * Description: adds a given Person to the database.
+ * Returns: 1 if the Person was added, 0 if it wasn't.
+ */
 int addPerson(Library* library, Person* person){
     if(getPersonByUsername(library, person->username) != NULL){
         return 0;
@@ -134,6 +156,11 @@ int addPerson(Library* library, Person* person){
     }
     return 1;
 }
+/*
+ * Function: removePerson
+ * Description: removes the Person with the given id from the database.
+ * Returns: --
+ */
 void removePerson(Library* library, int idPerson){
     for(int i = 0; i < library->personMaxCapacity; i++){
         if(library->personBooleanArray[i] != 0){
@@ -169,6 +196,12 @@ void removePerson(Library* library, int idPerson){
         }
     }
 }
+
+/*
+ * Function: getPersonById
+ * Description: finds a Person with the given id in the database.
+ * Returns: Person pointer if it exists, NULL otherwise.
+ */
 Person* getPersonById(Library* library, int idPerson){
     for(int i = 0; i < library->personMaxCapacity; i++){
         if(library->personBooleanArray[i] != 0){
@@ -179,6 +212,12 @@ Person* getPersonById(Library* library, int idPerson){
     }
     return NULL;
 }
+
+/*
+ * Function: getPersonByUsername
+ * Description: finds a Person with the given Username in the database.
+ * Returns: Person pointer if it exists, NULL otherwise.
+ */
 Person* getPersonByUsername(Library* library, char* username) {
     for(int i = 0; i < library->personMaxCapacity; i++){
         if(library->personBooleanArray[i] != 0){
@@ -190,6 +229,11 @@ Person* getPersonByUsername(Library* library, char* username) {
     return NULL;
 }
 
+/*
+ * Function: growTeacher
+ * Description: Increases the size of the Teacher array.
+ * Returns: --
+ */
 void growTeacher(Library* library) {
     library->teacherArray = realloc(library->teacherArray, sizeof(Teacher*) * library->teacherMaxCapacity * 2);
     library->teacherBooleanArray = realloc(library->teacherBooleanArray, sizeof(int) * library->teacherMaxCapacity * 2);
@@ -198,6 +242,11 @@ void growTeacher(Library* library) {
     }
     library->teacherMaxCapacity *= 2;
 }
+/*
+ * Function: addTeacher
+ * Description: adds a given Teacher to the database.
+ * Returns: 1 if the Teacher was added, 0 if it wasn't.
+ */
 int addTeacher(Library* library, Teacher* teacher){
     if(library->amountOfTeacher != library->teacherMaxCapacity) {
         for (int i = 0; i < library->teacherMaxCapacity; i++) {
@@ -218,6 +267,11 @@ int addTeacher(Library* library, Teacher* teacher){
     }
     return 1;
 }
+/*
+ * Function: getTeacher
+ * Description: finds a Teacher with the given id in the database.
+ * Returns: Teacher pointer if it exists, NULL otherwise.
+ */
 Teacher* getTeacher(Library* library, int idPerson){
     for(int i = 0; i < library->teacherMaxCapacity; i++){
         if(library->teacherBooleanArray[i] != 0){
@@ -228,6 +282,11 @@ Teacher* getTeacher(Library* library, int idPerson){
     }
     return NULL;
 }
+/*
+ * Function: getTeacherById
+ * Description: finds a Teacher with the given id in the database.
+ * Returns: Teacher pointer if it exists, NULL otherwise.
+ */
 Teacher* getTeacherById(Library* library, int idTeacher){
     for(int i = 0; i < library->teacherMaxCapacity; i++){
         if(library->teacherBooleanArray[i] != 0){
@@ -238,7 +297,11 @@ Teacher* getTeacherById(Library* library, int idTeacher){
     }
     return NULL;
 }
-
+/*
+ * Function: growStudent
+ * Description: Increases the size of the Student array.
+ * Returns: --
+ */
 void growStudent(Library* library){
     library->studentArray  = realloc(library->studentArray, sizeof(Student*) * library->studentMaxCapacity * 2);
     library->studentBooleanArray = realloc(library->studentBooleanArray, sizeof(int) * library->studentMaxCapacity * 2);
@@ -247,6 +310,11 @@ void growStudent(Library* library){
     }
     library->studentMaxCapacity *= 2;
 }
+/*
+ * Function: addStudent
+ * Description: adds a given Student to the database.
+ * Returns: 1 if the Student was added, 0 if it wasn't.
+ */
 int addStudent(Library* library, Student* student){
     if(library->amountOfStudent != library->studentMaxCapacity) {
         for (int i = 0; i < library->studentMaxCapacity; i++) {
@@ -267,6 +335,11 @@ int addStudent(Library* library, Student* student){
     }
     return 1;
 }
+/*
+ * Function: getStudent
+ * Description: finds a Student with the given id in the database.
+ * Returns: Student pointer if it exists, NULL otherwise.
+ */
 Student* getStudent(Library* library, int idPerson){
     for(int i = 0; i < library->studentMaxCapacity; i++){
         if(library->studentBooleanArray[i] != 0){
@@ -277,6 +350,11 @@ Student* getStudent(Library* library, int idPerson){
     }
     return NULL;
 }
+/*
+ * Function: getStudentById
+ * Description: finds a Student with the given id in the database.
+ * Returns: Student pointer if it exists, NULL otherwise.
+ */
 Student* getStudentById(Library* library, int idStudent){
     for(int i = 0; i < library->teacherMaxCapacity; i++){
         if(library->teacherBooleanArray[i] != 0){
@@ -287,7 +365,11 @@ Student* getStudentById(Library* library, int idStudent){
     }
     return NULL;
 }
-
+/*
+ * Function: growMaterial
+ * Description: Increases the size of the Material array.
+ * Returns: --
+ */
 void growMaterial(Library* library){
     library->materialArray  = realloc(library->materialArray, sizeof(Material*) * library->materialMaxCapacity * 2);
     library->materialBooleanArray = realloc(library->magazineBooleanArray, sizeof(int) * library->materialMaxCapacity * 2);
@@ -296,6 +378,11 @@ void growMaterial(Library* library){
     }
     library->materialMaxCapacity *= 2;
 }
+/*
+ * Function: addMaterial
+ * Description: adds a given Material to the database.
+ * Returns: 1 if the Material was added, 0 if it wasn't.
+ */
 int addMaterial(Library* library, Material* material){
     if(library->amountOfMaterial != library->materialMaxCapacity) {
         for (int i = 0; i < library->materialMaxCapacity; i++) {
@@ -316,6 +403,11 @@ int addMaterial(Library* library, Material* material){
     }
     return 1;
 }
+/*
+ * Function: removeMaterial
+ * Description: removes the Material with the given id from the database.
+ * Returns: --
+ */
 void removeMaterial(Library* library, int idMaterial){
     for(int i = 0; i < library->materialMaxCapacity; i++){
         if(library->materialBooleanArray[i] != 0){
@@ -362,6 +454,11 @@ void removeMaterial(Library* library, int idMaterial){
         }
     }
 }
+/*
+ * Function: getMaterial
+ * Description: finds a Material with the given id in the database.
+ * Returns: Material pointer if it exists, NULL otherwise.
+ */
 Material* getMaterial(Library* library, int idMaterial){
     for(int i = 0; i < library->materialMaxCapacity; i++){
         if(library->materialBooleanArray[i] != 0){
@@ -372,7 +469,11 @@ Material* getMaterial(Library* library, int idMaterial){
     }
     return NULL;
 }
-
+/*
+ * Function: growMagazine
+ * Description: Increases the size of the Magazine array.
+ * Returns: --
+ */
 void growMagazine(Library* library){
     library->magazineArray  = realloc(library->magazineArray, sizeof(Magazine*) * library->magazineMaxCapacity * 2);
     library->magazineBooleanArray = realloc(library->magazineBooleanArray, sizeof(int) * library->magazineMaxCapacity * 2);
@@ -381,6 +482,11 @@ void growMagazine(Library* library){
     }
     library->magazineMaxCapacity *= 2;
 }
+/*
+ * Function: addMagazine
+ * Description: adds a given Magazine to the database.
+ * Returns: 1 if the Magazine was added, 0 if it wasn't.
+ */
 int addMagazine(Library* library, Magazine* magazine){
     if(library->amountOfMagazine != library->magazineMaxCapacity) {
         for (int i = 0; i < library->magazineMaxCapacity; i++) {
@@ -400,6 +506,11 @@ int addMagazine(Library* library, Magazine* magazine){
         library->amountOfMagazine++;
     }
 }
+/*
+ * Function: getMagazine
+ * Description: finds a Magazine with the given id in the database.
+ * Returns: Magazine pointer if it exists, NULL otherwise.
+ */
 Magazine* getMagazine(Library* library, int idMaterial){
     for(int i = 0; i < library->magazineMaxCapacity; i++){
         if(library->magazineBooleanArray[i] != 0){
@@ -410,7 +521,11 @@ Magazine* getMagazine(Library* library, int idMaterial){
     }
     return NULL;
 }
-
+/*
+ * Function: growBook
+ * Description: Increases the size of the Book array.
+ * Returns: --
+ */
 void growBook(Library* library){
     library->bookArray  = realloc(library->bookArray, sizeof(Book*) * library->bookMaxCapacity * 2);
     library->bookBooleanArray = realloc(library->bookBooleanArray, sizeof(int) * library->bookMaxCapacity * 2);
@@ -419,6 +534,11 @@ void growBook(Library* library){
     }
     library->bookMaxCapacity *= 2;
 }
+/*
+ * Function: addBook
+ * Description: adds a given Book to the database.
+ * Returns: 1 if the Book was added, 0 if it wasn't.
+ */
 int addBook(Library* library, Book* book){
     if(library->amountOfBook != library->bookMaxCapacity) {
         for (int i = 0; i < library->bookMaxCapacity; i++) {
@@ -439,6 +559,11 @@ int addBook(Library* library, Book* book){
     }
     return 1;
 }
+/*
+ * Function: getBook
+ * Description: finds a Book with the given id in the database.
+ * Returns: Book pointer if it exists, NULL otherwise.
+ */
 Book* getBook(Library* library, int idMaterial){
     for(int i = 0; i < library->bookMaxCapacity; i++){
         if(library->bookBooleanArray[i] != 0){
@@ -449,7 +574,11 @@ Book* getBook(Library* library, int idMaterial){
     }
     return NULL;
 }
-
+/*
+ * Function: growBorrow
+ * Description: Increases the size of the Borrow array.
+ * Returns: --
+ */
 void growBorrow(Library* library){
     library->borrowArray  = realloc(library->borrowArray, sizeof(Borrow*) * library->borrowMaxCapacity * 2);
     library->borrowBooleanArray = realloc(library->borrowBooleanArray, sizeof(int) * library->borrowMaxCapacity * 2);
@@ -458,6 +587,11 @@ void growBorrow(Library* library){
     }
     library->borrowMaxCapacity *= 2;
 }
+/*
+ * Function: addBorrow
+ * Description: adds a given Borrow to the database.
+ * Returns: 1 if the Borrow was added, 0 if it wasn't.
+ */
 int addBorrow(Library* library, Borrow* borrow){
     if(library->amountOfBorrow != library->borrowMaxCapacity) {
         for (int i = 0; i < library->borrowMaxCapacity; i++) {
@@ -478,6 +612,11 @@ int addBorrow(Library* library, Borrow* borrow){
     }
     return 1;
 }
+/*
+ * Function: getBorrow
+ * Description: finds a Borrow with the given id in the database.
+ * Returns: Borrow pointer if it exists, NULL otherwise.
+ */
 Borrow* getBorrow(Library* library, int idBorrow){
     for(int i = 0; i < library->borrowMaxCapacity; i++){
         if(library->borrowBooleanArray[i] != 0){
@@ -488,7 +627,11 @@ Borrow* getBorrow(Library* library, int idBorrow){
     }
     return NULL;
 }
-
+/*
+ * Function: removeBorrow
+ * Description: removes the Borrow with the given id from the database.
+ * Returns: --
+ */
 void removeBorrow(Library* library, int idBorrow){
     for(int i = 0; i < library->borrowMaxCapacity; i++){
         if(library->borrowBooleanArray[i] != 0){
@@ -502,13 +645,27 @@ void removeBorrow(Library* library, int idBorrow){
     }
 }
 
-
+/*
+ * Function: generateIdBorrow
+ * Description: Generates the next borrow id.
+ * Returns: int that is the next id.
+ */
 int generateIdBorrow(Library* library){
     return ++library->borrowIdGenerator;
 }
+/*
+ * Function: generateIdPerson
+ * Description: Generates the next Person id.
+ * Returns: int that is the next id.
+ */
 int generateIdPerson(Library* library){
     return ++library->personIdGenerator;
 }
+/*
+ * Function: generateIdMaterial
+ * Description: Generates the next Material id.
+ * Returns: int that is the next id.
+ */
 int generateIdMaterial(Library* library){
     return ++library->materialIdGenerator;
 }

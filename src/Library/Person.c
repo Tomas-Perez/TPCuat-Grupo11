@@ -2,6 +2,11 @@
 #include <memory.h>
 #include "Person.h"
 
+/*
+ * Function: newPerson
+ * Description: Creates a new Person with the given data.
+ * Returns: Person pointer.
+ */
 Person* newPerson(int idPerson, char* username, int type, char* name, char* surname, int phone){
     Person* person = malloc(sizeof(Person));
     person->idPerson = idPerson;
@@ -19,13 +24,22 @@ Person* newPerson(int idPerson, char* username, int type, char* name, char* surn
     person->borrowedMaterialMaxCapacity = 10;
     return person;
 }
+/*
+ * Function: destroyPerson
+ * Description: Deallocates all memory related to the Person.
+ * Returns: --
+ */
 void destroyPerson(Person* person){
     free(person->name);
     free(person->username);
     free(person->surname);
     free(person);
 }
-
+/*
+ * Function: growBorrowedMaterial
+ * Description: Increases the size of the BorrowedMaterial id array.
+ * Returns: --
+ */
 void growBorrowedMaterial(Person *person){
     person->borrowedMaterial = realloc(person->borrowedMaterial, sizeof(int) * person->borrowedMaterialMaxCapacity * 2);
     for(int i = person->borrowedMaterialMaxCapacity; i < person->borrowedMaterialMaxCapacity * 2; i++){
@@ -33,6 +47,11 @@ void growBorrowedMaterial(Person *person){
     }
     person->borrowedMaterialMaxCapacity *= 2;
 }
+/*
+ * Function: addBorrowedMaterial
+ * Description: adds a given Material id to the BorrowedMaterial array.
+ * Returns: 1 if the id was added, 0 if it wasn't.
+ */
 void addBorrowedMaterial(Person *person, int idMaterial){
     if(person->amountOfBorrowedMaterial != person->borrowedMaterialMaxCapacity) {
         for (int i = 0; i < person->borrowedMaterialMaxCapacity; i++) {
@@ -49,6 +68,11 @@ void addBorrowedMaterial(Person *person, int idMaterial){
         person->amountOfBorrowedMaterial++;
     }
 }
+/*
+ * Function: removeBorrowedMaterial
+ * Description: removes the BorrowedMaterial id with the given id from the BorrowedMaterial array.
+ * Returns: --
+ */
 void removeBorrowedMaterial(Person *person, int idMaterial){
     for (int i = 0; i < person->borrowedMaterialMaxCapacity; i++) {
         if (person->borrowedMaterial[i] == idMaterial) {

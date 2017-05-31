@@ -2,6 +2,11 @@
 #include <memory.h>
 #include "Borrow.h"
 
+/*
+ * Function: newBorrow
+ * Description: Creates a new Borrow with the given data.
+ * Returns: Borrow pointer.
+ */
 Borrow* newBorrow(int idBorrow,int idMaterial,int idPerson, char* startDate, char* finishDate){
     Borrow* borrow = malloc(sizeof(Borrow));
     borrow->idBorrow = idBorrow;
@@ -13,6 +18,12 @@ Borrow* newBorrow(int idBorrow,int idMaterial,int idPerson, char* startDate, cha
     strcpy(borrow->finishDate, finishDate);
     return borrow;
 }
+
+/*
+ * Function: destroyBorrow
+ * Description: Deallocates all memory related to the Borrow.
+ * Returns: --
+ */
 void destroyBorrow(Borrow* borrow){
     free(borrow->startDate);
     free(borrow->finishDate);

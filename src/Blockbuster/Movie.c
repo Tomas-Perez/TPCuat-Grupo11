@@ -2,6 +2,11 @@
 #include <memory.h>
 #include "Movie.h"
 
+/*
+ * Function: newMovie
+ * Description: Creates a new Movie with the given data.
+ * Returns: Movie pointer.
+ */
 Movie* newMovie(int idMovie, char* name){
     Movie* movie = malloc(sizeof(Movie));
     movie->idMovie = idMovie;
@@ -10,6 +15,11 @@ Movie* newMovie(int idMovie, char* name){
     strcpy(movie->name, name);
     return movie;
 }
+/*
+ * Function: destroyMovie
+ * Description: Deallocates all memory related to the Movie.
+ * Returns: --
+ */
 void destroyMovie(Movie* movie){
     free(movie->name);
     free(movie);

@@ -2,6 +2,11 @@
 #include <memory.h>
 #include "Rent.h"
 
+/*
+ * Function: newRent
+ * Description: Creates a new Rent with the given data.
+ * Returns: Rent pointer.
+ */
 Rent* newRent(int idRent, int idMovie, int dni, char* rentDate, char* finishDate){
     Rent* rent = malloc(sizeof(Rent));
     rent->idRent = idRent;
@@ -14,7 +19,11 @@ Rent* newRent(int idRent, int idMovie, int dni, char* rentDate, char* finishDate
     strcpy(rent->finishDate, finishDate);
     return rent;
 }
-
+/*
+ * Function: destroyRent
+ * Description: Deallocates all memory related to the Rent.
+ * Returns: --
+ */
 void destroyRent(Rent* rent){
     free(rent->rentDate);
     free(rent->finishDate);
