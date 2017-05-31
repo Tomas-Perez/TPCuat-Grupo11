@@ -10,7 +10,7 @@
 #include "User.h"
 
 /*
- * Description: Contains all data needed for the CameraShopDatabase, including:
+ * Description: Contains all data needed for the CameraShop system, including:
  *  - Providers
  *  - Manufacturers
  *  - Products

@@ -8,7 +8,7 @@
 #include "InvoiceLine.h"
 
 /*
- * Description: A cart saves the products the client buys from the shop.
+ * Description: A cart saves the products the client in buying in the shop.
  */
 
 typedef struct Cart{

@@ -6,6 +6,25 @@
  * Description: Contains the functions related to the cart ADT.
  */
 
+static int cartContainsAppliance(Cart* cart, int applianceId){
+    for(int i = 0; i < cart->maxCapacity; i++){
+        if(cart->spacesTaken[i] != 0){
+            if(cart->cartLines[i]->applianceId == applianceId) return i;
+        }
+    }
+    return -1;
+}
+
+static void cartGrow(Cart* cart){
+    int maxCapacity = cart->maxCapacity;
+    cart->cartLines = realloc(cart->cartLines, sizeof(CartLine*) * (maxCapacity*2));
+    cart->spacesTaken = realloc(cart->spacesTaken, sizeof(int) * (maxCapacity*2));
+    cart->maxCapacity = maxCapacity*2;
+    for(int i = maxCapacity; i < cart->maxCapacity; i++){
+        cart->spacesTaken[i] = 0;
+    }
+}
+
 /*
  * Function: newCart
  * Description: creates a new cart with the given initial capacity;
@@ -68,14 +87,7 @@ void cartAddAppliance(Cart* cart, int applianceId, int amount){
     }
 }
 
-int cartContainsAppliance(Cart* cart, int applianceId){
-    for(int i = 0; i < cart->maxCapacity; i++){
-        if(cart->spacesTaken[i] != 0){
-            if(cart->cartLines[i]->applianceId == applianceId) return i;
-        }
-    }
-    return -1;
-}
+
 
 /*
  * Function: cartRemoveAppliance
@@ -115,12 +127,4 @@ int cartGetTotal(Cart* cart, Database* database){
     return result;
 }
 
-void cartGrow(Cart* cart){
-    int maxCapacity = cart->maxCapacity;
-    cart->cartLines = realloc(cart->cartLines, sizeof(CartLine*) * (maxCapacity*2));
-    cart->spacesTaken = realloc(cart->spacesTaken, sizeof(int) * (maxCapacity*2));
-    cart->maxCapacity = maxCapacity*2;
-    for(int i = maxCapacity; i < cart->maxCapacity; i++){
-        cart->spacesTaken[i] = 0;
-    }
-}
+
